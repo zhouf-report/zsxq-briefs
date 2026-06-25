@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+  }
+  .wrapper {
+    max-width: 680px;
+    margin: 0 auto;
+    background: #fff;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 24px 20px 20px;
+    text-align: center;
+  }
+  .header .label { font-size: 12px; color: #aaa; letter-spacing: 2px; margin-bottom: 4px; }
+  .header h1 { font-size: 20px; font-weight: 700; margin: 0 0 6px; color: white; }
+  .header .meta { font-size: 12px; color: #888; }
+  .stats-bar {
+    background: #f0f4ff;
+    border-bottom: 1px solid #dde5ff;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #555;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .sep { color: #ccc; }
+  .section { padding: 0 16px; margin-bottom: 4px; }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    padding: 16px 0 8px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 10px;
+  }
+  .section-title-star {
+    font-size: 15px;
+    font-weight: 700;
+    color: #92400e;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border: 1px solid #f59e0b;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 16px 0 10px;
+    display: block;
+  }
+  .star-item {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .star-count {
+    display: inline-block;
+    background: #f59e0b;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .star-analyst {
+    font-size: 13px;
+    font-weight: 700;
+    color: #92400e;
+    margin: 12px 0 6px;
+    padding: 4px 0;
+    border-bottom: 1px dashed #f59e0b;
+  }
+  .brief-item {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    border-left: 3px solid #ddd;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .alert-item {
+    background: #fff5f5;
+    border-left: 3px solid #e53e3e;
+  }
+  .tag-alert {
+    display: inline-block;
+    background: #e53e3e;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .tag-normal {
+    display: inline-block;
+    background: #4a5568;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .stock-label {
+    display: inline-block;
+    background: #f6ad55;
+    color: #7b3800;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin: 4px 4px 4px 0;
+    vertical-align: middle;
+  }
+  .stock-badge {
+    display: inline-block;
+    background: #fefcbf;
+    color: #744210;
+    border: 1px solid #f6ad55;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 3px 3px 3px 0;
+    vertical-align: middle;
+  }
+  .ref-link {
+    display: inline-block;
+    color: #3182ce;
+    background: #ebf8ff;
+    font-size: 11px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    margin-left: 2px;
+  }
+  .divider { border: none; border-top: 6px solid #f0f0f0; margin: 16px 0; }
+  .fulltext-header {
+    padding: 14px 16px 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #444;
+    border-bottom: 1px solid #eee;
+  }
+  .full-item { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; }
+  .full-header { font-size: 12px; font-weight: 700; color: #999; margin-bottom: 4px; }
+  .full-body { font-size: 13px; color: #333; line-height: 1.65; }
+  .footer { text-align: center; padding: 16px; font-size: 11px; color: #aaa; background: #f9f9f9; }
+  strong { color: #c05621; }
+  .plain { padding: 4px 0; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="label">每日简报</div>
+    <h1>【早报】2026年06月25日</h1>
+    <div class="meta">生成于北京时间 09:07</div>
+  </div>
+
+  
+    <div class="stats-bar">
+      <span>📅 07:00 – 09:00</span>
+      <span class="sep">|</span>
+      <span>共 <strong>140</strong> 条</span>
+      <span class="sep">|</span>
+      <span>覆盖 07:29 – 08:59</span>
+    </div>
+
+  <div class="section">
+    <div class="section-title">📊 A股投资研究简报｜2026年06月25日</div>
+<p class="plain">---</p>
+<div class="section-title">🔴 分类1：供需/涨价/缺货/交期信号</div>
+<div class="brief-item alert-item"><span class="tag-alert">【电容涨价·3次提及】</span>日本铝电解电容龙头尼吉康全系涨价10-15%（原9-12%），国内江海、立隆跟进涨价5-10%。电极箔成本占比最大，一体化企业（江海75%自制、艾华60%+自制）受益最大。Q3有望再次涨价，供给端持续紧张。<span class="stock-label">相关标的</span><span class="stock-badge">江海股份</span><span class="stock-badge">艾华集团</span><span class="stock-badge">法拉电子</span><span class="stock-badge">火炬电子</span><span class="stock-badge">立隆电子</span><a href="#p095" class="ref-link">#095</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【光纤涨价·2次提及】</span>光纤预制棒价格较2025年初快速上涨：通用G.652D光棒涨幅超180%；G.657.A2光棒报价由22-30元/芯公里涨至160元，涨幅近550%。光棒产能扩产周期长，供给弹性有限，高纯四氯化硅需求明显增长。<span class="stock-label">相关标的</span><span class="stock-badge">长飞光纤</span><span class="stock-badge">通鼎互联</span><span class="stock-badge">永鼎股份</span><span class="stock-badge">泰和新材</span><span class="stock-badge">中天科技</span><span class="stock-badge">亨通光电</span><a href="#p040" class="ref-link">#040</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【存储芯片涨价·2次提及】</span>美光财报确认存储供需紧张持续至2027年以后。DRAM/NAND位元出货增速上调至20-25%/20%，但供给端受制于晶圆厂建设周期长、HBM吞噬产能、洁净室资源转移等结构性约束，供给增长难以追上需求。<span class="stock-label">相关标的</span><span class="stock-badge">兆易创新</span><span class="stock-badge">普冉股份</span><span class="stock-badge">北京君正</span><span class="stock-badge">德明利</span><span class="stock-badge">江波龙</span><span class="stock-badge">佰维存储</span><a href="#p017" class="ref-link">#017</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【PCB/覆铜板涨价·2次提及】</span>木林森6月12日全线PCB产品涨20%后，6月17日再涨10%；建滔积层板6月16日对所有厚度FR-4覆铜板及PP半固化片提价15%；7628电子布价格较年初已涨超70%。下游CCL订单饱满1-1.5个月，涨价传导顺畅，电子布供需紧张预计延续至明年底。<span class="stock-label">相关标的</span><span class="stock-badge">中国巨石</span><span class="stock-badge">国际复材</span><span class="stock-badge">中材科技</span><span class="stock-badge">宏和科技</span><span class="stock-badge">建滔积层板</span><a href="#p032" class="ref-link">#032</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【高纯四氯化硅涨价·2次提及】</span>光棒产能扩产拉动高纯四氯化硅需求明显增长，供给弹性有限导致涨价周期启动。高纯四氯化硅下游主要应用于光纤预制棒、合成石英玻璃生产，全球光纤高景气同步推高需求。<span class="stock-label">相关标的</span><span class="stock-badge">三孚股份</span><span class="stock-badge">宏柏新材</span><span class="stock-badge">新安股份</span><span class="stock-badge">新亚强</span><span class="stock-badge">恒星科技</span><a href="#p005" class="ref-link">#005</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【VC（碳酸亚乙烯酯）涨价】</span>6月24日VC均价16万元/吨，较前一工作日上涨0.5万元/吨，主流生产企业报价18万元/吨。储能电池添加比例高于动力，H2大规格尺寸储能释放后添加比例进一步提高，Q3扩产幅度有限，VC仍是典型旺季提价品种。<span class="stock-label">相关标的</span><span class="stock-badge">华盛锂电</span><span class="stock-badge">海科新源</span><span class="stock-badge">富祥药业</span><span class="stock-badge">孚日股份</span><span class="stock-badge">海辰药业</span><a href="#p038" class="ref-link">#038</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【焦煤涨价】</span>主流焦企发起第九轮提涨，湿熔焦上调50元/吨、干熔焦上调55元/吨，自6月26日0时起执行。<span class="stock-label">相关标的</span><span class="stock-badge">山西焦煤</span><span class="stock-badge">宝泰隆</span><a href="#p001" class="ref-link">#001</a></div>
+<div class="brief-item"><span class="tag-normal">【油运运费飙升】</span>霍尔木兹海峡通航恢复，油轮运费大幅上涨。租用海峡以外地区油轮费用从一周前的每周10.65万美元飙升至每日19.05万美元，接近翻倍。长锦商船最新成交中东湾内-印度航线租约运费达WS897点、对应TCE约百万美元/日。<span class="stock-label">相关标的</span><span class="stock-badge">招商轮船</span><span class="stock-badge">中远海能</span><span class="stock-badge">招商南油</span><a href="#p074" class="ref-link">#074</a></div>
+<p class="plain">---</p>
+<span class="section-title-star">⭐ 分类2：孙潇雅·赵宇阳专栏</span>
+<div class="star-count">📊 本期提及：孙潇雅 1次 | 赵宇阳/ZYY 2次</div>
+<div class="star-analyst">[孙潇雅观点]</div>
+<div class="star-item"><span class="tag-normal">【天承科技更新】</span>公司卡位PCB、TGV、半导体药水三大热门赛道。TGV方面独家供应填实药水，京东方新增沉铜药水需求，填实+沉铜单线药水价值量预计是PCB的几十倍但成本差异不大；半导体药水跟随设备厂BFHC逐步放量，高毛利市场；PCB跟随大厂扩产新增产线上量，mSAP、载板产线也开始放量。预计今年净利率25-30%、明年30-35%、后续冲击35-40%，看好PCB药水国产替代（200亿市场，公司去年份额不到5%）及mSAP价值量通胀2-2.5倍。<span class="stock-label">相关标的</span><span class="stock-badge">天承科技</span><a href="#p028" class="ref-link">#028</a></div>
+<div class="star-analyst">[赵宇阳/ZYY观点]</div>
+<div class="star-item"><span class="tag-normal">【莲花控股/纽菲斯ABF膜】</span>国内ABF膜相关研发最早由H发起，国家发改委、工信部2022年牵头标准制定。纽菲斯ABF膜9层及以下已全部实现技术过关，9-11层技术为国内企业唯一突破的厂商，产品已向XSKJ、SY等客户供货，正在和SN、HD等客户推进合作。目前处于中试线阶段年产能约100万平，预计ABF下半年价格继续起飞，2026年上半年价格上涨30%，预计下半年还将上涨50%；普通产品价格约250-270元/平，高端A107产品售价可达2000元/平。<span class="stock-label">相关标的</span><span class="stock-badge">莲花控股</span><a href="#p081" class="ref-link">#081</a></div>
+<div class="star-item"><span class="tag-normal">【通鼎互联光纤产能拐点】</span>康宁采购光棒锁定数年单年200t以上A1光棒供给，对应650万芯里光纤，按当下A1价格与公司成本测算对应贡献3-5亿年化利润；山东东方光源复产单月产出已达10-20t，预计Q3达年化150t供给，Q4实现年化300t满产，该复产均为A2纤，单芯净利180-200元对应贡献18-20亿年化利润；韶关一期规划600t A2光棒、2000万芯里A2光纤，预计明年上半年实现投满产，按单芯净利180-200元对应贡献36-40亿利润。2027年有望实现40亿以上利润，对应当下仅7X估值。<span class="stock-label">相关标的</span><span class="stock-badge">通鼎互联</span><a href="#p053" class="ref-link">#053</a></div>
+<p class="plain">---</p>
+<div class="section-title">💻 分类3：半导体/晶圆代工/芯片设备</div>
+<div class="star-item"><span class="tag-alert">【台积电涨价·2次提及】</span>台积电已向客户通知调涨晶圆代工价格，涨价范围不仅涵盖3nm制程，更扩及7nm及以下所有先进制程，整体涨幅约5-10%，影响范围涵盖约75%的晶圆营收来源。这是AI/HPC需求强劲、先进制程产能紧张、N2及海外厂资本开支压力上升背景下的定价权强化。<span class="stock-label">相关标的</span><span class="stock-badge">中芯国际</span><span class="stock-badge">华虹半导体</span><a href="#p044" class="ref-link">#044</a></div>
+<div class="star-item"><span class="tag-alert">【联发科涨价】</span>IC设计厂开始向下游顺价。联发科已向客户发出价格调整通知，涉及手机SoC、PMIC等产品，主流口径涨幅约10-15%，部分市场传闻最高可到20%。这意味着上游晶圆代工、封测、原材料、物流等成本上行已从制造端向IC设计端传导。<span class="stock-label">相关标的</span><span class="stock-badge">联发科</span><a href="#p044" class="ref-link">#044</a></div>
+<div class="star-item"><span class="tag-normal">【美光资本开支上修】</span>FY26Q4资本开支约100亿美元，预计FY26全年约270亿美元；FY27各季度资本开支均超FY26Q4水平，预计全年超400亿美元。资本开支主要用于洁净室建设及先进存储产能扩张，爱达荷Boise工厂提前一季度到2027年中投产，新加坡2027上半年成为HBM封装中心。<span class="stock-label">相关标的</span><span class="stock-badge">北方华创</span><span class="stock-badge">中微公司</span><span class="stock-badge">华海清科</span><span class="stock-badge">盛美上海</span><span class="stock-badge">长川科技</span><span class="stock-badge">精智达</span><a href="#p069" class="ref-link">#069</a></div>
+<div class="star-item"><span class="tag-normal">【HBM4量产加速】</span>美光HBM4 12层产品量产爬坡速度是HBM3E 12层版本的两倍，已累计交付超10亿美元收入。HBM4进入高量产出货阶段，下一代HBM4E研发顺利推进预计2027年下半年量产。<span class="stock-label">相关标的</span><span class="stock-badge">兆易创新</span><span class="stock-badge">普冉股份</span><span class="stock-badge">北京君正</span><a href="#p017" class="ref-link">#017</a></div>
+<div class="star-item"><span class="tag-normal">【先进制程产能紧张】</span>DRAM和NAND供需紧张预计持续至2027年以后。供给端受制于晶圆厂建设周期长（3年+）、先进节点越来越复杂、HBM吞噬大量DRAM产能、NAND厂商将洁净室资源转移给DRAM生产等结构性约束。<span class="stock-label">相关标的</span><span class="stock-badge">中芯国际</span><span class="stock-badge">华虹半导体</span><span class="stock-badge">晶合集成</span><span class="stock-badge">华润微</span><a href="#p082" class="ref-link">#082</a></div>
+<div class="star-item"><span class="tag-normal">【测试设备国产替代】</span>AI带动后道测试设备量价齐升，2025年全球测试设备销售额增长55%，远高于前段晶圆制程设备增长12%。国内4家上市ATE公司25年合计收入仅80亿，而爱德万、泰瑞达占全球份额80%以上，国产替代空间巨大。<span class="stock-label">相关标的</span><span class="stock-badge">华峰测控</span><span class="stock-badge">长川科技</span><span class="stock-badge">联动科技</span><span class="stock-badge">精智达</span><span class="stock-badge">金海通</span><span class="stock-badge">强一股份</span><a href="#p043" class="ref-link">#043</a></div>
+<p class="plain">---</p>
+<div class="section-title">🤖 分类4：AI/算力/光模块/数据中心</div>
+<div class="star-item"><span class="tag-normal">【美光战略客户协议（SCA）重塑商业模式】</span>美光已签署16份SCA，覆盖数据中心、消费电子、汽车市场，期限通常5年（汽车3年）。这16份协议占美光DRAM出货量20%、NAND出货量33%，采用Take-or-Pay模式，14份协议最低收入承诺合计1000亿美元，已收押金及财务承诺220亿美元。预计未来超50%收入来自SCA，其中40%收入设有接近当前市价的价格上限。这标志存储行业从周期品向合约品转变，收入可见性大幅提升。<span class="stock-label">相关标的</span><span class="stock-badge">兆易创新</span><span class="stock-badge">普冉股份</span><span class="stock-badge">北京君正</span><span class="stock-badge">德明利</span><span class="stock-badge">江波龙</span><span class="stock-badge">佰维存储</span><a href="#p101" class="ref-link">#101</a></div>
+<div class="star-item"><span class="tag-normal">【液冷系统全面验证加速】</span>英特尔联合英维克、嘉实多完成单相冷板液冷工质225天长周期验证，液冷产业从主题预期进入平台认证+生态验证阶段。英伟达Vera Rubin平台落地45℃全液冷方案，实现100%液冷的AI计算平台。<span class="stock-label">相关标的</span><span class="stock-badge">英维克</span><span class="stock-badge">申菱环境</span><span class="stock-badge">高澜股份</span><span class="stock-badge">同飞股份</span><span class="stock-badge">曙光数创</span><span class="stock-badge">川环科技</span><span class="stock-badge">飞荣达</span><span class="stock-badge">领益智造</span><span class="stock-badge">依米康</span><a href="#p014" class="ref-link">#014</a></div>
+<div class="star-item"><span class="tag-normal">【光模块CPO规模化量产加速】</span>康宁发布Glass Bridge玻璃桥技术，用玻璃波导替代传统机械对准，打通CPO量产瓶颈。Trendforce预测CPO/NPO市场将由2025年约1亿美元增长至2030年超390亿美元，2028-2029年才有望明显加速。<span class="stock-label">相关标的</span><span class="stock-badge">剑桥科技</span><span class="stock-badge">三安光电</span><span class="stock-badge">云南锗业</span><span class="stock-badge">兴业科技</span><span class="stock-badge">中际旭创</span><span class="stock-badge">新易盛</span><span class="stock-badge">联特科技</span><a href="#p005" class="ref-link">#005</a></div>
+<div class="star-item"><span class="tag-normal">【国产算力芯片放量】</span>寒武纪思元690芯片三季度大规模放量，国产高端训练芯片核心标的；品高股份绑定江原科技，旗舰T800芯片今日APEC论坛正式发布，对标海外高端算力，国产替代空间巨大。<span class="stock-label">相关标的</span><span class="stock-badge">寒武纪</span><span class="stock-badge">品高股份</span><a href="#p012" class="ref-link">#012</a></div>
+<div class="brief-item"><span class="tag-normal">【Token工厂盈利能力强】</span>行云科技联手AlayaDB打造Token工厂，单台B300服务器月盈利60万元，仅需8个月回本。公司27年算力租赁净利润26亿+配套业务3.7亿+Token工厂18.8亿，28年随着Rubin及GB300新代际产品导入，算力租赁业务整体净利润超50亿。<span class="stock-label">相关标的</span><span class="stock-badge">行云科技</span><a href="#p108" class="ref-link">#108</a></div>
+<p class="plain">---</p>
+<div class="section-title">📱 分类5：消费电子/被动元器件</div>
+<div class="brief-item"><span class="tag-normal">【苹果折叠屏iPhone量产在即】</span>苹果已最终确定可折叠iPhone关键规格，包括显示屏、外壳和机械部件，已进入量产准备阶段，计划7月下旬量产。铰链技术难题基本解决，9月新品发布会计划保持不变。<span class="stock-label">相关标的</span><span class="stock-badge">宜安科技</span><span class="stock-badge">精研科技</span><span class="stock-badge">联得装备</span><span class="stock-badge">蓝思科技</span><a href="#p004" class="ref-link">#004</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【MLCC涨价开启】</span>江海股份发布涨价函，调整范围包括铝电解电容器、薄膜电容器、超级电容器三大品类。日本铝电解电容龙头尼吉康全系涨价10-15%，国内江海、立隆跟进涨价5-10%。AI牛角电容主要用于服务器电源层级，江海已跻身全球AI产业链。<span class="stock-label">相关标的</span><span class="stock-badge">江海股份</span><span class="stock-badge">火炬电子</span><span class="stock-badge">艾华集团</span><span class="stock-badge">法拉电子</span><span class="stock-badge">立隆电子</span><a href="#p095" class="ref-link">#095</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【MLPC松下涨价带动国产突破】</span>全球高容MLPC目前仍以松下为主，已发布涨价函将于7月1日起涨价20-30%。江海股份与国内头部AI芯片客户联合研发突破MLPC技术，有望同时供给国内与海外客户需求，潜在MLPC空间巨大。<span class="stock-label">相关标的</span><span class="stock-badge">江海股份</span><a href="#p138" class="ref-link">#138</a></div>
+<p class="plain">---</p>
+<div class="section-title">🏭 分类6：PCB/CCL/覆铜板</div>
+<div class="brief-item"><span class="tag-normal">【电子布供需紧张持续】</span>7628电子布价格较年初已涨超70%，当前行业库存持续低位，下游需求旺盛，订单处于每月一议阶段。供给来看，产能扩产进度平稳，到年底二代布维持紧平衡，T布供需紧张预计到明年底。此轮7628电子布价格大概率会站上10元/米。<span class="stock-label">相关标的</span><span class="stock-badge">中国巨石</span><span class="stock-badge">国际复材</span><span class="stock-badge">长海股份</span><span class="stock-badge">中材科技</span><span class="stock-badge">宏和科技</span><a href="#p033" class="ref-link">#033</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【覆铜板涨价传导顺畅】</span>建滔积层板6月16日对所有厚度FR-4覆铜板及PP半固化片提价15%，当前覆铜板厂订单维持1-1.5个月，订单持续饱满，上下游产业链提价传导顺畅。5月27日建滔CCL提价10%，价格已经超过21年高点。<span class="stock-label">相关标的</span><span class="stock-badge">建滔积层板</span><span class="stock-badge">建滔集团</span><a href="#p033" class="ref-link">#033</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【PCB全线涨价】</span>木林森6月12日官宣全线PCB产品上调20%后，6月17日再次发函宣布在原有涨幅基础上再次上调10%。<span class="stock-label">相关标的</span><span class="stock-badge">一博科技</span><span class="stock-badge">中国巨石</span><span class="stock-badge">中材科技</span><span class="stock-badge">国际复材</span><span class="stock-badge">华正新材</span><span class="stock-badge">铜冠铜箔</span><a href="#p005" class="ref-link">#005</a></div>
+<p class="plain">---</p>
+<div class="section-title">🔋 分类7：新能源/储能/锂电</div>
+<div class="brief-item"><span class="tag-normal">【全钒液流电池储能规模化应用】</span>新疆吉木萨尔全钒液流电池储能电站全面转入商业运行，是目前我国规模最大的全钒液流电池储能电站。全钒液流储能作为支撑高比例可再生能源发展的战略性技术，正迎来技术突破与产业落地双重加速。我国钒制品产能占全球总量72%，储能领域钒应用占比从2023年10.8%提升至16.3%，已成为钒全产业链中增长最快的细分领域。<span class="stock-label">相关标的</span><span class="stock-badge">钒钛股份</span><span class="stock-badge">河钢股份</span><span class="stock-badge">安宁股份</span><a href="#p001" class="ref-link">#001</a></div>
+<div class="brief-item"><span class="tag-normal">【锂电行业进入上升周期】</span>碳酸锂主力合约上涨近4%，VC价格昨天继续上涨5000元/吨。综合市场机构观点，锂电行业周期已进入上升区间，随着动力电池与储能电池需求旺季临近，板块有望迎来量价共振的主升行情。<span class="stock-label">相关标的</span><span class="stock-badge">永杉锂业</span><span class="stock-badge">盛新锂能</span><span class="stock-badge">融捷股份</span><span class="stock-badge">永兴材料</span><span class="stock-badge">大中矿业</span><span class="stock-badge">天齐锂业</span><span class="stock-badge">赣锋锂业</span><span class="stock-badge">西藏矿业</span><span class="stock-badge">中矿资源</span><a href="#p003" class="ref-link">#003</a></div>
+<div class="brief-item"><span class="tag-normal">【储能电芯一芯难求】</span>媒体报道储能电池电芯"一芯难求"，储能电芯企业订单已排至2027年。<span class="stock-label">相关标的</span><span class="stock-badge">宁德时代</span><span class="stock-badge">亿纬锂能</span><span class="stock-badge">鹏辉能源</span><a href="#p001" class="ref-link">#001</a></div>
+<p class="plain">---</p>
+<div class="section-title">🦾 分类8：机器人/物理AI</div>
+<div class="brief-item"><span class="tag-normal">【人形机器人存储需求爆发】</span>美光CEO表示人形机器人搭载的内存容量是普通L2+级别车辆的10倍，预计本十年后半段将开启持续数十年、规模庞大的内存需求增长周期。这为高带宽、低功耗内存及存储产品带来增量广阔、单设备搭载量大幅提升的市场机遇。<span class="stock-label">相关标的</span><span class="stock-badge">兆易创新</span><span class="stock-badge">普冉股份</span><span class="stock-badge">北京君正</span><span class="stock-badge">德明利</span><span class="stock-badge">江波龙</span><span class="stock-badge">佰维存储</span><a href="#p083" class="ref-link">#083</a></div>
+<p class="plain">---</p>
+<div class="section-title">💊 分类9：医药/生物/创新药</div>
+<div class="brief-item"><span class="tag-normal">【创新药产业链大涨】</span>恒瑞医药、信达生物、海思科、德琪医药合作持续落地，基本面持续向好。2025年中国临床试验总量首次突破5000项，创历史新高，其中新药临床试验2997项同比增长18%。4月初至6月中旬，A股和H股中百余家医药上市公司宣布或实施回购股份，5月共有13家生物医药企业发布回购预案，合计拟回购金额上限达34.9亿元。<span class="stock-label">相关标的</span><span class="stock-badge">康方生物</span><span class="stock-badge">三生制药</span><span class="stock-badge">信达生物</span><span class="stock-badge">科伦博泰生物</span><span class="stock-badge">翰森制药</span><span class="stock-badge">石药集团</span><span class="stock-badge">百济神州</span><span class="stock-badge">基石药业</span><span class="stock-badge">映恩生物</span><span class="stock-badge">乐普生物</span><span class="stock-badge">君实生物</span><span class="stock-badge">荣昌生物</span><a href="#p031" class="ref-link">#031</a></div>
+<div class="brief-item"><span class="tag-normal">【脑机接口市场规模扩大】</span>工信部公开征求《脑机接口信息系统脑电数据格式要求》等5项通信行业标准报批意见。全国首例无创脑机接口临床应用，患者术后一月恢复独立行走。我国脑机接口企业总量已突破200家，预计2026年中国脑机接口市场规模有望突破50亿元，到2030年将达150亿元。<span class="stock-label">相关标的</span><span class="stock-badge">创新医疗</span><span class="stock-badge">三博脑科</span><span class="stock-badge">科大讯飞</span><span class="stock-badge">世纪华通</span><span class="stock-badge">汉威科技</span><span class="stock-badge">伟思医疗</span><span class="stock-badge">汤姆猫</span><span class="stock-badge">翔宇医疗</span><span class="stock-badge">佳禾智能</span><span class="stock-badge">美好医疗</span><span class="stock-badge">盈趣科技</span><span class="stock-badge">海格通信</span><span class="stock-badge">诚益通</span><span class="stock-badge">汉王科技</span><a href="#p003" class="ref-link">#003</a></div>
+<p class="plain">---</p>
+<div class="section-title">🔩 分类10：材料/有色/稀土</div>
+<div class="brief-item"><span class="tag-normal">【战略矿产出口管制完善】</span>商务部发布进一步完善战略矿产两用物项出口管制违法违规行为举报处理工作，自2026年7月1日起实施。涉及镓、锗、锑、钨、中重稀土、钼、铟、碲、铋等。完成从"立规"到"管住"的转变，全面落实管制政策，把社会举报、实名奖励作为常态化、制度化的监管落实渠道。<span class="stock-label">相关标的</span><span class="stock-badge">中钨</span><span class="stock-badge">厦钨</span><span class="stock-badge">江钨</span><span class="stock-badge">翔鹭</span><span class="stock-badge">章源</span><span class="stock-badge">佳鑫</span><span class="stock-badge">金钼</span><span class="stock-badge">盛龙</span><span class="stock-badge">国城</span><span class="stock-badge">盛和</span><span class="stock-badge">中稀有色</span><span class="stock-badge">中国稀土</span><span class="stock-badge">北稀</span><span class="stock-badge">爱迪特</span><span class="stock-badge">国瓷</span><span class="stock-badge">云锗</span><span class="stock-badge">驰宏</span><span class="stock-badge">锡业</span><span class="stock-badge">株冶</span><span class="stock-badge">有研新材</span><span class="stock-badge">豫光金铅</span><a href="#p070" class="ref-link">#070</a></div>
+<div class="brief-item alert-item"><span class="tag-alert">【SiC衬底涨价在即】</span>天岳先进作为英飞凌最大SiC供应商，涨价信号已出现。扬杰等企业已发二轮涨价函，产业需求非常旺盛，企业有同比+150%以上的积压订单，交期从2-3个周延长到50周以上。<span class="stock-label">相关标的</span><span class="stock-badge">天岳先进</span><span class="stock-badge">扬杰科技</span><a href="#p054" class="ref-link">#054</a></div>
+<div class="brief-item"><span class="tag-normal">【金刚石散热产业化元年】</span>Blackwell→Rubin架构GPU单芯功耗突破2300W，传统铜/液冷逼近物理极限，金刚石热导率超铜4-5倍，被英伟达、Akash Systems明确列为下一代散热方案，2026年可视为金刚石散热0→1产业化元年。国内培育钻石产能占全球60%+，CVD金刚石热沉片已通过部分头部供应链验证。<span class="stock-label">相关标的</span><span class="stock-badge">力量钻石</span><span class="stock-badge">四方达</span><span class="stock-badge">国机精工</span><span class="stock-badge">黄河旋风</span><span class="stock-badge">中兵红箭</span><span class="stock-badge">菲沃泰</span><a href="#p034" class="ref-link">#034</a></div>
+<p class="plain">---</p>
+<div class="section-title">🏦 分类11：宏观/货币/大宗</div>
+<div class="brief-item"><span class="tag-normal">【美联储维持基准利率不变】</span>美联储FOMC维持基准利率不变，主席沃什强调当前物价持续高企不会成为常态，委员会将实现物价稳定目标。美银发报告认为美联储年内要加息三次。</div>
+<div class="brief-item alert-item"><span class="tag-normal">【油价回吐涨幅】</span>国际原油回吐本轮中东冲突以来全部涨幅，WTI原油下跌3.92%至70.34美元/桶，布伦特原油下跌4.33%至73.74美元/桶。霍尔木兹海峡通航恢复，伊朗原油全链条豁免，油运超级周期再获强支撑。</div>
+<div class="brief-item"><span class="tag-normal">【黄金白银大幅下跌】</span>随着美元走强及加息预期升温，黄金长达三年的牛市行情告一段落，金价自去年11月以来首次跌破4000美元。现货黄金下跌2.73%至3998.98美元/盎司，现货白银下跌6.8%至57.42美元/盎司。</div>
+<p class="plain">---</p>
+<div class="section-title">📊 分类12：市场策略/盘面观点</div>
+<div class="brief-item"><span class="tag-normal">【量能缩量，科创板特别猛】</span>昨日成交32843亿，缩量1564亿。量能继续缩，海外做了止跌动作但没有很强的反包，科创板（半导体）特别猛，基本面预期扎实。</div>
+<div class="brief-item"><span class="tag-normal">【板块轮动分化】</span>电子（半导体）、建材（电子布）和化工（各种细分）表现强势。PCB链条作为重要观察指标反包力度不错，赚钱效应很炸裂，能想到要拉的东西都被抢了，估计明天得喘口气。</div>
+<div class="brief-item"><span class="tag-normal">【美股涨跌不一】</span>标普500指数跌0.09%，纳指跌0.43%，道指涨0.36%。芯片股继续回调，西部数据、希捷科技跌超4%，高通跌超3%，但美光财报后盘后普遍走强。</div>
+<p class="plain">---</p>
+<div class="section-title">📰 分类13：其他重要信息</div>
+<div class="brief-item"><span class="tag-normal">【微短剧发展管理办法】</span>国家广播电视总局发布《微短剧发展管理办法（征求意见稿）》，支持优秀微短剧境内外同步播出。<span class="stock-label">相关标的</span><span class="stock-badge">中文在线</span><span class="stock-badge">掌阅科技</span><span class="stock-badge">百纳千成</span></div>
+<div class="brief-item"><span class="tag-normal">【商业航天密集发射在即】</span>长十乙火箭转运前往海南商发2号发射工位，航警已出，发射时间预估7月10-13日，预期实现海上网系回收。朱雀三号已在酒泉完成一级起竖、箭塔对接，全箭硬件就位，预期实现垂直回收。<span class="stock-label">相关标的</span><span class="stock-badge">航天工程</span><span class="stock-badge">广联航空</span><span class="stock-badge">鲁信创投</span><span class="stock-badge">金风科技</span><span class="stock-badge">巨力索具</span><span class="stock-badge">海兰信</span></div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="fulltext-header">📄 全文（点击简报中的编号可跳转）</div>
+  
+        <div class="full-item" id="p001">
+            <div class="full-header">[001] 07:29</div>
+            <div class="full-body">盘前热点事件<br><br>【一、昨日热点】<br>磷化铟：兴业科技<br>正丙醇锆：西陇科学<br>氧化锆：长裕集团、东方锆业<br>四氯化硅：三孚股份、宏柏新材<br>液冷：圣阳股份<br>光纤：通鼎互联<br>MLCC：火炬电子<br>PCB：满坤科技<br>锂电：永杉锂业<br>油运：招商轮船<br>创新药：海南海药<br>可回收火箭：航天工程<br> <br>【二、美光科技财报超预期 带动存储芯片盘后全线上涨】<br>美光科技最新财报显示，公司预计第四财季经调整营收490亿美元至510亿美元，市场预期432.4亿美元。美光科技CEO表示，预计第四财季资本支出约为100亿美元，预计2026财年全年资本支出约为270亿美元。2027财年各季度的资本支出将高于2026第四财季的水平。<br>美光科技发布财报后，美股存储芯片盘后全线上涨，美光科技涨超14%，西部数据涨超10%，闪迪涨超10%，希捷科技涨超10%。<br>存储芯片：太极实业、深科技、兆易创新、普冉股份、佰维存储<br>【 】<br>【三、两款可回收火箭7月初发射】<br>6月24日，长十乙火箭转运前往海南商发2号发射工位。航警已出，发射时间预估7月10-13日，预期实现海上网系回收。<br>朱雀三号已在酒泉东风商业航天 LC-96B 工位完成一级起竖、箭塔对接，全箭硬件就位，预期实现垂直回收。<br>航天一院（长十乙）：航天工程、广联航空<br>蓝箭航天（朱雀三号）：鲁信创投、金风科技<br>网系回收：巨力索具、海兰信<br> <br>【四、苹果将于7月下旬量产首款可折叠iPhone】<br>供应链人士透露，苹果已最终确定可折叠iPhone的关键规格，包括显示屏、外壳和机械部件，并已进入量产准备阶段。<br>折叠屏手机：宜安科技、精研科技、联得装备<br> <br>【五、电容器涨价】<br>江海股份6月20日发出产品价格调整通知，今年电容器核心原材料（如铝箔、化工原料、碳粉等）及电力源头信息加微信 WUXL3408成本持续大幅攀升，不得不对产品价格进行调整，调整范围包括铝电解电容器、薄膜电容器、超级电容器三大品类。<br>电容：江海股份、火炬电子、艾华集团<br>上游碳粉：元力股份<br>上游电极箔：海星股份、东阳光、华锋股份<br> <br>【六、康宁发布新一代玻璃基光互连技术】<br>康宁发布新一代玻璃基光互连技术，该技术将光纤与光半导体（硅光子学）连接起来，利用光传输信号。这项技术的目标应用领域是下一代共封装光学器件（CPO）和玻璃芯封装。传统方式是把水管一根根对准接头插进去，Glass Bridge是在玻璃里预埋好管道，光纤直接插进去就行，TGV玻璃基板+CPO封装这个组合，等于把玻璃基板从载板升级成光互连载板。<br>玻璃基板：京东方A、沃格光电、彩虹股份、北玻股份<br>光纤：通鼎互联、长飞光纤、亨通光电、中天科技<br> <br>【七、我国规模最大全钒液流电池储能电站转入商业运行】<br>新疆吉木萨尔全钒液流电池储能电站日前全面转入商业运行，该电站是目前我国规模最大的全钒液流电池储能电站，标志着我国在大容量、长时储能技术规模化应用方面取得新进展。全钒液流储能作为支撑高比例可再生能源发展的战略性技术，正迎来技术突破与产业落地的双重加速阶段。行业数据显示，我国钒制品产能占全球总量的72%；储能领域钒应用占比从2023年的10.8%提升至16.3%，储能应用占比持续攀升，已成为钒全产业链中增长最快的细分领域，为全钒液流储能规模化发展提供了稳定的原料支撑与发展动力。<br>钒：钒钛股份、河钢股份、安宁股份<br> <br>【八、行业要闻】<br>1、国家广播电视总局发布《微短剧发展管理办法（征求意见稿）》，支持优秀微短剧境内外同步播出。（中文在线、掌阅科技、百纳千成）<br>2、追觅受邀出席2026年夏季达沃斯论坛工商界代表座谈会，俞浩出现在6月24日晚间新闻联播中。（嘉美包装）<br>3、荣耀：下一代移动终端操作系统完整技术框架将于7月亮相，将AI Agent的感知力、规划力和行动力同时注入移动终端。（天音控股、爱施德）<br>4、英特尔联合英维克、嘉实多发布单相冷板液冷工质测试验证成果。（英维克）<br>5、科大国盾量子技术股份有限公司完成工程化开发的国产稀释制冷机ez-Q F1500首台6月24日正式下线。（国盾量子）<br>6、焦炭开启第九轮提涨，自6月26日0时起执行。（大有能源、郑州煤电）<br>7、五部门联合启动工业5G独立专网试点，加速5G+工业互联网赋能千行百业。（武汉凡谷、东土科技）<br>8、经济半小时：AI制药研发效率飙升40倍，制药迎来AI时刻。（泓博医药）<br>9、上海证券报：一芯难求，储能电芯企业订单已排至2007年。（宁德时代、亿纬锂能、鹏辉能源）<br>10、我国成功研制全球首款可产生百万级原子光镊阵列的超表面芯片。<br>11、国家卫生健康委定于6月26日（周五）15:00，介绍促进生育健康有关情况。（爱婴室、孩子王）<br>12、国务院新闻办公室定于6月26日（星期五）上午10时举行发布会，介绍“十五五”时期加快新型能源体系建设有关规划情况。（华电辽能、豫能控股）<br>13、商务部发布进一步完善战略矿产两用物项出口管制违法违规行为举报处理工作有关事项。（稀土、钨、锑、镓、锗、锆等） <br><br>#文字观点#【  】</div>
+        </div>
+
+        <div class="full-item" id="p002">
+            <div class="full-header">[002] 07:31</div>
+            <div class="full-body">20260624复盘<br><br>宏观：<br>贝森特：委内瑞拉正在重新回归美元体系。伊朗方面将以美元开具发票。在乌克兰局势结束后，俄罗斯将希望恢复美元体系。<br><br>人工智能：<br>1.	康宁推出“玻璃桥"，瞄准CPO和玻璃芯包装市场。<br>2.	OPENAI和博通合作发布AI芯片Jalapeno 新芯片可节省50%的成本。<br>3.	卖方：Lambda 2023年部署的H100，现在的租赁费率比2023年还高。<br>4.	传立讯下了约140亿元物料。<br>5.	卖方：7月1日起各MLCC厂商将陆续和核心直供客户重新谈判价格。<br>6.	卖方：市场关注度都在牛角电容，但我们认为接下来成长性最快的铝电解电容为MLPC。<br>7.	江海涨价函。<br>8. 日本铝电解电容龙头尼吉康宣布对旗下所有铝电解电容产品实施全面涨价，涨幅据悉由原先的9%至12%进一步扩大至10%至15%。<br>8.	7.13谷歌供应商大会即将召开。<br><br>半导体：<br>1.	WSTS 6月预测26年全球半导体市场规模预计将达到约1.51万亿美元（ 25年12月预测值9750亿美元），核心在于存储涨价带来的快速扩容。预计27年将达到1.91万亿美元。<br>2.	卖方：存储、CCL受益产品涨价，板块盈利表现最优。<br>3.	卖方：晶圆厂、封测厂稼动率稳步抬升，产品涨价节奏清晰，半导体设备、国产算力相关企业订单放量，财报持续改善。<br>4.	三星宣布90万亿韩元回购。<br>5.	据BBG，荷兰正在游说美国不要扩大对半导体设备的出口管制。<br>6.	SK海力士计划赴美发行ADR募资290亿美元，预计7月10日开始交易。<br><br>商业航天：<br>1.	可回收火箭长十乙发射计划于7月10日13:00~13日17:00发射。<br>2.	首届全球太空算力大会6月29日在京举办 将成立北京太空算力创新中心和联盟。<br><br>市场相关：<br>1.	监管要求暂停管理人跨境TRS（总收益互换）规模新增。<br>2.	美股涨，干NV链；韩国涨，干存储；日本涨，干电容PCB；都不涨，干国产。<br><br>策略观察：<br>1.	今日成交32843亿，缩量1564亿。量能继续缩，海外做了止跌动作，但没有很强的反包，目前看是震荡源头信息加微信 WUXL3408等待6月结束，我们也做了止跌动作，但科创板（半导体）特别猛，不说长鑫这种明牌的事情，基本面预期也确实扎实。<br>2.	板块方面，电子（半导体）、建材（电子布）和化工（各种细分都有，比较杂）。<br>3.	题材方面，昨天列举抗跌的细分里面半导体特别多，今天大爆发，pcb链条作为重要观察指标，也是反包力度不错，所以今天赚钱效应很炸裂的，能想到要拉的东西都被抢了，那估计明天得喘口气（分化轮动）等等，今天追不上的，喘口气时候慢慢买呗，要是明天美光落地后海外很猛，那是追不上了，只能希望别人多拉拉那些低位造分歧了。航天因为发射时间定了也反弹了，要觉得能成这位置能搞，不觉得能成先不管他也可以。<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p003">
+            <div class="full-header">[003] 07:31</div>
+            <div class="full-body">6月25日：芯片半导体、光纤材料、锂电、脑机接口、短剧等概念股梳理<br><br>一、昨夜发酵消息精选。<br>1、芯片半导体：美光科技第四财季销售展望超出预期，盘后上涨超10%。SK海力士计划下月登陆纳斯达克，拟募资294亿美元扩建AI产能。高通宣布第三代人工智能芯片计划于2027年推出。科技分析师科潘指出，台积电已陆续向客户通知调涨晶圆代工价格，涨价范围不仅涵盖市场传言的3nm制程，更扩及7nm及以下所有先进制程，整体涨幅约5%至10%，影响范围涵盖约75%的晶圆营收来源。A股封测龙头长电科技公告称，公司拟通过设立控股子公司，在上海临港新片区建设高端先进封测工厂，投资总额78亿元，其中注册资本预计40亿元。<br>概念股：聚辰股份、汇成股份、新相微、华亚智能、长川科技、长电科技、兆易创新、金海通、雅克科技、电科芯片、通富微电、联芸科技、格科微、中科蓝讯、富满微、珂玛科技、燕东微、神工股份、中科飞测、恒烁股份、颀中科技、芯源微、捷捷微电、东微半导、恒光股份、芯联集成、太极实业、盛剑科技、兴发集团、臻宝科技等<br>2、光纤材料：光纤预制棒作为光纤光缆产业链上游核心环节，其生产过程中对高纯四氯化硅的单耗约为6.5吨。由于光棒产能扩产周期较长供给弹性相对有限，高纯四氯化硅的需求规模对光棒产量的边际变化高度敏感，且具备明显的需求弹性放大特征，光棒产量的小幅提升即可带动上游高纯四氯化硅需求的明显增长。<br>概念股：三孚股份、新安股份、云南锗业、驰宏锌锗、宏柏新材、飞凯材料、泰和新材、光智科技、中天科技、长飞光纤、泰和科技、和远气体、江瀚新材、阳谷华泰、烽火通信、有研新材、中化国际、神马股份等<br>3、锂电：碳酸锂主力合约上涨近4%，VC价格昨天继续上涨5000元/吨。综合市场机构观点看，锂电行业周期已进入上升区间，随着动力电池与储能电池需求旺季临近，板块有望迎来量价共振的主升行情，龙头企业盈利修复机遇值得关注。<br>概念股：永杉锂业、盛新锂能、融捷股份、永兴材料、大中矿业、天齐锂业、赣锋锂业、西藏矿业、中矿资源、华盛锂电、富祥药业、孚日股份、永太科技、新宙邦、天赐材料、海科新源、联泓新科等。<br>4、脑机接口：工信部公开征求《脑机接口信息系统脑电数据格式要求》等5项通信行业标准报批意见。6月24日消息，全国首例！无创脑机接口临床应用，患者术后一月恢复独立行走。<br>概念股：创新医疗、三博脑科、科大讯飞、世纪华通、汉威科技、伟思医疗、汤姆猫、翔宇医疗、佳禾智能、美好医疗、盈趣科技、海格通信、诚益通、汉王科技等<br>5、短剧：广电总局公开征求意见，支持优秀微短剧境内外同步播出，拍摄制作完成的一类微短剧和二类微短剧在播出前应当向主管部门申请内容审核和发行许可。<br>概念股：中文在线、昆仑万维、华策影视、百纳千成、欢瑞世纪、掌阅科技、捷成股份、芒果超媒、蓝色光标、易点天下、天娱数科、遥望科技、博纳影业、中国电影、浙文互联、慈文传媒、横店影视等。<br>6、PCB：6月24日晚间，PCB龙头股红板科技、MLCC三倍大牛股昀冢科技相继发布对外投资公告。<br>概念股：红板科技、昀冢科技、中国巨石、弘信电子、昊志机电、超声电子、一博科技、骏亚科技、满坤科技等。<br>7、工业5G专网：工信部等五部门启动工业5G独立专网试点，支持企业建设专属5G网络，推动“5G+工业互联网”深度融合，赋能关键行业，提升网络自主可控能力。<br>概念股：中兴通讯、东土科技、烽火通信、紫光股份、移远通信、广和通、海格通信、震有科技、广哈通信、海能达、映翰通、中贝通信、经纬辉开、瑞斯康达、宝信软件、通宇通讯等<br>8、数据中心：黑石集团计划在日本人工智能数据中心投资300亿美元。软银集团董事长孙正义：将“建造世界上最大的数据中心”。微软威斯康星州数据中心投运，预计2024至2028年间将在威斯康星州投入47亿美元。（工业富联、中际旭创）<br>9、光通信：美股部分光通信概念股走强，康宁涨逾9%，Technologies涨逾6%。消息面：康宁推出"玻璃桥"，瞄准CPO和玻璃芯包装市场。（京东方A、沃格光电）<br>10、算电：夏季达沃斯源头信息加微信 WUXL3408论坛重磅开幕致辞：未来我们将继续优化创新生态，加快建设新型电网、算力网。（协鑫能科、豫能控股）<br>11、商业航天：可回收火箭长十乙发射时间已出，计划于7月10日13:00~13日17:00发射。多家机构都有研报覆盖长十乙发射。（航天工程、巨力索具）<br>12、战略矿产：打击违规违法出口战略矿产两用物项，商务部发布举报办法。（东方锆业、云南锗业）<br>13、太空算力：首届全球太空算力大会6月29日在京举办，将成立北京太空算力创新中心和联盟。（航宇微、顺灏股份）<br>14、超表面芯片：我国成功研制全球首款可产生百万级原子光镊阵列的超表面芯片。（光启技术、安泰科技）<br>15、对位芳纶：AI算力需求传导“纤维之王”对位芳纶步入高景气周期。（泰和新材、中化国际）<br>16、物理AI：NVIDIA 发布 Halos for Robotics，业界首个面向物理 AI 的全栈安全系统。（索辰科技、天娱数科）<br>17、苹果折叠屏手机：苹果首款折叠iPhone将于7月末启动量产，铰链技术难题已基本解决，9月新品发布会计划保持不变。（蓝思科技、宜安科技）<br>18、电容涨价：江海涨价函：今年电容器核心原材料及电力成本持续大幅攀升，将对铝电解电容器、薄膜电容器、超级电容器三大品类价格进行调整。（江海股份、法拉电子）<br>19、固态电池：独家对话曾毓群：固态电池已迈进第四级，投资新技术要把握节奏。（宁德时代、先导智能）<br>20、储能电芯：媒体盘后报道，储能电池电芯“一芯难求”！（宁德时代、湖南裕能）<br>21、航运：伊朗表示，霍尔木兹海峡已免费开放，为期60天。一艘油轮在海湾地区被以基准运费的897%预订。（招商轮船、中远海能）<br>22、美股三大指数收盘涨跌不一，芯片股继续回调，西部数据、希捷科技跌超4%，高通跌超3%，闪迪跌超2%，ARM、恩智浦跌超1%，英伟达跌0.56%。赫兹租车股价下跌41%，创该公司美国IPO以来最大单日跌幅。商品市场方面，国际金价、银价、油价双双走弱， WTI原油盘中跌破70美元/桶。<br>二、个股新增概念精选。<br>1、先进封装（光迅科技、臻宝科技、利元亨、奥特维）<br>2、风电（华微电子、华润新能源、宏柏新材）<br>3、PCB概念（TCL科技、江西铜业、洁美科技）<br>4、医疗器械概念（科莱瑞迪、贵研铂业）<br>5、锂电池概念（吉和昌、西部材料）<br>6、芯片概念（托伦斯、扬帆新材）<br>7、生物质能发电（山高环能）<br>8、存储芯片（迪生力）<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p004">
+            <div class="full-header">[004] 07:33</div>
+            <div class="full-body">【周四你需要知道的隔夜全球要闻：美光财报亮眼盘后大涨16%，带动芯片股全线上攻；金价自去年11月以来首次跌破4000美元；油价回吐本轮中东冲突以来涨幅】<br>美光业绩亮眼<br>1、美光科技盘后一度大涨16%，公司第三财季经调整营收414.6亿美元，上年同期93.0亿美元，预估356.9亿美元；第三财季调整后每股收益25.11美元，上年同期1.91美元，预估20.49美元。美光科技预计第四财季经调整营收490亿美元至510亿美元，市场预期432.4亿美元；预计第四财季调整后EPS为30-32美元，市场预期25.31美元。<br>2、美光科技CEO表示，预计第四财季资本支出约为100亿美元，预计2026财年全年资本支出约为270亿美元。2027财年各季度的资本支出将高于2026第四财季的水平。<br>3、美光科技发布财报后，美股芯片股盘后全线上涨，西部数据、闪迪涨超10%，希捷科技涨超9%，ARM、应用材料涨超6%，阿斯麦、英特尔涨超4%，AMD涨超3%。<br>4、由于美光科技亮眼业绩的提振，纳斯达克100指数期货早盘涨超2%。iShares MSCI韩国ETF在美股盘后涨超6%。<br>5、美光科技表示，下一代DRAM与NAND节点的研发进展良好，预计将在2027年下半年开始进入量产阶段。HBM4 12层产品的量产爬坡速度目前是HBM3E 12层版本的两倍。公司已经累计交付超过10亿美元的HBM4收入。<br>6、美光科技宣布季度分红每股0.15美元，并计划提高资本回报。<br><br>环球市场<br>1、随着美元走强及加息预期升温，黄金长达三年的牛市行情告一段落，金价自去年11月以来首次跌破每盎司4000美元。截至收盘，现货黄金下跌2.73%，报3998.98美元/盎司；现货白银下跌6.8%，报57.42美元/盎司。<br>2、国际原油回吐本轮中东冲突以来全部涨幅，8月交割的WTI原油价格下跌3.92%，结算价为每桶70.34美元；8月布伦特原油下跌4.33%，结算价为每桶73.74美元。<br>3、美股三大指数收盘涨跌不一，道指涨0.36%，纳指跌0.43%，标普500指数跌0.09%。芯片股继续回调，西部数据、希捷科技跌超4%，高通跌超3%，闪迪跌超2%，ARM、恩智浦跌超1%，美光科技跌0.37%，英伟达跌0.56%。但是在美光科技发布业绩后，芯片股盘后普遍走强。<br>4、比特币再次跌破6万美元关口，一度逼近59000美元，创2024年10月以来新低。<br>5、利弗莫尔中概股龙头指数收跌0.32%。富时中国A50指数期货夜盘收跌0.02%。恒生指数主连夜盘收跌0.29%，报23322点。恒生科技指数主连夜盘收跌0.31%，报4464点。<br>6、欧洲斯托克600指数周三走势震荡，最终收盘持平，盘中一度下跌0.3%。房地产和化工板块表现最佳，而能源和矿业股则表现落后。<br><br>全球要闻<br>1、高通盘后大涨16%，高通CFO称目标在2027财年实现AI数据中心业务收入50亿美元。公司首席财务官还表示，公司有机会将年度营收规模拓展至1000亿美元。<br>2、美国总统特朗普表示，如果最终达成的美伊协议中包含针对航运或海事活动的任何形式的费用，这对他来说是“不可接受的”。<br>3、美国所有大型银行均通过美联储年度压力测试，为这些银行提高回购和派息铺平道路。<br>4、摩根大通将提高股息至1.65美元，打算回购500亿美元股票。高盛计划将其股息从每股4.50美元提升至每股5美元。<br>5、谷歌将Gemini 3.5 Pro发布日期推后至7月份。此外有报道称，谷歌预计将再失去两名人工智能领域的员工，转投Anthropic旗下。<br>6、特朗普抱怨汽油价格下降速度不够快，称他已下令美国司法部调查汽油价格。<br>7、特朗普表示，美方人员将参与国际原子能机构对伊朗核设施的核查行动。<br>8、特朗普将向国会寻求逾14亿美元的埃博拉资金援助，寻求6.72亿美元资金用于移除伊朗核材料。<br>9、伊朗外交部发言人巴加埃在其个人社交媒体表示，美国官员关于该谅解备忘录相互矛盾的言论，不仅不会减少伊朗民众积累的不信任，反而只会让人想起美国曾屡屡违约的记忆。<br>10、摩根大通分析师Rajat Gupta把对特斯拉第二季度汽车交付量的预估从43.05万辆下调至42万辆。<br>11、SpaceX投资者、Andreessen Horowitz LLC普通合伙人David George表示，一旦星舰投入使用，将那些能力拓展至太空是不可避免的，因为地球上的AI数据中心容量正日益受限。<br>12、高盛全球大宗商品研究联席主管Daan Struyven表示，石油多头分析师误判了伊朗局势缓和后原油价格的下跌幅度，市场“低估了系统的灵活性”。<br>13、西班牙国家气象局24日说，在今年首轮热浪袭击下，该国已连续两天创下有记录以来6月单日平均气温新高，近日多地最高气温超过40摄氏度。<br><br>世界杯早报<br>1、2026年美加墨世界杯小组赛B组第3轮在不列颠哥伦比亚体育馆展开角逐，瑞士对阵加拿大。上半场恩博洛单刀被扑，下半场鲁文·巴尔加斯打破僵局，最终瑞士2-1战胜加拿大。<br>2、世界杯小组赛B组第3轮，波黑对阵卡塔尔的比赛在流明球场展开角逐。上半场，阿拉伊贝戈维奇世界波远射破门，哲科制造苏丹·布雷克的乌龙球，海多斯扳回一城。波黑半场2-1领先卡塔尔。下半场，马赫米奇替补建功，最终波黑3-1击败卡塔尔。<br>3、B组小组赛全部战罢，瑞士以B组头名身份出线，加拿大位居B组第2名出线，波黑积4分排名小组第三，卡塔尔1分垫底出局。波黑目前暂时是所有小组当中成绩最好的第三名。<br>4、北京时间今日6:00，2026世界杯小组赛C组第3轮，苏格兰vs巴西。巴西方面，34岁内马尔时隔981天回归大名单坐镇替补。<br>5、卡塔尔中场球员马迪博因在世界杯上对加拿大球员科内犯规，被处以五场禁赛处罚。(来自财联社APP)#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p005">
+            <div class="full-header">[005] 07:33</div>
+            <div class="full-body">6月25日股市早报：商业航天/半导体设备/材料/先进封装/存储/PCB/液冷/光纤/光通信等<br><br>【一、重要财经信息】<br>①【商务部发布进一步完善战略矿产两用物项出口管制违法违规行为举报处理工作有关事项】。<br>②工信部等【五部门联合启动工业5G独立专网试点】，支持原材料、装备制造、消费品、电子信息、国防科技、能源交通等行业领域的大型特大型企业建设独立专网。<br>③高盛研究报告称，【中国居民的股票配置相对于其长期潜力而言仍然较低，股票和保险有望成为中期的主要受益者。】<br>④我国成功研制全球首款可产生百万级原子光镊阵列的超表面芯片。<br>⑤【美光科技盘后一度大涨16%。美光科技发布财报后，美股芯片股盘后全线上涨】，西部数据、闪迪涨超10%，希捷科技涨超9%，ARM、应用材料涨超6%，阿斯麦、英特尔涨超4%，AMD涨超3%。<br><br>【二、今日热点聚焦】<br>【祥鑫科技】：拟通过现金收购与增资相结合的方式取得液冷散热公司酷尔芯科技51%股权<br>【中广天择】：控股股东拟变更为城发文旅，股票复牌<br>【返利科技】：实控人将变更为苗润财 股票复牌<br>【招商轮船】：近期中东进出波斯湾航线流量有所恢复带动VLCC油轮运费上涨（异动公告）<br>【柏诚股份】：签署3.59亿元OLED生产线洁净合同<br>【亚信安全】：子公司拟签订3000万元算力集群服务框架协议 <br>【长电科技】：拟投资78亿元建设高端先进封测工厂<br>【海科新源】：电解液溶剂及核心添加剂价格体系具备极强支撑力 供需关系有望进一步趋紧（调研）<br>【斯迪克】：持续深耕微电子材料赛道，在MLCC专用PET离型膜领域取得重大技术突破。面向&lt;1um介质厚度源头信息加微信 WUXL3408的超高端产品，为国内唯一实现技术突破并通过两家头部MLCC制造商验证的产品（调研）<br>【佳电股份】：截至目前，国内已披露的高温气冷堆主氦风机项目招标总量为24台，公司成功中标18台。公司已实现主氦风机产业化项目顺利达产交付（调研）<br><br>【商业航天】<br>可回收火箭长十乙计划于7月10日13:00~13日17:00发射。<br>【（航天工程、海兰信、巨力索具、飞沃科技）】<br><br>【半导体设备/材料】<br>①科技分析师科潘（Tim Culpan）指出，台积电已陆续向客户通知调涨晶圆代工价格，涨价范围不仅涵盖市场传言的3nm制程，更扩及7nm及以下所有先进制程，整体涨幅约5%至10%，影响范围涵盖约75%的晶圆营收来源。<br>②SK海力士计划下月登陆纳斯达克 拟募资294亿美元扩建AI产能。<br>【半导体设备：盛剑科技、新莱应材、北方华创、长川科技】<br>【洁净室：亚翔集成、柏诚股份、圣晖集成】<br>【半导体材料：雅克科技、彤程新材、鼎龙股份、江丰电子】<br><br>【先进封装】<br>全球先进封装龙头安靠(Amkor)与晶圆代工巨头台积电签署十年战略合作协议，双方将共同扩充美国亚利桑那州先进封装产能，一期厂房计划2027年年中完工、2028年初投产，重点落地InFO、CoWoS等高端封装工艺。<br>【（汇成股份、长电科技、通富微电、深科技、华天科技、太极实业）】<br><br>【存储】<br>TrendForce预估DDR2第二季合约价涨幅将达约55%-60%，第三季预估将进一步上涨35%-40%。<br>②美光第三财季经调整营收414.6亿美元，上年同期93.0亿美元，预估356.9亿美元；第三财季调整后每股收益25.11美元，上年同期1.91美元，预估20.49美元。美光科技预计第四财季经调整营收490亿美元至510亿美元，市场预期432.4亿美元；预计第四财季调整后EPS为30-32美元，市场预期25.31美元。<br>【（兆易创新、德明利、香农芯创、江波龙）】<br><br>【PCB】<br>木林森6月12日官宣全线PCB产品上调20%后，6月17日再次发函，宣布在原有涨幅基础上再次上调10%。建滔积层板于6月16日宣布对所有厚度FR-4覆铜板及PP半固化片提价15%，而7628电子布价格较年初已上涨超70%。<br>【（一博科技、中国巨石、中材科技、国际复材、华正新材、铜冠铜箔）】<br><br>【液冷】<br>英伟达发文详细介绍了即将量产的Vera Rubin平台所使用的45℃全面液冷技术，表示其帮助AI数据中心大幅降低能耗，并称Rubin是全球首个实现100%液冷的AI计算平台。<br>【（领益智造、飞龙股份、圣阳股份、英维克、申菱环境、大元泵业、奕东电子）】<br><br>【光纤】<br>受益于AI算力网络建设带来的巨量光纤光缆需求，作为光纤制造“母体”的光纤预制棒价格较2025年初快速上涨：通用G.652D光棒报价涨幅超过180%；用于数据中心高密度布线的G.657.A2类光棒，每等效芯公里报价则由22元至30元涨到160元，涨幅近550%。<br>【（长飞光纤、永鼎股份、通鼎互联、泰和新材、杭电股份、亨通光电、中天科技）】<br><br>【光通信】<br>Trendforce预测CPO/NPO市场将由2025年约1亿美元增长至2030年超390亿美元，但2028–2029年才有望源头信息加微信 WUXL3408明显加速，且可插拔光模块仍将长期并存，说明产业正由传统可插拔，向着NPO/CPO等XPO方案稳步推进。<br>【（剑桥科技、三安光电、云南锗业、兴业科技）】<br><br>【算力网】<br>工信部总工程师：保持适度超前加强新一代通信网和算力网规划建设。<br>【（宏景科技、智微智能、协创数据、光环新网）】<br><br>【VC】<br>6月24日， 碳酸亚乙烯酯市场价格向上运行，均价为16万元/吨，较上一个工作日上涨0.5万元/吨。主流生产企业报价来到18万元/吨，提高市场均价，其余工厂在维护客户下，缓慢上调。市场涨价气氛依旧高涨，但下游需要时间消化货源涨势。<br>【（海科新源、华盛锂电、孚日股份、富祥股份、永太科技、海辰药业）】<br><br>【锂电】<br>全球来看，因单车带电量的提升，中信期货上调2026年全球动力电池产量至2008GWh，同比增长29%，相应碳酸锂需求约为133万吨。<br>【（永杉锂业、盛新锂能、雅化集团、融捷股份、天华新能、盐湖股份、天齐锂业）】<br><br>【焦煤】<br>主流焦企发起第九轮提涨，湿熄焦上调50元/吨、干熄焦上调55元/吨，自6月26日0时起执行。<br>【（山西焦煤、宝泰隆）】<br><br>【航运】<br>通过霍尔木兹海峡及海湾地区的船舶运量正逐步回升。而随着石油运输需求上升，油轮运费价格已经大幅飙升，油轮运营商本周的利润创下历史新高。租用霍尔木兹海峡以外地区油轮的费用，已从一周前的每周10.65万美元飙升至每日19.05万美元，接近翻倍。同时，在海湾以外地区租用的船只价格也大幅上涨。<br>【（招商轮船、中远海能、招商南油、国航远洋）】<br><br>【创新药】<br>①全球生物技术领域盛会BIO2026大会于6月22日至25日在美国圣地亚哥召开，汇聚全球超20000名行业参与者，覆盖人工智能与数字健康、细胞与基因治疗等前沿领域，中国CXO企业的高效率优势备受关注。<br>②药品联采办发布《第12批国家组织药品集中带量采购公告》，第12批药品集采工作正式启动，共65个品种纳入集采，覆盖皮肤病、消化道和代谢、心血管等多个治疗领域。<br>【（凯莱英、景峰医药、千红制药、药明康德、泰格医药、昭衍新药）】<br><br>【有机硅】<br>受算力基建、通信网络升级带动，今年以来，高纯四氯化硅市场需求持续回暖。高纯四氯化硅下游主要应用于光纤预制棒、合成石英玻璃的生产。据了解，受益于全球光纤高景气，高纯四氯化硅同步进入紧缺导致的涨价周期<br>【（三孚股份、宏柏新材、新安股份、新亚强、恒星科技、高盟新材）】<br><br>【脑机接口】<br>我国脑机接口企业总量已突破200家。据行业报告预计，2026年中国脑机接口市场规模有望突破50亿元，到2030年将达150亿元。<br>【（倍益康、爱朋医疗、创新医疗、三博脑科）】<br><br>【三、昨日强势板块和个股】<br>【芯片、PCB、液冷、光纤、光通信、锂电、创新药、航运、超级电容、锆、玻璃基板】等<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p006">
+            <div class="full-header">[006] 07:34</div>
+            <div class="full-body">高通公司预计到2029年数据中心销售额将达到150亿美元<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p007">
+            <div class="full-header">[007] 07:34</div>
+            <div class="full-body">周三盘后交易中，半导体股票大幅上涨，此前美光科技公司发布强劲的财务报告 ，强调人工智能仍然是增长的主要动力。<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p008">
+            <div class="full-header">[008] 07:34</div>
+            <div class="full-body">由于供应增加的迹象以及美伊和平协议取得进展，油价持续下跌，并接近抹去战时价格涨幅。<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p009">
+            <div class="full-header">[009] 07:34</div>
+            <div class="full-body">特朗普警告伊朗，称霍尔木兹海峡收费“不可接受”<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p010">
+            <div class="full-header">[010] 07:34</div>
+            <div class="full-body">市场综述：受美光强劲业绩预期提振，美国股指期货大幅上涨<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p011">
+            <div class="full-header">[011] 07:35</div>
+            <div class="full-body">康宁Glass Bridge 玻璃桥深度解读：光纤应用新突破，光模块赛道量产提速 0625<br><br>   #康宁Glass# Bridge 玻璃桥本质不是"玻璃基板"故事，而是"CPO光耦合方案重构"——光路从模块外部推进到封装内部后，光纤到芯片的精密耦合成为新瓶颈。#真正受益的不是做玻璃的，而是精密光器件、高密度连接器和硅光PIC全链条。<br>🌹康宁GlassBridge核心突破：<br>玻璃波导：晶圆级基材+离子交换工艺，O波段损耗**&lt;0.1dB/cm**，超低损耗适配高密度集成。<br>被动对准：无需超高精密人工对位，量产良率提升，成本下降。<br>🌹终局：与GlobalFoundries深度绑定，#实现硅光PIC+玻璃桥连接器一体化封装，加速CPO规模化商用。<br><br>一、光纤：光互联基建的核心载体<br>Glass Bridge把光纤直接接入玻璃波导，光纤用量只增不减，且对光纤的通道密度和偏振稳定性要求更高。<br>长飞光纤（601869）：全球光纤光缆龙头，G.657.A2光纤价格突破210元/芯公里，订单排至2028年。<br>通鼎互联（002491）：光纤光缆+光模块全链布局，WDM滤光片/激光器芯片覆盖。<br>长盈通（688143）：空芯光纤+保偏光纤独家送样微软/英伟达/OpenAI，是光纤环节弹性最大的标的。<br>二、光模块：CPO规模化量产的直接受益方<br>Glass Bridge降低了CPO耦合工艺难度，加速CPO从"能造"到"能量产"。<br>中际旭创（300308）：1.6T光模块全球市占率50-70%，CPO交换机配套方案最完整。<br>新易盛（300502）：LPO+硅光双路线布局，Glass Bridge可插拔设计与LPO理念高度契合。<br>联特科技（301205）：CPO三条技术路线并行投入，Marvell DSP深度绑定，小市值弹性大。<br>三、光互联核心器件：<br>长光华芯（688048）：CW激光器芯片，CPO光引擎的"心脏"，光源芯片是硅光PIC的前置输入。<br>长芯博创：谷歌MPO第一供应商，高密度光连接器方案与Glass Bridge形成互补。<br>四、光上游材料：<br>云南锗业（002428）：A股唯一磷化铟衬底量产商，磷化铟是CPO光芯片的衬底基石，Glass Bridge不改变这一底层需求。<br>⚠️风险提示：Glass Bridge技术尚处验证阶段，量产进度不及预期；本文不构成投资建议。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p012">
+            <div class="full-header">[012] 07:35</div>
+            <div class="full-body">🔥#国产算力行情爆发/供需全面紧缺/两大核心催化落地<br><br>最新驱动：智谱等国产大模型快速崛起，国内自主算力供不应求，产业利好持续落地<br><br>1、【寒武纪】思元690芯片，三季度大规模放量，国产高端训练芯片核心标的；<br><br>2、【品高股份】绑定江原科技，旗舰T800芯片今日AP­EC论坛正式发布，对标海外高端算力，国产替代空间巨大；<br><br>#当下自主可控算力是长期主线，筹码与业绩预期双改善，重点跟踪两大龙头放量进度#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p013">
+            <div class="full-header">[013] 07:35</div>
+            <div class="full-body">【zx新材料】茂莱光学再更新<br><br>近日，茂莱光学发布公告称，公司预计2026年度与关联方茂威精控发生日常关联交易总额1150万元，其中向关联方购买商品920万元，向关联方销售商品230万元。<br><br>茂莱通过关联交易将高精密配套"准内部化"，缩短了半导体/生命科学等领域高端光学系统的开发周期。茂威精控提供精密运动控制等定制组件，茂莱反向输出光学器件，形成技术闭环，以增强供应链弹性。<br><br>此外，今年Onto将变成公司第一大客户，公司为Onto研发的G5机型检测性能超出KLA同类产品数倍，在台积电验证效果突出，这是茂莱在台积电的第二次成功。Onto 2027年要求公司供货15亿元。<br><br>#公司已将光通信业务作为重点拓展方向，计划3-5年内打造出与半导体业务规模相当的新业务板块。<br><br>三条线：1）谷歌Taara（已量产）：整机交付，tube lens/光纤耦合器/准直器/隔离器自研，下一代星地组网跟SpaceX合作；<br><br>2）光器件业务：为康宁、Lumentum 等客户提供基于波片类的器件和模组；<br><br>3）CPO 封装：第一承接玻璃基底的wafer研磨加工需求；第二基于10nm对准（公司现有设备1nm）、光波导光性能检测/串扰的独家优势，布局光波导CPO的过程检测方案与检测设备，以提升CPO封装良率，解决行业痛点。<br><br>#2026年年报将单独列示光通讯板块收入。<br><br>产能方面，茂莱光学泰国基地一期今年8月交付，定位为匹配光通信业务，作为海外出货地应对地缘政治风险，一期交付后将立即启动二期扩建。南京、上海、北京、美国等基地陆续的释放最终有望将公司现有产值×5。<br><br>一句话来说，公司光刻机是硬卡位（SMEE独家+ASML唯一中国供应商）；光通信是Taara整机+CPO光波导检测两条稀缺线 + OCS。两条线的放量节奏确实都能看到，不是平推，是阶梯式跳。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p014">
+            <div class="full-header">[014] 07:35</div>
+            <div class="full-body">【天风电新】英特尔联合英维克、嘉实多发布单相冷板液冷工质测试验证成果，其中：<br><br>英维克以两条独立二次侧真实循环回路并行完成225天的液冷工质测试。液体全程清澈透明；pH值、离子浓度、金属元素含量及菌落总数等化学指标持续稳定并合格；冷板热阻稳定性高，热性能偏差远低于5%；EPDM密封件及软管、波纹管等全部触液材质兼容性测试均顺利通过。<br><br>【全面液冷，验证加速】液冷：英特尔联合英维克、嘉实多完成冷板工质验证，AI算力中心进入系统级液冷时代<br><br>英特尔联合英维克、嘉实多发布单相冷板液冷工质验证成果，标志液冷产业从“主题预期”进入“平台认证+生态验证”阶段。我们认为，本次核心意义在于冷板液冷的工质稳定性、材料兼容性、管路可靠性得到长周期验证，行业有望加速从样板项目走向规模化落地。<br><br>AI服务器高功耗趋势不可逆，液冷正成为智算中心基础设施升级主线。海外看，英伟达Rubin推动全液冷架构，英特尔同步推进冷板生态验证；国内看，国产AI服务器、智算中心、液冷机柜建设提速，产业链有望从概念炒作进入订单兑现期。<br><br>重点关注三条主线：<br><br>1）液冷系统方案商：英维克为本次事件最直接映射，申菱环境、高澜股份、同飞股份、曙光数创 受益CDU、冷源侧、液冷机柜及整体方案放量。<br><br>2）弹性部件： 川环科技 受益液冷管路放量，# 飞荣达 受益冷板、散热模组及导热材料配套。<br><br>3）液冷扩散：领益智造 切入服务器液冷快拆连接器、Manifold、液冷板、光模块冷板等AI服务器热管理硬件；依米康 布局液冷CDU、二次侧管路环网、液冷机柜、干冷器。<br><br>☎️ 风险提示：AI资本开支不及预期；液冷渗透率不及预期；订单兑现不及预期。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p015">
+            <div class="full-header">[015] 07:35</div>
+            <div class="full-body">Anthropic 指控阿里巴巴利用数千个欺诈账户，大规模“非法”访问其 Claude 人工智能模型。<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p016">
+            <div class="full-header">[016] 07:35</div>
+            <div class="full-body">美光科技盘后股价大涨16%，业绩展望远超预期<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p017">
+            <div class="full-header">[017] 07:36</div>
+            <div class="full-body">【小熊团队】美光3QFY26业绩点评：业绩、指引大超预期，毛利率持续上行<br><br>3QFY26收入、利润大超预期。美光3QFY26实现收入414.56亿美元，同比+346%、环比+74%，超市场预期（356.88亿美元）；实现净利润288.57亿美元，同比+1223%、环比+106%，超市场预期（235.63亿美元）；实现EPS 25.11美元，同比+1215%、环比+106%，超市场预期（20.49美元）。<br><br>4QFY26指引超市场预期。美光指引4QFY26收入500亿美元，同比+324%、环比+21%，超市场预期（432.43亿美元）；指引4QFY26 EPS 31美元，同比+923%、环比+23%，超市场预期（25.31美元）。<br><br>分业务来看：<br>1）DRAM：313.28亿美元，同比+343%、环比+67%，超预期（275.13亿美元）；<br>2）NAND：99.43亿美元，同比+361%、环比+99%，超预期（77.46亿美元）；<br><br>分部门来看：<br>1）Cloud Memory：137.69亿美元，同比+307%、环比+78%，超预期（120.04亿美元）；<br>2）Core Data：115.24亿美元，同比+653%、环比+103%，超预期（68.04亿美元）；<br>3）Mobile and Client：115.21亿美元，同比+254%、环比+49%，超预期（97.33亿美元）；<br>4）Auto and Embedded：46.34亿美元，同比+311%、环比+71%，超预期（35.09亿美元）；<br><br>毛利率及指引持续上行。3QFY26毛利率为84.9%，环比+10个pct，超市场预期（81.9%），指引4QFY26毛利率为86%，环比持续上行。<br><br>【SCA协议】<br>1）目前已经签署16分SCA，占据2026-2030年DRAM总业务量的20%、NAND总业务量的33%，客户包括4家超大型客户和3家中型客户；<br>2）时长：通常情况下SCA协议为5年（汽车领域通常为3年），这16份SCA；<br>3）Take-or-pay Agreements：多年期限内购买特定数量的约束性承诺；<br>4）价格：目前最大的SCA协议，以日历年26Q2价格设定为价格上限，并在协议内规定了价格下限；采用固定价格或价格上限（等于/接近26Q2价格）的协议预计占收入40%；<br>5）体量：16分SCA协议中，按最低价格计算，累计营收超过1000亿美金；<br><br>【产品进展】<br>1）基于 1-beta DRAM 技术的 HBM4 已开始面向领先客户平台大批量出货，且验证样品已送达多个终端客户；<br>2）基于 1-gamma DRAM 技术的 HBM4E 研发工作进展顺利，预计将于 2027 日历年开始量产；<br>3）LP5X SOCAMM2 产品已进入大批量生产阶段，并且我们已将 LP5X SOCAMM2 产品线扩展至多个容量点；<br>4）基于 G9 的 PCIe Gen6 高性能 SSD 现已进入大批量生产阶段；<br>5）我们已开始出货高容量 245TB QLC SSD。<br><br>【存储行业需求】<br>1）数据中心：预计26年数据中心DRAM和NAND位元出货量将比2年前翻一倍以上；预计2026年服务器出货量同比+15%-19%（先前预期是10%-13%），NAND领域，AI上下文存储和HDD替代扩大了SSD潜在市场范围；<br>2）个人电脑和移动设备：出货量有所下降，但是收入预计持续增长，未来看边缘侧推理需求；<br>3）自动驾驶和机器人：L2+及以上车辆，其内存和存储容量是普通车的五倍以上；<br><br>【存储行业供给】DRAM和NAND在2027年以后仍保持紧张，即使预计2028年供给会逐步改善，但目前仍无法预见内存供应何时能够满足日益增长的需求；<br>1）供给侧：供应依赖于大型晶圆厂的扩建，复杂且耗时，且受多因素限制（关键专业技能工人短缺、复杂法规、能源设施），同时，技术转型导致位元增长随时间推移而放缓；<br>2）DRAM领域：预计2026年DRAM位元出货量增长20%-25%（略高于先前预期），随HBM增长以及每一代提升的折算率，进一步压缩了非HBM的供应；<br>3）NAND领域：预计2026年NAND位元出货量增长20%（同先前预期持平），供应商将洁净室空间从NAND转向DRAM，以及整体洁净室空间不足，限制了NAND位元供应的增长；<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p018">
+            <div class="full-header">[018] 07:36</div>
+            <div class="full-body">美光财报和电话会最大的启示：存储行业已经变了<br><br>今天Micron交出了一份几乎无可挑剔的成绩单。<br>Q3营收414.6亿美元，远超市场预期的355.9亿美元。<br>调整后EPS 25.11美元，远超市场预期的20.63美元。<br>更夸张的是Q4指引：<br>营收490-510亿美元，市场预期429亿美元。<br>EPS 30-32美元，市场预期25.5美元。<br>这已经不是beat，是直接把华尔街模型打穿了。<br><br>电话会透露了三个足以影响未来几年的核心变化。<br>第一，存储已经从周期品变成战略资源<br>CEO说了一句话让我印象非常深：“AI系统的性能，本质上取决于内存子系统的性能和容量。”<br><br>随着Agentic AI、多智能体系统和超长上下文的发展，内存正在成为整个AI基础设施的瓶颈。GPU负责计算。存储负责记忆。没有记忆，再强的大脑也没用。<br><br>MU CEO甚至直接表示：AI已经把内存提升到了战略资产（Strategic Asset）的地位。这是一个非常大的变化。战略资产意味着客户不会只看价格。而会优先考虑供货能力、安全性和长期合作关系。<br><br>第二，DRAM和NAND供给紧张可能持续到2028年以后<br>管理层明确表示：“我们目前看不到内存供给何时能够追上需求。”甚至进一步指出：预计DRAM和NAND供需紧张将持续到2027年以后。<br><br>为什么？因为扩产太难了。新晶圆厂建设周期长。先进节点越来越复杂。HBM正在吞噬大量DRAM产能。而NAND厂商甚至开始把部分洁净室资源转移给DRAM生产。<br><br>这意味着什么？很多人觉得DRAM涨价周期快结束了。<br>MU却在告诉市场：这可能不是一个普通周期。是一次供给侧被永久重构的行业变化。<br><br>第三，未来需求来源已经不只是AI服务器<br><br>电话会给出了一个更大的故事。<br>数据中心：2026年服务器出货量预计增长高十几个百分点。Agentic AI正在推动CPU机柜、存储机柜同步扩张。<br>AI不只是增加GPU需求。也在增加存储需求。<br><br>汽车：L2+以上车型平均存储容量已经达到普通汽车的5倍以上。今年L2+车型占比将超过20%。2030年预计超过40%。<br><br>机器人：人形机器人平均存储容量达到L2+汽车的10倍。<br>MU CEO直接表示：预计本世纪后半段将开启持续数十年的存储需求周期。<br><br>另外还有一个市场可能还没有充分定价的信息：Micron宣布已经签署16份战略客户协议（SCA）。<br><br>这些协议覆盖：数据中心，消费电子，汽车期限最长到2030年。更重要的是这些协议采用Take-or-Pay模式。简单理解就是客户必须买，不买也要付钱。<br>目前这些协议已经锁定：约20%的DRAM产能，约三分之一的NAND产能。这意味着Micron正在把过去极度周期性的商业模式，逐渐转变成更接近长期合同模式。<br>这也是为什么CEO特别强调，MU正在经历业务模式转型。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p019">
+            <div class="full-header">[019] 07:36</div>
+            <div class="full-body">【方正电新】玻璃基板行业更新 260625<br>🚀玻璃基催化再临:康宁Glass Bridge技术突破，打通CPO量产瓶颈<br>康宁发布新一代玻璃基光互连技术 Glass Bridge，瞄准 CPO 与玻璃芯封装场景。传统 CPO 光耦合依赖 FAU 机械对准，精度、成本、良率约束突出，是规核心卡点。新技术采用“光纤→玻璃波导→PIC”架构，以离子交换工艺替代机械对准，耦合环节集成于玻璃内部；实现从“载板”向“光互连载板”的升级，提升装配效率与良率。<br><br>🚀应用+工艺端，基于我们此前发布的玻璃基板专题报告：<br>①我们认为玻璃基板先用于消费电子的显示端，随后将是半导体级应用<br>显示端的Micro LED、近眼显示率先技术验证；先进封装为中长期核心增量，玻璃芯基板替代BT树脂适配高算力需求，海外头部厂商加速量产导入；CPO场景下玻璃基板兼具光+电优势，可同步承载光波导、TGV与RDL，为未来数据中心网络节点的光电信号协同集成提供理想平台。<br>②我们认为TGV已相对成熟，后道的磁控溅射+电镀填孔将是关键量产瓶颈<br>TGV成孔技术已实现规模化导入，量产瓶颈向后段转移。磁控溅射种子层、微孔无空洞电镀铜填充、高密度RDL布线以及玻璃微裂缝检测为核心工艺难点，直接决定产品良率与性能，相关设备与材料将率先受益于产业化加速。<br><br>⭐建议关注<br>玻璃原片：【戈碧迦】【凯盛科技】【力诺药包】<br>玻璃基板：【京东方A】【沃格光电】【宸展光电】<br>激光设备：【海目星】【大族激光】【帝尔激光】<br>光刻、磁控溅射设备：【洪田股份】【芯碁微装】【汇成真空】<br>电镀设备：【三孚新科】【东威科技】<br>药水：【三孚新科】【天承科技】【光华科技】<br>风险提示：下游需求不及预期；技术迭代不及预期<br><br>🚀报告链接：[【方正电新】玻璃基板重磅深度：AI算力引领封装升级，关注TGV和电镀填孔核心工艺]<br>[红包]联系人 郭彦辰/张陆佳#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p020">
+            <div class="full-header">[020] 07:36</div>
+            <div class="full-body">【hcdx】帝科股份：自研B规分选技术实现同行3倍产出，深度收割长鑫扩产红利，存储第二极量利齐升<br><br>🍁存储持续缺货涨价，公司存储收入超预期：DRAM原厂价自2025年10月6–7美元/颗涨至2026年3月近14美元/颗，晶圆厂策略优先保障算力需求，预计2030年前持续供给紧张。存储为未来5-10年的长期赛道，作为AI时代的基础设施持续加大投入 。公司26年存储业务原收入指引为15亿元，受益于存储价格上涨，实际收入有望超预期。<br><br>🍁公司26年出货预期3000-5000万颗，以1GB DDR等利基型产品为主，其中家用场景（机顶盒、电视等）占比约1500-2000万颗 。27年出货量计划进一步提升至5000-7000万颗，业务成长确定性高 。货源端，#长鑫存储产能的快速扩张和爬坡将产生大量B规晶圆，为公司提供核心货源增量 。<br><br>🍁B规处理能力领跑行业，#同样的B规晶圆公司产出高于同行。# 硬件端，通过自研分选机、板卡及SLT系统测试方案，实现精细化分档，有效提升B规晶圆利用率 。软件端，通过与主流SOC芯片设计公司在系统上的深度合作，优化了低功耗存储与SOC的适配兼容性 。#这种体系化能力使公司产品较市场同容量同品质产品成本优势明显，在保障下游客户降本的同时，维持了较高的稳健毛利率 。与主营A规存储的厂商不同，公司B规业务受价格波动影响更小，利润水平更平稳，具备更强的抗周期特性 。<br><br>🍁光伏主业短期阵痛已过，高铜浆料开启利润空间。 2026年一季度，因白银价格暴涨产生的升水成本导致毛利出现数千万级损失，但该影响已从3月起由客户逐步承担，后续不会再现 。高铜浆料利润约为传统产品的2-3倍 。26年出货目标百吨级，核心客户晶科（N型组件出货45-50GW）需求空间巨大。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p021">
+            <div class="full-header">[021] 07:37</div>
+            <div class="full-body">比音勒芬：增持稳步落地<br><br>截止6月24日，董事申金东增持0.25亿占总0.24%，其于3月25日公告拟增持0.5-1亿元；<br>截止6月2日，实控人一致人（儿子）增持1.1亿占总1.2%（其中截止3月16日增持0.7%），其于2月28日公告拟增持1-2亿元；目前持股42.5%。<br>管理层增持稳步推动，彰显对公司未来发展的信心和价值的认可，也有利于公司治理和战略落地执行。<br>得益户外转型，渠道较轻库存及线上快速成长，今年比音成长可见度相对较高；建议积极关注。<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p022">
+            <div class="full-header">[022] 07:37</div>
+            <div class="full-body">【国信汽车｜出海链系列】中国重汽H-0624：海外边际好转，把握回调布局好时机<br><br>#海外边际好转/新能源出海在即# <br>海外个别地区缺油影响正在恢复，公司海外销量预计6-8月增长至月均2万水平。四月，海外能源因素导致公司出口在1.5万水平，五月稳步恢复；目前，根据最新信息，海外出现边际好转，预计6-8月保持在2万月均。海外部分地区G端推动新能源重卡试水，公司有望获得一定体量订单。<br><br>#非洲空间巨大# <br>毛估非洲新车+二手实际销量20万量级，公司新车中占比过半，持续对潜在市场进行替代。公司在非洲的产品使用场景，毛估三成物流、三成基建、四成采矿，使用场景有待挖掘。预计2030年非洲市场规模30万辆，远期有望达到国内市场规模，同时兼具产品升级、后市场的持续机会。<br><br>#欧洲期权/南美扩产# <br>油车在欧洲已有认证，去年100台左右，今年Q1有70-80台，全年预计小几百。新能源争取在欧洲车展前拿到认证；欧洲品牌新能源定价2-300万元，脱离市场价值，公司产品定价在高端油车水平，具有实际竞争力。巴西产能近年落地，有望带来近10亿确定性边际利润。<br><br>#我们认为：海外扰动已出现向好拐点/把握回调布局机会<br>在外部环境未完全平稳情况下，海外需求出现向好拐点，释放右侧信号。今年出海预期有望进一步提升。今年利润突破90+亿确定性提升，目前对应估值仅10x，我们仍看好重卡估值提升逻辑，持续推荐，把握回调带来的长期布局时机。<br><br>详细内容，欢迎私信沟通！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p023">
+            <div class="full-header">[023] 07:37</div>
+            <div class="full-body">🔥海光信息：AI CPU+DCU携手下半年有望双击，进展或超市场预期｜中信计算机&amp;电子<br><br>🎈【DCU + Switch：深算4进展顺利】<br>- 新一代产品深算4进展顺利，AI算力提升明显，我们预计下半年有望进一步对互联网客户取得大规模销售。<br>- 深算4搭配第二代Scale up交换芯片HySwitch2.0，单芯片支持192卡互联，两层网络可支持数万卡集群，相比上一代的单芯片40卡互联提升幅度巨大。<br>- DCU + CPU + HySwitch （Scale up）+ Scale Fabric （Scale out）+ PCIe Switch + 网卡芯片，海光系已构成国内最完整、最领先的自研芯片阵容之一。<br>- 搭配国际领先的X640/X40/定制化超节点，海光系AI算力实现全产业链领先。<br><br>🎈【CPU：国内持续领军】<br>- 公司第5代CPU进展顺利，下半年有望进一步获得互联网规模化采购。<br>- 公司产品性能+生态双重优势，核心数从64陆续升级为96、128、256，单核性能国内领先，软件生态可实现无缝迁移。<br>- 2025年9月HSL方案发布，26Q1发布参考设计，已经与国内主要服务器OEM厂商达成合作，带宽达到普通PCIe的8倍级别。伴随HSL方案规模化出货，后续海光CPU有望成为纯国产AI超节点最佳选项。<br><br>🎈【海光信息：重申买入评级】<br>- 海光信息是我国CPU+GPU领军企业，下一代新产品与超节点进展顺利，目前公司CPU和GPU均已经与国内各家头部互联网大厂密切合作，互联网销售占比持续高增。<br>- 重申“买入”评级。<br><br>欢迎联系中信计算机&amp;电子团队 杨泽原/丁奇/马庆刘/孙竟耀#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p024">
+            <div class="full-header">[024] 07:37</div>
+            <div class="full-body">东阳光推荐：idc和算力租赁，打造tokens工厂业务闭环【财通计算机】<br><br>[红包]并购秦淮数据开启“算力+绿电”新增长极。<br>公司正向“AI算力基础设施核心服务商”全面进化，未来将通过发行股份，收购秦淮数据100%股权，卡位国内一流超大规模IDC运营商，深度绑定字节跳动等头部AI客户（收入占比超80%），切入高景气的算力赛道，实现了“绿电协同”的战略闭环。<br><br>[红包]积层箔业务预期差极大，与台达签署优先合作订单<br>- 电子元器件（全球电极箔龙头）：全球唯一已量产积层箔的企业，性能优势显著，正加速导入AI服务器电源等高端场景，抢占高端电容国产替代份额。<br><br>[红包]主业基本盘稳固，深度受益于AIDC需求扩张带来的材料升级与散热增量<br>- 化工新材料（制冷剂第一梯队）：拥有约6万吨三代制冷剂配额，受益于配额制下的供需趋紧，R32价格持续上涨，化工业务盈利确定性强。<br>- 液冷科技（前瞻布局）：与中际旭创战略合作，布局冷板式与浸没式液冷，并购苏州大图热控补齐冷板技术，已建成30万套/年冷板模组产能，直接受益于高功耗AI芯片散热需求爆发。<br><br>[玫瑰]投资建议：看1800e市值，后续idc和算力租赁业务版图将持续扩张。<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p025">
+            <div class="full-header">[025] 07:38</div>
+            <div class="full-body">布油跌破76美元，插曲终将过去，回归经营本质。<br>燃油附加费7月预计下调，有助于催化暑运出行需求。<br><br>上周我们新发春秋航空深度《春秋航空：砺行致远、春华秋实——华创交运|航空强国系列研究（九）》<br>我们认为公司的发展历程诠释了 “砺行致远、穿越周期”的经营发展底色。<br>底部位置，值得参与。<br><br>欢迎联系华创交运吴晨玥吴一凡<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p026">
+            <div class="full-header">[026] 07:38</div>
+            <div class="full-body">【GFDX】泰金新能推荐：高端设备&amp;材料国产替代先锋，铜箔设备+光模块封装+电镀铜设备多点开花20260624<br><br>[發]#公司深耕材料领域研究二十余载、推动高端装备材料国产替代。公司是西北有色金属研究院控股子公司，技术实力雄厚。泰金新能的核心能力在于对金属钛的研究，20年实现阴极辊的国产替代，满足锂电铜箔扩产需求，目前积极推进表面处理机的国产替代。赛尔电子的核心能力在于对玻璃和陶瓷的研究，逐步将军工领域高端技术应用于光模块封装中。<br><br>[發]#我们认为、公司短期增长来自电解成套装备、中期增长来自光模块封装、电镀铜设备贡献长期增长期权。<br>#电解成套装备：#  随着锂电铜箔单吨盈利修复，铜箔厂商进入新一轮扩产周期，锂电铜箔设备订单恢复增长；同时HVLP铜箔需求爆发，三船表面处理机产能成为行业扩产瓶颈，供需紧缺背景下，公司电子电路铜箔设备有望实现国产替代。<br>#光模块封装：#  根据同花顺，公司全资子公司赛尔电子所生产的光模块封装外壳产品已实现小批量供货，可应用于光模块产品，为光器件提供高可靠的气密性防护，相关产品已服务行业客户。受稀土禁运影响，海外氧化钇价格暴涨导致日本京瓷（全球最大的氮化铝陶瓷基板&amp;管壳供应商，市占率约为80%）减产，为公司陶瓷管壳业务带来发展机遇。<br>#电镀铜设备：#  根据同花顺，公司正在推进与胜宏的合作，双方以AI服务器PCB的超低轮廓高频铜箔装备及新型PCB电镀铜设备为核心合作产品。在PCB的mSAP工艺制程中，电镀为核心增量环节，需要增加填孔电镀设备，水平镀/垂直镀为主要的技术路线，核心技术与复合铜箔工艺流程中的电镀环节相通。<br><br>[發]#投资建议：#  我们认为，铜箔设备对应市值300e，光模块封装贡献市值增量250e，电镀铜设备贡献增长期权150e，合计目标市值700e。本周公司已不在重点监控名单，交易层面压制因素解除，继续重点推荐！欢迎电话交流具体细节~#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p027">
+            <div class="full-header">[027] 07:38</div>
+            <div class="full-body">[烟花]长川科技（6月金股）-最新更新0624：市场低估了AI算力芯片放量【东吴机械】<br><br>我们认为，长川Q2业绩超预期是刚刚开始，公司卡位测试机国产替代龙一+国产算力GPU高景气+壁垒最深环节卡位优势被低估<br><br>#国产测试机龙一：测试机最难的是SoC测试机，目前#仅长川大规模放量（华峰进展也领先于其他公司），GPU测试设备关键优势体现在测试时长增加带来的#设备大规模通胀。<br><br>#国产算力GPU芯片刚刚开始放量：GPU芯片是未来大国AI发展的关键卡位，设备格局好（长川龙一地位明显），当前国产算力芯片刚刚放量，未来空间预计是3-5年增长10倍的速度发展。<br><br>叠加稀缺的存储测试机CP+FT设备单价通胀逻辑，未来存储大扩产带来历史性机遇。今年业绩有望达25e，明年看继续50%+增长，年内看2500-3000e。继续强call！<br><br>详细情况，欢迎电话联系 东吴机械 周尔双、李文意#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p028">
+            <div class="full-header">[028] 07:38</div>
+            <div class="full-body">❗【天风电新】天承科技更新&amp;再推荐0624<br>———————————<br>公司卡位PCB、TGV、半导体药水三大热门赛道，但股价表现均弱于板块，实际进展良好，现更新如下：<br><br>1、	TGV<br>1）行业：今日康宁推出““玻璃桥"，瞄准CPO和玻璃芯包装市场。玻璃桥技术落地，有望打动玻璃芯片封装产业链，且康宁此前和京东方签约合作开发，公司作为京东方稀缺供应链，有望受益。<br><br>2）公司情况：<br>一则，独家供应填实药水，目前产业多家玻璃基板公司开始#将保型电镀切填实电镀，预计28年有望大规模应用。<br><br>二则，京东方新增沉铜药水需求。填实+沉铜单线药水价值量预计是目前PCB的几十倍，但成本差异不大，核心赚的是配方和早期配套开发的钱。<br><br>最后，客户不仅限于JDF，台湾、韩国TGV客户也密集对接中。<br><br>2、半导体<br>和设备厂BFHC独家绑定，跟随其逐渐放量中，此块同样是高毛利市场，收入大部分可转化为利润。<br><br>3、PCB<br>跟随PCB大厂扩产新增产线逐步上量中，此外mSAP、载板产线也开始放量，价值量明显通胀。<br><br>#投资建议# <br>看好的是公司在PCB药水国产替代（200亿市场，公司去年份额不到5%），叠加mSAP 价值量通胀2-2.5倍。不仅是收入端增长，更有高端化+规模效应带动净利率提升（今年25-30%、明年30-35%，后续冲击35-40%）。<br><br>此外，手握TGV、半导体药水两大期权，这两块利润率极高，且是JDF稀缺供应链，卡位优势和稀缺性十足，当前位置继续保持重点推荐。<br>———————————<br>欢迎交流：孙潇雅/张童童#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p029">
+            <div class="full-header">[029] 07:38</div>
+            <div class="full-body">🚩三一重工划重点：<br><br>1⃣️三一重工员工持股计划价格是：21.30元/股<br><br>2⃣️三一重工现在的股价是17.62元/股<br><br>🧧结论：现在买比公司自家员工的成本还低。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p030">
+            <div class="full-header">[030] 07:38</div>
+            <div class="full-body">🔥【国盛建筑何亚轩】盛剑科技：股权激励正式授予，第一阶段目标市值继续看100e+<br><br>✨股权激励正式授予，绑定核心团队、解锁目标彰显增长信心。公司公告确定2026年限制性股票激励计划首次授予日为6月23日，以16.53元/股向169名激励对象授予519.90万股限制性股票，占总股本的4.39%。本次激励首次授予部分分三期解锁，比例为40%/30%/30%，公司层面以营收为核心考核指标，2026-2028年目标值分别为16.20/19.44/22.36亿元，对应三年复合增速约26%，彰显业绩修复信心。<br><br>✨境内AI扩产&amp;出海共振，明年盈利有望迎加速拐点：<br><br>🔺境内：今年起大陆晶圆厂步入扩产高峰，两存持续上调产能目标，预计未来5年境内洁净室需求景气将大幅提升，公司在半导体厂务系统领域市占率约25%-30%，有望同步受益上游设备需求增长。今年1-5月公司累计新签订单已超10亿，接近去年营收总额，需求显著恢复。<br><br>🔺海外：公司在新加坡设立海外总部，已切入本土2-3个晶圆厂绿色厂务供货（下游承包商端可验证），今年累计海外签单1亿。此前海外相关市场主要由台系及韩系供货商垄断，今年因晶圆厂扩建大幅提速，下游需求激增致设备供应有所紧缺，公司依托代工模式快速切入，在交付效率上具备显著优势，下半年海外预计将陆续有更多厂务系统订单落地。附属设备方面，目前已送样英飞凌进行测试验证，若通过验收有望自明年起贡献增量订单，海外业务空间广阔。<br><br>✨目标市值：剔除2025年亏损年度，此前公司净利率基本稳定在7%-9%区间，我们预计境内业务贡献利润约1.5亿元，按25X PE对应目标市值约38亿元。海外业务中期目标收入15亿元，约对应10个项目、单项目市占率15%，按15%净利率测算，对应2.25亿元业绩目标，给予30X PE，对应市值约68亿元。境内+海外合计最低合理市值约106亿元，若后续真空泵/温控设备送样通过，将进一步打开市值空间。<br><br>☎️联系人：何亚轩18501776485/ 李枫婷18958083808#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p031">
+            <div class="full-header">[031] 07:39</div>
+            <div class="full-body">【国盛医药张雪·李慧瑶团队】创新药产业链大涨点评<br><br>🌹事件<br>今日创新药及CXO板块表现亮眼，近期恒瑞医药、信达生物、海思科、德琪医药合作持续落地，基本面持续向好，建议关注板块超跌修复机会。<br><br>[玫瑰]研发热情高涨，中国创新居全球潮头<br>“十四五”时期，中国的创新药研发在数量和质量上实现飞跃。2026年6月22日国家药监局发布2025年《[中国新药注册临床试验进展年度报告]》，2025年中国临床试验总量首次突破5000项，创历史新高。2025年，国家药监局收到临床试验登记总量5215项，同比增长6.4%。新药临床试验2997项，占比57.5%，同比增长18%；生物等效性试验2218项，占比42.5%。<br><br>[玫瑰]回购彰显信心<br>据制药网数据显示，4月初至6月中旬，A股和H股中百余家医药上市公司宣布或实施回购股份。据新浪财经报道，5月共有13家生物医药企业发布回购预案，数量远超其他行业，合计拟回购金额上限达34.9亿元，占据当月回购总规模近四成。<br><br>[烟花]建议关注有业绩确定性及短期超跌公司：<br>1) IO/肿瘤：康方生物、三生制药、信达生物、科伦博泰生物、翰森制药、石药集团、百济神州、基石药业、映恩生物、乐普生物、君实生物、荣昌生物；<br>2) 平台资产：和铂医药、德琪医药、云顶新耀；<br>3) 小核酸：瑞博生物、前沿生物；<br>4) CXO：药明康德、康龙化成、药明生物、药明合联；<br>5) AI制药：英矽智能、晶泰控股、剂泰科技<br><br>风险提示：1）医药负向政策超预期；2）行业增速不及预期；3）行业竞争加剧风险。<br><br>欢迎联系：国盛医药 张雪/李慧瑶#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p032">
+            <div class="full-header">[032] 07:39</div>
+            <div class="full-body">#再次强调一下电子布和ccl在7月的涨幅会超预期。昨天盘前速递，还有雨夜的心理按摩，就想一个事，现在连一个像样的季度利润都还没出，产业趋势没结束#巨石、国际复材、中材、宏和<br>风险提示:涨价不及预期#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p033">
+            <div class="full-header">[033] 07:39</div>
+            <div class="full-body">进入中报窗口期，电子布业绩确定高增，抛开扰动声音，重视产业趋势<br><br>[礼物]#下游CCL订单饱满，#涨价传导顺畅： 5月27号建滔ccl提价10%，价格已经超过了21年高点；6月16日，建滔积层板再次发布涨价函，宣布自即日起，对所有厚度的FR-4覆铜板及PP半固化片产品统一上调15% ，涨价提速，当前覆铜板厂订单维持1-1.5个月，订单持续饱满，上下游产业链提价传导顺畅，高景气度无虞。<br><br>[礼物]#电子布供需持续紧张，#中报业绩确定性高增： 6月1日，7628电子布提价0.7毛/米，相较于前几个月提速了（之前提价0.5元/米），当前行业库存持续低位，下游需求旺盛，订单处于每月一议的阶段，各布种涨价传导顺畅，我们认为，此轮7628电子布价格大概率会站上10元/米；供给来看，产能扩产进度比较平稳，到年底二代布还是维持紧平衡，T布供需紧张预计到明年底，丰田织布机月产100台要持续要明年中才能扩产到200台，整体还是供给偏紧的态势；进去中报窗口期，电子布企业业绩确定高增（各企业中报情况欢迎交流）。<br><br>[礼物]重点推荐#中国巨石#  （粗纱+7628电子布全球龙头，业绩确定性最强），关注#国际复材#  （二代布、LOW-CET出货逐步增加，有预期差）、#长海股份#  （树脂-玻纤-玻纤制品一体化优势，26年高模量产品放量）、#中材科技#  （一二代布、LOW-CET、Q布品类最齐全）、#宏和科技#  （主要产品为特种布，LOW-CTE出货量最大）等。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p034">
+            <div class="full-header">[034] 07:39</div>
+            <div class="full-body">【申万建材】持续推荐AI新材料方向：电子布、TGV玻璃基板、金刚石散热材料<br><br>#持续重点推荐电子布。AI服务器驱动高频高速覆铜板升级，高端Low-Dk电子布需求激增。特种布环节头部企业积极卡位抢占领先地位。传统7628布供给在织机紧缺产能挤兑需求增长三重背景下持续偏紧，2026年上半年累积涨价70%以上，行业几乎无库存。扩产周期长，织布机缺口短期难解。重点推荐业绩确定性最强的#中国巨石，最紧缺的T布龙头#宏和科技，全品类供应的优势企业#中材科技，#国际复材，产业链一体化龙头#建滔积层板&amp;建滔集团，以及新进规划的黑马标的#山东玻纤，其他#聚杰微纤、永冠新材。关注织机国产替代机会#泰坦股份，#卓郎智能等。<br><br>#持续推荐TGV玻璃基板：#  先进封装材料革命，早周期盯设备、晚周期看载板。<br>后摩尔时代AI芯片面积与I/O密度已超有机ABF基板极限，玻璃基板+TGV凭低热膨胀、低损耗、高互连密度成台积电CoPoS/Intel EMIB以及NV下一代方向，2026年被视为商业化元年。产业链投资节奏清晰：设备先于材料放量——TGV超快激光打孔、面板级电镀、AOI检测设备订单能见度高；具备TGV全制程或玻璃载板送样的平台型公司#长信科技，#沃格光电，#彩虹股份，及上游无碱玻璃原片厂商#力诺药包，#旗滨集团 等中期弹性大，全流程国产化的玻璃载板企业#凯盛科技#  具备强阿尔法。这是3-5年维度的成长赛道，建议沿着原片、设备、成品载板三大板块路径配置。<br><br>#持续推荐金刚石散热材料。Blackwell→Rubin架构GPU单芯功耗突破2300W，传统铜/液冷逼近物理极限，金刚石热导率超铜4-5倍，被英伟达、Akash Systems明确列为下一代散热方案，2026年可视为金刚石散热0→1产业化元年。国内培育钻石产能占全球60%+，CVD金刚石热沉片已通过部分头部供应链验证。短期看金刚石铜复合材料热沉片先放量，中期看晶圆级金刚石衬底。可逢低关注已切入AI散热验证、具备CVD量产能力的标的如#力量钻石，#四方达，#国机精工，#黄河旋风，#中兵红箭 等，重点跟踪大厂认证和订单落地节奏。<br><br>☎欢迎联系：任杰19512256636/宋涛/郝子禹17321138296/傅浩玮18868166997#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p035">
+            <div class="full-header">[035] 07:39</div>
+            <div class="full-body">🌟📍重申电子布重点推荐：E布和二代布涨价预期加强（国泰海通建材鲍雁辛团队）20260624<br><br>我们核心推荐中国巨石、建滔积层板股价领涨电子布板块，我们认为核心在于，1）传统E布紧缺程度超出市场预期；2）进入中报交易区间，市场对业绩兑现度的要求上升。<br><br>#E布的紧缺程度超预期# <br>巨石淮安10万吨电子纱新产能其中一期5万吨纱已于5月满产，6-7月开始巨石织布机利用率已经逐渐拉满，意味着市场预期8月另外5万吨的电子纱窑炉对应布的产能其实已经在提前释放了，我们预计公司【7月】将来到全年E布产能的高点，但即便织布机已经提前拉满利用率，巨石电子布目前仍是【0库存】。<br><br>8月仅剩建滔9600万米新产能增量，对应月供应增量仅800万米，且大部分以自供为主，我们判断目前市场E布月度缺口仍有3000-4000万米。<br><br>#短期中报兑现度重要性提升# <br>另外7月上旬陆续进入中报预告的披露期，市场对于业绩对限度的要求提升，整体看E布涨价的业绩确定性更高，【巨石和建滔中报均有超预期的空间】。巨石在粗纱单吨盈利、薄布占比提升对单米布净利拉动上仍有潜在超预期空间；建滔在单张板盈利上仍有超预期空间。<br><br>#特种布方面二代布预期继续强化# <br>二代布预期强化，交易的是下半年二代布提价带来的新的涨价逻辑，其中<br><br>【国际复材】目前国产二代布月度发货量领先，单月发货60万米，7-8月织布机到位后年底有望提升至120-150万米，公司目前对大客户价格尚未调整，后续有计划上调大客户价格。<br><br>【中材科技】目前月度二代布发货20万米，公司在台系客户供应评价较高，二代布下半年有望跟随台系客户放量。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p036">
+            <div class="full-header">[036] 07:39</div>
+            <div class="full-body">【国泰海通医药】商务部《利用外资固稳促优行动方案》报告点评<br><br>[太阳]方案与医药相关政策主要包括：<br>（三）支持外资参与医药等产业高质量发展。抓紧研究出台药品分段生产实施细则，便利境外药品上市许可持有人开展生物制品、化学药品跨境分段生产。抓紧研究报批进一步扩大生物技术、外商独资医院领域开放试点区域范围。支持保险公司将更多创新药械纳入商业保险保障范围，持续鼓励优质创新药械进入我国市场。搭建行业协作平台，便利外资企业生产的药品进入药品零售渠道。<br>（四）完善外资并购管理制度。<br>（五）优化数据跨境流动管理。<br>（七）大力吸引外资企业在华设立研发中心。<br><br>[玫瑰]我们认为，该项政策：<br>（1）有利于国内医药研发外包生产环节的全球竞争力提升，以及提升国内保险对创新药的支付能力。<br>（2）有利于外资参与并购与股权投资，拓展产业资本通道，完善国内创新药行业的对外授权合作体系与资本市场生态。<br>（3）有利于明确医药行业临床数据的跨境流动管理。<br>（4）有利于外资企业将带来全球前沿技术、研发体系与人才资源引入国内，推动国内创新药、创新器械等生物医药前沿技术发展，强化我国医药产业的全球创新竞争力。<br><br>联系人：陈铭/余文心/余克清#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p037">
+            <div class="full-header">[037] 07:40</div>
+            <div class="full-body">花旗更新了几家公司的财务模型并引入了2028年预测：<br><br>东山精密 目标价：由225元人民币大幅上调至350元逻辑：上调2026-2028年净利润预测，主要基于光模块出货量上调。预计公司将在800G和1.6T模块以及100G EML/CW激光芯片上抢占市场份额。AI光通信业务预计将在2026/27/28年贡献54亿/257亿/527亿人民币的净利润。采用SOTP估值法给予光学芯片业务50倍市盈率。<br><br>新易盛目标价：由353.57元上调至701元。逻辑：上调2026/27年净利润8%/13%，以反映3.2T光模块和NPO的贡献。基于其190%的三年盈利CAGR，给予20倍2027年P/E估值。<br><br>天孚通信目标价：由318.57元上调至419元逻辑：虽小幅下调2026/27年盈利预测（因EML供应紧张导致光引擎出货量降低），但引入了2028年191亿人民币的净利润预测，受惠于CPO和3.2T光引擎的放量。给予34.3倍2027年P/E估值#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p038">
+            <div class="full-header">[038] 07:40</div>
+            <div class="full-body">【国金电新】VC成为旺季第一个涨价品种<br><br>#VC价格最新15.5万/吨、较6.22号+8K/吨、提价周期延续。<br><br>#VC整体受益储能的α、供需结构优异。VC在储能电池添加比例高于动力，H2尤其大规格尺寸储能释放后添加比例进一步提高，有明确的储能α，Q3扩产幅度仍有限，我们预计VC仍是典型的旺季提价品种。<br><br>6.14的进门财经每周汇已做前瞻提示，欢迎联系。核心标的华盛锂电、海科新源、富祥药业、孚日股份、海辰药业。<br><br>联系人：国金电新 姚遥/胡媛媛/陆文杰#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p039">
+            <div class="full-header">[039] 07:40</div>
+            <div class="full-body">关注泛品类跨境电商AI应用，运营效率有望提升<br><br>#投资建议：#  泛品类跨境电商业务链条长、SKU数量众多、运营环节高度数据化，适合利用AI工具优化效率。从应用场景来看，AI应用由文案生成与客服辅助，逐步深入至选品、定价、广告投放、内容生成等核心环节，有望显著提升运营效率。建议关注：吉宏股份、华凯易佰。<br><br>#吉宏股份：AI渗入运营核心环节，自有品牌有望放量。<br>1）公司自研AI模型吉客印覆盖选品、投放、备货等多个环节，已与谷歌、亚马逊等北美头部客户展开合作，有望提效进一步优化广告投放ROI。Giikin AI+全域智能运营平台上线后，Giikin AI+在原有系统基础上升级，进一步将选品、投放、视频创作、落地页生成、客服、订单履约、数据分析和业财管理等核心环节进一步自动化、智能化。落地后，首批应用已实现整体运营效率提升60%以上、人力成本降低30%以上、内容产能提升770%以上、客服自动化率达到85%以上、数据决策覆盖率达到89%以上，智能体定制周期压缩至4小时以内。<br>2）此外自有品牌业务年内有望放量，预计2026年规模将突破10亿元，在跨境业务占比有望超20%。阳伞品牌在进入销售旺季叠加厄尔尼诺预期，增长或将提速。<br><br>#华凯易佰：加速AI应用与精品转型。# <br>1）公司以AI Agent为核心抓手，依托易智万象大模型与AI Agent基座，将AI应用落地到视觉内容生成、客户服务优化、供应链采购管理、物流运营提升、选品决策支持、内部协同增强及平台刊登自动化等环节，应用显著提升了运营效率和成本管控水平。例如：视觉内容生产效率提升超95%，物流节省人力超375小时/月，选品决策效率提升80%等。<br>2）库存风险持续出清，精品业务或带动业绩放量。公司当前库存去化基本完成，盈利质量边际改善。同时精品业务保持高增，于26年3月、6月分别收购FINGER TEN/HOMLAND品牌，切入高端运动赛道/家用辅助医疗赛道，加速向垂类精品转型。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p040">
+            <div class="full-header">[040] 07:41</div>
+            <div class="full-body">光纤0625——你若高开，逻辑自来<br><br>#市场严重低估了光纤的贝塔，——3-5年内北美AI光纤需求是今年的10倍，北美光纤会涨到你怀疑人生。<br><br>#市场严重低估了光纤公司的一体化能力，——未来光纤公司都可以作MPO，牛逼的公司可以作FAU/SNMT/MMC/DCI。<br><br>#市场严重低估了长飞的阿尔法，——根据长飞总裁庄总6月24日MMC演讲原文：1）保偏光纤，长飞是中国企业在北美正式量产认证的唯一一家，客户反馈未来2-3年数倍到10x增长用于CPO、NPO；2）长飞ASR带状缆（6912芯）已交付客户商用，主要是北美数据中心客户；3）长飞高密度FAU已获得海外头部客户深度定制认证；MMC和SNMT跳线，也已获得海外头部数据中心批量认证。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p041">
+            <div class="full-header">[041] 07:41</div>
+            <div class="full-body">继续强call 模拟板块性机遇：<br>1、ai敞口，全球1季度接近10%，进入加速阶段；<br>2、通胀来看，未来5年模拟/功率增速最高（不考虑涨价）；<br>3、供给来看，ai需求占比过去2年新增产能100-120%，开始挤压存量产能（工业、汽车），未来可能会继续挤压；<br>4、模拟涨价两轮，挤出消费等低价场景，国内涨价难，但Ti若退出释放40亿美金大盘子，囤货需求会促使价格可能超预期；<br>5、国内领先企业近期疯狂锁产，历史机遇到来<br><br>空间保守来看，板块50-100%空间，其中龙头一定是华峰、圣邦，其他重视华虹、晶合、中芯、思瑞浦、纳芯微、杰华特等#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p042">
+            <div class="full-header">[042] 07:41</div>
+            <div class="full-body">字节跳动为加大AI投资寻求200亿美元离岸贷款<br><br>#字节跳动正与银行初步洽谈约200亿美元的贷款，这是字节迄今最大规模的离岸借款，以加大对人工智能的投资。<br><br>知情人士透露，#这笔新增贷款期限为三年，可选择延长至五年。目前谈判处于初期阶段，具体细节可能变化，资金用途尚不明确。<br><br>#字节跳动正考虑将今年资本支出提升至最高700亿美元，用于扩建数据中心等AI基础设施。若经济与商业环境保持有利，明年该数字可能增至1000亿美元。<br><br>作为对比，#美国四大云计算巨头今年计划资本支出高达7250亿美元，主要投向AI数据中心设备。软银近期也获得400亿美元过桥贷款，用于投资OpenAI。<br><br>[https://www.bloomberg.com/news/articles/2026-06-24...]<br>By 华福政策与国际关系#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p043">
+            <div class="full-header">[043] 07:41</div>
+            <div class="full-body">强烈推荐半导体测试设备：每一次调整都是上车机会！-0624<br><br>#AI带动半导体设备需求快速增长，后道测试设备量价齐升。根据SEMI报告，2025年全球半导体制造设备销售额达1351亿美元，同比增长15%，细分来看，前段晶圆制程设备增长12%，后道测试设备大增55%，#AI对后道设备拉动更显著，原因是芯片复杂化使得测试要求提升、测试内容变多、测试时间变长，导致测试设备量提升；<br><br>#测试设备需求上看，中国大陆、中国台湾、韩国合计占全球79%，未来市场增量看中国；供应格局上看：爱德万、泰瑞达占全球份额的80%以上，爱德万25年收入接近500亿，27年预计达到800亿；泰瑞达25年收入220亿，27年预计达到400亿，中国4家上市ATE公司25年合计收入仅80亿；国产替代空间巨大；<br><br>#华峰测控：模拟国内第一，SoC今年有望实现订单0到1的突破。STS8600系列则面向高性能SOC芯片测试，包括人工智能（AI）、高性能计算（HPC）及汽车电子等，市场空间是模拟测试机4-6倍，8600已经通过算力相关客户验证；<br><br>#长川科技：深度绑定H客户，显著受益于爱德万断供。公司产品布局最全，测试机覆盖模拟、数字、SoC、功率，是目前SoC量产的唯一国内品牌，后续受益于H客户AI芯片放量及两存扩产，同时收购新加坡STI是北美头部X公司供应商；<br><br>#联动科技：功率芯片测试机龙头，延伸至SoC领域。公司从功率半导体测试机起家，覆盖全球主流功率器件公司，新推出SoC测试机9800面向AI、大算力市场，有望打破海外垄断，与天数智芯战略合作；<br><br>#精智达：存储测试设备龙头，深度绑定CX。国内唯一DRAM全流程测试（CP+老化+ FT）厂商，HBM高速CP测试机全球领先，进入一线大厂供应链，受益于两存扩产；<br><br>#金海通：国内平移式分选机龙头，三重需求爆发。“AI +车规+存储”高景气共振，AI芯片尺寸更大、更复杂，测试时长增加导致分选机环节通胀，拉动分选机市场翻倍以上增长，国内竞争格局更优；<br><br>#强一股份：全球第六、唯一内资探针卡龙头，AI 算力/存储高景气。MEMS探针卡“卡脖子”突破，全链条自主可控，AI算力+存储测试双轮驱动，测试时长是原来3-5倍，探针卡量价齐升；<br><br>#长川科技业绩超预期只是周期景气的注脚，真正的AI和两存的拉动才刚开始，现在是行业β+国产化α共振的最好阶段！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p044">
+            <div class="full-header">[044] 07:41</div>
+            <div class="full-body">20260624【科技观察】涨价从晶圆厂传导到IC设计，半导体定价权重回供给端<br><br>过去两天市场连续传出台积电、联发科涨价消息，我们认为这不是两条孤立新闻，而是半导体产业链进入新一轮“成本重估+产能溢价”的重要信号。<br><br>1）台积电涨价：不是单纯“3nm涨价”，而是7nm及以下先进制程整体提价。市场消息显示，台积电已向客户通知7nm及以下先进制程价格上调，涨幅大致在5%–10%。按照台积电1Q26收入结构，3nm占晶圆收入约25%、5nm约36%、7nm约13%，合计先进制程占晶圆收入约74%。因此，本轮涨价若落地，影响面并不小，本质上是AI/HPC需求强劲、先进制程产能紧张、N2及海外厂资本开支压力上升背景下，台积电重新强化自身定价权。<br><br>2）联发科涨价：是IC设计厂开始向下游顺价。近期市场传出联发科已向客户发出价格调整通知，涉及手机SoC、PMIC等产品，主流口径涨幅约10%–15%，部分市场传闻最高可到20%。这意味着上游晶圆代工、封测、原材料、物流等成本上行，已经开始从制造端向IC设计端传导。过去市场更多关注存储涨价，现在SoC/PMIC也开始提价，说明成本压力正在从单一品类扩散到更广泛的半导体BOM。<br><br>我们认为，本轮涨价最关键的信号是：半导体行业正在从“消费电子弱复苏”逻辑，切换到“AI拉动上游稀缺资源重新定价”逻辑。AI带来的并不只是GPU、HBM、光模块需求，而是对先进制程、先进封装、高端载板、封测产能、电源管理、连接芯片等基础资源的系统性挤占。只要AI/HPC需求维持高景气，先进产能就难以快速宽松，上游涨价就有持续传导的可能。<br><br>投资上建议关注三条主线：<br>第一，定价权最强的上游制造环节，如先进制程晶圆代工、先进封装、高端封测、关键材料和设备。涨价说明供给端仍然紧张，具备稼动率与价格双重弹性。建议关注先进逻辑代工厂，以及由先进逻辑代工厂清退落后产能而释放出的成熟代工机会，推荐：台积电、中芯国际、华虹半导体、asmpt<br>第二，具备顺价能力的IC设计龙头。联发科涨价说明设计公司并非只能被动承受成本压力，在供需紧张和规格升级背景下，龙头厂商有能力把晶圆、封测、材料等成本向下游客户转嫁。推荐：英伟达、Marvell、高通、联发科<br>第三，AI对非GPU环节的“外溢涨价”。市场此前定价更多集中在GPU/HBM/光通信，但从台积电到联发科的涨价可以看到，AI正在推高整个半导体供应链的资源价格，后续可以继续关注PMIC、连接芯片、模拟芯片、ABF载板、先进封装材料等环节是否出现类似顺价。推荐：MonolithicPower、ADI、英飞凌、意法半导体、纳芯微、新洁能、华润微#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p045">
+            <div class="full-header">[045] 07:42</div>
+            <div class="full-body">宏观：<br>1.	 美银发报告认为美联储年内要加息三次。<br>2.	彭博造谣cn要开始紧缩财政，被各路评论怼了。<br><br>人工智能：<br>1.	盘中关于Pcb和光模块压价的谣言已经被各路辟谣了。背板延迟也都解释了。<br>2.	卖方：7 月tw铜箔企业准备涨价，hvlp+rtf；7月普通布和ldk二代布涨价。<br>3.	字节发布豆包大模型最新旗舰版本2.1Pro。Seedance 2.5将在7月初正式发布。<br>4.	字节新一代豆包手机屏幕供应商已由前一代的深天马，更换为京东方。<br>5.	截至2026年6月，豆包大模型日均Tokens调用量达180万亿（两年增长1500倍），近一年增长超 10 倍。<br>6.	媒体报道，真正制约CPO乃至整个高速光通信产品的是上游的磷化铟激光芯片。<br>7.	GPT 5.6推迟发布，新目标时间7月中旬。<br>8.调整过后还是科技，科创创业人工智能ETF鹏华（588410）软硬兼备。<br>9.消费电子ETF鹏华（159153）和港股通信息技术ETF鹏华（159185）昨天调整比较多，但情绪稳定下来修复机会也大。<br><br>半导体：<br>1.据半导体分析平台Culpium：台积电正推动所有先进制程（包括7nm）涨价5–10%。一些客户认为台积电还将对部分成熟制程进行提价。<br>2.国产芯片和半导体产业链昨天是比较扛打的，尤其是科创半导体设备ETF鹏华（589020）趋势很明确。<br><br>超硬合金：<br>住友旗下硬质合金子公司发函：已经敲定多元化稳定原料渠道，超硬合金整体生产未受实质性冲击，客户可正常排产下单。<br><br>机器人：<br>据Wccftech报道，供应链报告显示，特斯拉正加速推进其人形机器人的大规模量产计划。机器人ETF鹏华（159278）最近被虹吸，需要等催化。<br><br>航运：<br>卖方：OFAC 官宣伊朗原油全链条豁免、油运超级周期再获强支撑，石油ETF鹏华（159697）底部企稳。<br><br>市场相关：<br>1.	一句话总结今天的行情：韩股担心杠杆，美股担心输家减少资本开支，A股担心他们崩了。（我觉得简明扼要）<br>2.	韩国议员正在讨论对股票未实现收益征税。<br>3.	卖方：美股因为半年末的原因振幅会变大，今晚关注美光财报。<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p046">
+            <div class="full-header">[046] 07:52</div>
+            <div class="full-body">剑桥科技：按照上游物料测算27年净利润望大超预期<br><br>1️⃣#Q1业绩大增：#  Q1营收13亿，+44%；净利润1.18亿元，+276%。<br><br>2️⃣#光芯片绑定：源杰、鼎芯、镭芯等等。# [太阳]周五：镭芯（剑桥持股17%+，第二大股东）与AXTI签订2500万美金INP衬底订单（光芯片对应约2500万个模块）<br><br>3️⃣#海外客户突破：思科外，O客户、M客户、其他等等。<br><br>4️⃣#DSP锁了很多# #文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p047">
+            <div class="full-header">[047] 07:52</div>
+            <div class="full-body">【雅克科技更新点评】国金电子<br><br>✨船运方面：公司是国内LNG保温绝热材料龙头，受益于霍尔木兹海峡开放及船运大周期。25年国内交付首艘17.5万立方米LNG大船，26年进入批量交付阶段，国内LNG保温材料国产化率不足20%；且公司26年首次接到韩国船厂大订单，突破韩国市场，预计26~28年均为景气周期。<br><br>✨存储前驱体方面：作为全球前驱体龙头，公司全球市占率约为15%，未来销量受益于国内外存储公司扩产；在与海力士保持多年合作的情况下，今年三星实现首年规模化供应。价格方面，由于铪等材料涨价，前驱体价格也相应上涨。此外，随着江苏先科稼动率提升，前驱体业务毛利率有望回升。<br><br>✨其他硅微粉、电子特气随着工厂转移、能源成本下降，市场竞争力进一步提升；受益于先进封装及特高压建设，预计今年销量及毛利率均有较好预期。<br><br>✨公司估值在半导体材料板块处于偏低位置，且景气预计逐季提升。其他高景气、估值合理的公司建议关注#鼎龙股份、#飞凯材料、#立昂微、#彤程新材等。<br><br>联系人：樊志远/王倩雯 18566299885#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p048">
+            <div class="full-header">[048] 07:52</div>
+            <div class="full-body">【申万宏源化工】雅克科技：前驱体全球化供应价值被低估，当前位置仍强烈推荐<br><br>#一、半导体前驱体# #前驱体单品价值量长期低估！#  对比国内所有半导体材料供应商，仅有雅克前驱体能够全面实现国内、国外的核心客户的全面覆盖，且持续配合海力士、三星等客户进行最新一代技术的开发，同时反哺国内fab厂技术的演进，因此公司前驱体业务长期被市场低估，#我们认为前驱体单品匹配市值至少千亿以上。<br>      #前驱体涨价落地+铪出口载体+以钼代钨趋势！ 1）公司对海力士供应产品7/1开始涨价20%，且份额有望再次提升，#公司单海力士未来增量达3倍以上。以海力士为示范效应，其他核心客户均有涨价预期。2）铪与钨对比均出口限制品种，六氟化钨作为出口载体受益，铪价国内外差距更大，#铪基前驱体逻辑与六氟化钨一致，高纯铪材料出口需通过公司前驱体作为载体。3）400层及以上NAND以钼代钨技术路线确定，公司UP产品已确定进入三星等客户，#未来钼单品具备至少10亿以上销售额潜力。设备端，液态前驱体配套LDS设备（40-50万/台，5万片/月配套300台），公司国内市占率80%以上，固态前驱体（钼等）配套SDS设备法液空、英特格垄断售价200万美金，公司实现突破，#设备端也有望超预期。<br>      #前驱体单品营收中长期有望超100亿！#  后续看，国内两存从当前30+20万片/月扩产至100+100万片/月，先进逻辑方面亦有大幅扩产计划，叠加海外如海力士明确5年产能翻倍等扩产目标，不考虑涨价情况下，公司前驱体单品具备百亿营收预期，净利润可达近30亿。#雅克前驱体之于长鑫可类比旭创光模块之于英伟达（战略绑定、份额垄断、联合推进下一代）、5万亿长鑫雅克可匹配2000亿空间。<br><br>#二、硅微粉&amp;光刻胶等# <br>      #硅微粉，高频高速产品市场区分不同工艺路线，最终目标即保证产品的介电性能达到要求，如公司前驱体highk产品主要就是介电性能的变化，加之公司华飞过去在封装领域的积累，匹配高频高速覆铜板产品已经实现突破并进入韩国大厂供应链。#对标联瑞650亿&amp;凌玮科技200亿市值、该产品至少具备2-300亿市值空间。<br>      #光刻胶，面板光刻胶国产替代日本逻辑顺畅，TCL华星绑定江苏先科，京东方渗透率持续提升；同时公司布局半导体光刻胶产品，今年有望在先进封装领域实现量产突破，市场关注玻璃基板方向，公司光刻胶积累+面板厂布局玻璃基板优势，同样具备卡位潜力。#面板胶中长期营收40亿、利润6亿、120亿市值&amp;半导体胶匹配200亿市值空间。<br><br>目前公司新材料平台涵盖前驱体、光刻胶、湿电子化学品、电子气体、硅微粉、LNG板材、传输设备等，公司具备深厚的并购及业务延伸能力，以及身后的海外基础，针对半导体材料两大发展思路，平台化&amp;全球化，公司均走在国内材料企业前面，预计未来公司平台将进一步扩充，打造全球领先的电子材料乃至新材料平台。#先看前驱体1000亿+其他材料500亿+、乐观看在此基础上仍有再翻倍空间。<br><br>联系人：周超18810299533/宋涛#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p049">
+            <div class="full-header">[049] 07:52</div>
+            <div class="full-body">[红包]大族激光：珍惜仍在被倒挂的时光，3DP等新业务几乎是零估值白送的。公司全面拥抱AI，科技平台正在加速崛起，坚定看3000e+！<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p050">
+            <div class="full-header">[050] 07:52</div>
+            <div class="full-body">三星电子（005930 KS）：存储更强，但其他业务盈利走弱<br><br>☑️维持买入评级并将目标价上调至67万韩元；2Q业绩预计强于预期，因奖金计提费用低于此前预测<br>我们维持三星电子买入评级，并将目标价从59万韩元上调至67万韩元。我们维持5.0x目标P/B，对应目标P/E为8.3x。5.0x目标估值倍数反映出，在存储长期协议（LTA）支撑下，公司业务稳定性和可见度有所提升。我们预计三星电子2026–2027F期间ROE将达到约60%。我们预计三星电子2Q26F营业利润为76万亿韩元，高于此前67万亿韩元的预测。此前我们在2Q预测中计入24万亿韩元奖金准备金，但最终劳资协议落地后，奖金支付比例确定为10.5%，低于此前12%的假设。因此，目前预计总奖金准备金为19万亿韩元，包括在2Q一次性确认所有1H应计奖金，低于此前预测。<br><br>☑️预计2Q涨价幅度高于同业；HBM价格自2H26F起大幅上涨；Foundry/LSI业务面临更高奖金负担<br>我们预计三星电子2Q实现的价格上涨幅度相对同业更大。对于高速HBM4，我们认为其相较标准HBM4将享有显著价格溢价。鉴于HBM盈利能力目前仍明显低于通用存储产品，我们预计HBM价格将在2H26F及2027F期间大幅上涨。简单测算来看，目前HBM产品OPM约50%，若要达到通用存储产品约80%的OPM水平，ASP需要上涨超过100%。Foundry/LSI业务方面，我们预计在产能利用率改善和新客户获取的支撑下，收入增长将加快；但由于奖金费用与半导体部门整体盈利挂钩，相关业务亏损可能进一步扩大。<br><br>☑️智能手机业务可能因存储价格上涨而转亏<br>我们下调2Q26F MX部门营业利润预测，主要反映存储价格上涨影响。剔除专利授权收入后，我们估算硬件业务已转为经营亏损，因为存储成本上升的影响超过了智能手机提价带来的抵消。尽管三星近期已将智能手机价格上调10–15%，但我们认为仍不足以完全覆盖存储成本上升。鉴于主要竞争对手苹果已表示将因存储成本上升而提高新机发布价格，我们认为三星也可能在2H26F进一步提价。<br><br>☑️2026F/2027F营业利润将达到371万亿/598万亿韩元；总分红同比增长约9倍<br>考虑到奖金费用低于预期，以及我们预计2H26F及之后存储涨价幅度将高于此前假设，我们将三星电子2026F和2027F营业利润预测分别上调21%和38%，至371万亿韩元和598万亿韩元。自下半年开始，三星电子可能启动股份回购，用于员工薪酬和股东回报，其中部分回购股份可能被注销。假设公司维持2026F 25%的分红派息率，则对应总分红有望提升至95万亿韩元，同比约增长9倍。按当前股价计算，对应普通股股息率4.4%、优先股股息率6.9%。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p051">
+            <div class="full-header">[051] 07:52</div>
+            <div class="full-body">近期研究【金刚石散热】，金刚石铜复合材料有可能率先产业化大规模应用<br><br>【斯莱克】金刚石散热，AI光模块算力金刚石铜复合材料小龙头[福][福][福]<br><br>金刚石散热系列调研——【国机精工】，欢迎参加！<br>6月30日（周二）下午3点，河南郑州，国机精工 董秘 赵总<br><br>5年前我们系统研究过【金刚石/培育钻石】产业链，当时还在期待中——第四代半导体材料——金刚石产业链，国机精工、四方达、中兵红箭、黄河旋风、力量钻石、沃尔德等，欢迎交流[抱拳]#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p052">
+            <div class="full-header">[052] 07:52</div>
+            <div class="full-body">🚩【长城机械 邓宇亮】把握#博迈科：好行业➕好公司➕好价格❗# <br><br>油气供给缺口➕技术进步导致经济性可行➕国家能源安全🟰深海油气的超级周期❗<br><br>博迈科正是深海超级周期中最纯正、最有弹性的标的❗ <br>1⃣️公司产值120亿<br>2⃣️公司今年订单大爆发<br>3️⃣#公司市值远小于今年新签订单、远小于公司产值<br><br>这些还只是水上的冰山一角，冰山的水下更大更精彩！#现在的博迈科类似于松发主升浪之前的订单爆发+超级周期❗#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p053">
+            <div class="full-header">[053] 07:52</div>
+            <div class="full-body">0624通鼎互联：光棒产能拐点+玻璃基板保偏业务期权共振，光通信低估资产独家推荐<br><br>#一骑绝尘独家推荐，千亿通鼎起航# <br><br>■光棒光纤产能年化测算：<br>1、康宁采购光棒：公司与康宁锁定了数年单年200t以上的A1光棒供给，对应650万芯里光纤，按当下A1价格与公司成本测算，对应贡献3-5亿年化利润<br>2、山东东方光源复产：目前单月产出已达到10-20t，预计Q3达到年化150t供给，Q4实现年化300t满产。该复产均为A2纤，单芯净利按180-200元测算，对应贡献18-20亿年化利润<br>3、韶关一期：公司韶关一期规划了600t A2光棒、2000万芯里A2光纤，目前已通电打桩，预计明年上半年实现投满产，按单芯净利180-200元测算，对应贡献36-40亿利润，假设明年贡献半年，对应18-20亿利润<br><br>按照产能2027年有望实现40亿以上利润，对应当下仅7X估值。<br><br>■公司潜在新业务期权：<br>1、玻璃基板：公司与康宁合作多年，康宁为玻璃基板基材龙头，公司通过相关渠道跨界布局打通玻璃基板产业0624通鼎互联：光棒产能拐点+玻璃基板保偏业务期权共振，光通信低估资产独家推荐<br><br>#一骑绝尘独家推荐，千亿通鼎起航# <br><br>■光棒光纤产能年化测算：<br>1、康宁采购光棒：公司与康宁锁定了数年单年200t以上的A1光棒供给，对应650万芯里光纤，按当下A1价格与公司成本测算，对应贡献3-5亿年化利润<br>2、山东东方光源复产：目前单月产出已达到10-20t，预计Q3达到年化150t供给，Q4实现年化300t满产。该复产均为A2纤，单芯净利按180-200元测算，对应贡献18-20亿年化利润<br>3、韶关一期：公司韶关一期规划了600t A2光棒、2000万芯里A2光纤，目前已通电打桩，预计明年上半年实现投满产，按单芯净利180-200元测算，对应贡献36-40亿利润，假设明年贡献半年，对应18-20亿利润<br><br>按照产能2027年有望实现40亿以上利润，对应当下仅7X估值。<br><br>■公司潜在新业务期权：<br>1、玻璃基板：公司与康宁合作多年，康宁为玻璃基板基材龙头，公司通过相关渠道跨界布局打通玻璃基板产业<br>2、保偏光纤：公司特种光纤技术储备多年，目前据设备商产业调研，公司规划了一期20-30万芯里保偏光纤产能，总70-90万芯里保偏光纤产能；与此同时还布局了空芯光纤相关项目，目前已与国内头部光通信厂商形成对接。<br><br>目前市值严重低估，在光纤标的中预期差较大，后续复产业绩拐点及新业务期权向上空间巨大。<br><br>#现在从韩国调研tmt回来，近期开始可以详细交流<br><br>CT Rita Geng#文字观点# <br>2、保偏光纤：公司特种光纤技术储备多年，目前据设备商产业调研，公司规划了一期20-30万芯里保偏光纤产能，总70-90万芯里保偏光纤产能；与此同时还布局了空芯光纤相关项目，目前已与国内头部光通信厂商形成对接。<br><br>目前市值严重低估，在光纤标的中预期差较大，后续复产业绩拐点及新业务期权向上空间巨大。<br><br>#现在从韩国调研tmt回来，近期开始可以详细交流<br><br>CT Rita Geng</div>
+        </div>
+
+        <div class="full-item" id="p054">
+            <div class="full-header">[054] 07:53</div>
+            <div class="full-body">按手call【天岳先进】，全球最大sic供应商涨价在即！<br><br>Sic需求旺盛，下游扬杰率先跟英飞凌意法的第二轮涨价，产业需求非常旺盛。<br><br>据我们了解最新产业信息，英飞凌供不应求加剧，天岳作为英飞凌最大sic供应商涨价信号已出现！<br>By lzj#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p055">
+            <div class="full-header">[055] 07:53</div>
+            <div class="full-body">乐普医疗近况更新：重申关注稀缺的消费0-1投资机会<br><br>[玫瑰]公司今早开盘股价一度上涨7%+，主要受医药板块尤其是脑机&amp;创新药β行情的驱动。受极致的市场行情影响，近三个月公司股价连续回调，当前市值220亿+基本已回落至去年医美产品获批之前。公司依然拥有市场稀缺的PDRN、ECM等消费0-1的投资机会，当前股价配置性价比凸显。<br><br>[太阳]医美业务：1）PDRN依然维持今年获批的预期。作为对标的韩国丽珠兰母公司PRP，26Q1营收1461亿韩元/+25%再创新高（约合6.5亿人民币），PDRN三文鱼针的需求依然旺盛（#具体可参考我们此前的PDRN行业深度报告）；2）ECM注册申请进度也处于行业第一梯队，康哲医药合作的白衣缘生物的ECM预计26H2获批，由此来看乐普合作的ECM产品也不会差太多。作为对标的韩国L&amp;C Bio旗下ECM水光产品Elravie Re2O，24年底上市，25年销售额960亿韩元（约合4.28亿人民币）；3）此前获批的热玛吉正在铺货，预计26H2下半年将贡献主要业绩增量之一。<br><br>[红包]再次建议重视乐普的0-1确定性投资机会。PDRN是当前多数医美机构高度重视的医美新品之一，放量确定性强，再加上ECM也是重要的新品。本质上乐普是一家拿证能力很强的医药公司，乐普PDRN和ECM的逻辑只是Delay而不是消失，我们认为在今年临近PDRN获批之前，乐普会有一个很合适的右侧布局机会，建议重点关注！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p056">
+            <div class="full-header">[056] 07:53</div>
+            <div class="full-body">0624立讯补充——<br>不影响其他光！！不是简单代工，是打造光互联至高之地<br><br>■并非单纯代工，立讯输出自研全套光模块方案；谷歌主动锁定上游物料，保障扩产不受供应链约束；定价具备底气，800G报价400美金高于行业350美金，不走低价内卷路线。<br><br>■现有2条光模块产线，2027年扩至10条，合计千万级年产能；单产线CAPEX仅2亿，大幅低于行业3-8亿，自研耦合设备+90%行业最高自动化率，叠加90%-95%顶尖良率，高毛利率战士。<br><br>全球化人员研发布局，技术自主可控<br>■光模块核心研发团队设于日本，高端行业人才由谷歌协助面试引荐，直接对接北美云厂商技术标准，同步推进NPO共封装光学预研。<br>■耦合等核心专用设备自主开发，无需外购高价设备，自动化产线降本增效，是区别传统光模块厂商的核心差异化优势，支撑规模化盈利。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p057">
+            <div class="full-header">[057] 07:53</div>
+            <div class="full-body">0624立讯精密：高速率时代，新的大光，相干版本答案，谷歌立讯马威尔三向奔赴，打造光互联至高之地<br><br>#此番物料保证，dsp三方合作落地，马上分歧转一致<br><br>■已经获证H股备案，拟发行不超4.41亿股H股，募资规模20-30亿美元，最快7月上。<br><br>■Marvell DSP战略合作，5月签署MOU，获得800G/1.6T/2.4T DSP常态化优先保供，保障1.6T 8月顺利出货、明年2.4T产品落地，相干时代版本答案。<br><br>■全链路协同开发，三向奔赴<br>双方联合定义下一代光模块芯片规格、硅光集成方案，Marvell同步协同立讯拓展谷歌、AWS、Meta等北美云厂商客户；覆盖光模块+有源高速铜缆（AEC）双线业务。<br><br>■并非行业颠覆者，打造光互联至高之地<br>立讯输出自研全套光模块方案；谷歌主动锁定上游物料，保障扩产不受供应链约束；定价具备底气，800G报价400美金高于行业350美金，自研耦合设备+90%行业最高自动化率，叠加90%-95%顶尖良率。核心研发团队设于日本，高端行业人才由谷歌协助面试引荐，直接对接北美云厂商技术标准，同步推进NPO共封装光学预研。耦合等核心专用设备自主开发，无需外购高价设备，自动化产线降本增效，是区别传统光模块厂商的核心差异化优势，支撑规模化盈利。<br><br>#此外还有液冷预期差，万亿立讯起航# <br><br>#现在从韩国调研tmt回来，近期开始可以详细交流<br><br>CT Rita Geng#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p058">
+            <div class="full-header">[058] 07:53</div>
+            <div class="full-body">【HFDZ】菲沃泰：算力散热双击标的：设备+产品全自制，深度绑定国产算力大客户<br><br>✅光刻耗材基本盘：下游扩产持续放量，光刻配套材料单机价值超千万，业绩弹性大<br><br>✅金刚石散热增长曲线：国内稀缺MPCVD设备+金刚石热沉片全自研玩家，无卡脖子风险；正与国产算力大客户深度配合，解决AI芯片散热核心痛点，规模化放量在即<br><br>✅从设备端到产品端全程自主可控，从光刻耗材到算力散热双赛道共振，算力赛道真正被低估的隐形冠军。<br><br>[礼物]欢迎交流！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p059">
+            <div class="full-header">[059] 07:53</div>
+            <div class="full-body">【天风电子】智立方：索尔思12亿美元扩产落地，光芯片设备需求迎来强催化<br><br>🥇#行业拐点落地：光互联为算力刚需-索尔思大额扩产打开成长空间<br>东山精密子公司索尔思光电计划投资12亿美元，在常州推进光芯片与光模块扩建项目，全部使用自筹资金，扩充产能匹配AI算力上游元器件需求。此前行业逻辑已明确，铜缆传输存在性能上限，AI算力集群带动光互联成为行业刚需，高阶光模块、EML光芯片产能持续紧缺。索尔思作为公司核心战略客户，本次大规模扩产将直接拉动上游配套设备采购，此前判断得到验证，我们认为十倍成长弹性，行业高景气确定性进一步提升。<br><br>🥈#公司核心卡位：双主线布局清晰-光芯片设备高壁垒深度绑定行业成长<br>公司深度布局光芯片、光模块领域全品类核心设备，产品矩阵完善，覆盖排巴机、拆巴机、AOI、测试机、分选机、固晶机等全系列生产设备。公司光相关业务深度绑定源杰科技、敏芯、永鼎、索尔思、Coherent、应用光电、长光华芯、海思等国内外行业头部客户，深度嵌入高端光芯片与高速光模块供应链。其中公司排巴机、拆巴机、AOI检测设备成功打破海外垄断，国内市占率处于高位，充分受益国内光芯片国产化、高速光模块迭代升级的行业大趋势，伴随行业高景气持续兑现订单增量。<br><br>🥉#算力配套多点布局-液冷+半导体业务持续受益算力产业升级<br>依托深厚的精密设备制造能力，公司横向拓展算力配套优质赛道，多点开花夯实成长基底。液冷领域精准卡位谷歌液冷微通道组装设备，顺应AI高功耗算力中心液冷普及的升级趋势，提前布局核心生产环节，持续收获业务增量；半导体封测领域稳步推进，功率级固晶机已实现批量出货，分选机、AOI设备同步放量，持续迭代落地高精度半导体级设备，推动半导体业务稳步增长，打开全新成长空间。<br><br>🎯#四驾马车协同：长期成长支撑坚实#  <br>光芯片设备绑定光模块高景气周期，25-27年有望实现数倍级增长；纳米级精密运动平台切入中科飞测，高盈利属性突出；液冷新赛道打开第二增长曲线；消费电子业务绑定苹果链，提供稳定现金流支撑研发。四大板块协同发力，成长逻辑清晰，预计可达350亿市值空间。<br><br>天风电子团队 李双亮/冯浩凡☎#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p060">
+            <div class="full-header">[060] 07:53</div>
+            <div class="full-body">🔥【天风通信】永鼎股份涨停点评：市值突破千亿，积极看好公司后续发展，持续推荐！<br><br>[太阳]事件：公司股价今日涨停，股价再创新高，市值突破千亿，近期我们持续推荐，并持续作为6月金股。公司基本面持续向好，目前光芯片在客户侧验证顺利，后续有望获得规模订单；公司亦布局MPO产品，并已与海外综合布线商进行合作，产品已进入海外数据中心，并持续进行扩产。展望后续，我们认为公司股价仍有上行空间，持续推荐。<br><br>[烟花]子公司鼎芯光电全面布局EML、CW光源等光芯片产品，目前CW光源放量出货且产能持续爬坡，后续有望获得其他大客户订单（预计订单量高于之前客户），明年出货量有望大幅提升，鼎芯光电亦同步持续大幅扩产。此外，公司同步加快200mW、400mW CW及200G EML等高端芯片研发突破。<br><br>[红包]光纤持续涨价，公司积极扩产，预计2026年Q3末光棒产能扩充到1050吨，光纤产能扩充到3600万芯公里，公司聚焦高价值产品，有望贡献弹性利润，后续有望持续扩产。此外，公司亦布局MPO光纤跳线产品，在安徽六安自建产线并持续扩产，并已与海外综合布线商进行合作，产品已进入海外数据中心。<br><br>[庆祝]此外，子公司东部超导前瞻布局高温超导带材，是国内为数不多可以量产的超导带材公司，产品性能优异，可用于可控核聚变战略方向，近期计划扩产5万公里，满足下游需求的快速增长，预计今年可实现盈利，后续有望快速增长并贡献弹性利润，我们认为市场对公司高温超导带材业务并未充分定价，存在较大的预期差。<br><br>☎天风通信🥇王奕红/康志毅*/张建宇*/唐海清#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p061">
+            <div class="full-header">[061] 07:53</div>
+            <div class="full-body">【东吴计算机】持续坚定推荐#宏景科技# <br><br>云南锗业继续新高。计算机这边今年最强方向——算力租赁也一直是我们的重点推荐。<br><br>token分成意味着公司实现了商业模式和生态位升级，不再仅仅是硬件租赁提供商，而是切入大模型推理环节。<br><br>这不仅仅需要公司有强大的硬件渠道，也需要公司有强大的大模型token工程团队。<br><br>盈利和估值都会大幅提升<br><br>目标市值欢迎交流。<br><br>风险提示：技术发展不及预期。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p062">
+            <div class="full-header">[062] 07:53</div>
+            <div class="full-body">#今日天味盘中涨停，主要系Q2动销好于预期+收购催化，昨日已提示相关数据<br><br>#动销好于预期#   按渠道数据反馈，Q1提前备货背景下Q2好人家同比下滑小个位数，估算对应整体增长双位数，主要系不辣汤及龙虾料动销较好 #收购催化#  坛坛香为湘式剁椒赛道头部品牌，收入增速目标5%增长稳健，净利率达19%，交易估值12倍，属于优质品牌资产<br><br>#盈利预测#  收购并表叠加Q2预期上修，全年净利润7.5e可期，对应PE估值21倍，股息率4.7%#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p063">
+            <div class="full-header">[063] 07:54</div>
+            <div class="full-body">【长江计算机】智谱：探索智能上界，AGI商业价值加速释放<br><br>[玫瑰]智谱：技术长期主义+坚持自研，AGI领先探索者。创始人行业地位决定公司高度，清华班底带队、技术能力经多年技术沉淀，以领先的自研架构押注AGI长期目标。2026年起继续全面聚焦基础模型研究与Infra能力提升，专注于GLM-5的长远进化方向。<br><br>[玫瑰]行业迅速扩容，MaaS平台横向破圈，Token商业价值持续释放。行业层面需求加速的斜率极为陡峭；公司层面，MaaS平台加速渗透，进入量价齐升周期。当前公司已成为国内付费Token消耗量最高的厂商之一，2026年全年ARR有望持续突破。<br><br>[玫瑰]海外对比：参考Anthropic的路径,公司有望将其能力外溢至更广泛的垂直行业，打开更加广阔的成长空间。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p064">
+            <div class="full-header">[064] 07:54</div>
+            <div class="full-body">芯碁微装：重视先进封装预期差&amp;AI-PCB铲子股，受益双重beta【国金新材料&amp;建材李阳团队】<br><br>（1）先进封装直写光刻，明确受益CoWoS-L趋势<br>①国产算力起量、有望上修27年芯碁先进封装设备出货预期。<br>②直写光刻技术无需掩膜版，具备成本更低、效率更高的技术优势，适配CoWoS-L工艺。预估台积电CoWoS-L产能占比将逐年提升。<br>③目前公司WLP系列产品已助力多家先进封装头部厂商实现类CoWoS-L产品的量产，并预计于26H2进入量产爬坡阶段。<br><br>（2）传统主业带动订单/业绩高增：PCB直写光刻龙头，AI-PCB行业迎大规模资本开支，有望大幅拉动上游PCB设备的采购量。二期扩产于25年9月落地，极限产能可通过优化排产提升至1500台以上。<br><br>（3）其他看点包括载板/激光钻孔：<br>①载板曝光机：单台设备价值量更高，期待光模块mSAP工艺拉动。此外，公司玻璃基板相关设备同样有布局。<br>②激光钻孔：三菱市场份额较高，预计国产激光钻孔设备供应商存在替代机会，公司已进入多家头部客户的量产验证阶段。<br><br>风险提示：AI算力需求不及预期；直写光刻工艺与掩膜版光刻技术路线存在竞争；行业竞争格局恶化<br><br>【国金新材料&amp;建材】李阳15270997227/赵铭13958895503#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p065">
+            <div class="full-header">[065] 07:54</div>
+            <div class="full-body">精智达，最全面最稀缺的存储、算力、光通信卖铲人，基本面持续催化，主升尚未开始，珍惜筹码，坚定持有！<br><br>by WCS<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p066">
+            <div class="full-header">[066] 07:54</div>
+            <div class="full-body">赛意信息持续推荐<br><br>❶公司传统主业今年修复明显，预计都能接近小2亿利润。算力租赁业务前期已经跑通，200亿的授信额度已经准备好，前期已经有8亿+资产购买。<br><br>❷未来1-2年公司预计会把授信额度用足，我们预计今年规模有望很快呈现出数倍增长。相对于其他算租公司，目前股价非常低位，持续推荐！<br><br>bro yang#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p067">
+            <div class="full-header">[067] 07:54</div>
+            <div class="full-body">策略会交流，大族数控订单超预期。1-5月同比增长150%达到50e+，超快已出货150台+。大族激光的新增量也很快落地。继续看好大族全家桶！<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p068">
+            <div class="full-header">[068] 07:54</div>
+            <div class="full-body">🔥🔥短期波动不改“半导体+光”产业趋势，坚定推荐【广立微】、【长川科技】<br><br>🔥广立微：半导体“软带硬”模式成功验证，硅光业务再造同等体量，看500e+目标市值！<br><br>🔥长川科技：存储扩产+AI芯片放量+Space X上市最强弹性标的，当前对应27年仅30+xPE，显著低估品种，看3000e目标市值！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p069">
+            <div class="full-header">[069] 07:55</div>
+            <div class="full-body">🔥美光资本开支继续上修<br>🔥泛林/amat/kla盘后大涨5-6%<br><br>#2026财年:# Q1/Q2/Q3资本开支45/64/71亿美金，预计Q4开支100亿美金，#全年开支超270亿美金、相较上季度250亿美金的预期继续上修！<br><br>#2027财年:# 官方指引预计FY2027每季度开支均超过FY2626Q4（100亿美金），#即全年开支预计超400亿美金、较上季度350亿美金预期继续上修！<br><br>#DRAM/HBM：# 占开支绝大部分：<br>1️⃣爱达荷Boise 1号厂预计2027年中投产；Boise 2号厂土建启动预计2028年底投产；<br>2️⃣纽约clay两座厂预计2030产能爬坡<br>3️⃣台湾铜锣：收购力积电厂区扩建第二洁净室，预计2028财年大规模出货<br><br>#NAND：# 资本开支克制仅小幅增长，仅扩新加坡N9工厂、预计2028H2才大规模量产<br><br>#总结：# 26/27财年开支继续上修，官方资本开支不包含各国政府补贴 （美国CHIPS、台湾、新加坡、日本产业补贴），实际开支更大！当前nand开支克制，不排除后续继续加码可能！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p070">
+            <div class="full-header">[070] 07:55</div>
+            <div class="full-body">【战略金属】完善出口管制违法举报机制，资源重估再添筹码<br><br>#事件：# 商务部6月24日公告，进一步完善战略矿产两用物项出口管制违法违规行为的#举报处理机制，自2026年7月1日起实施。公告列举十三类可举报情形，重点打击未经许可出口、绕道第三国、改造拆分成部件、转移技术等。涉及的战略矿产即现行管制清单品种：#镓、锗、锑、钨、中重稀土、钼、铟、碲、铋等。<br><br>#从"立规"到"管住"；全面落实管制政策。 自2023年起，国内陆续将镓锗、锑、钨钼铋碲铟、中重稀土纳入管制，管制框架的搭建已趋完整。对于框架的执行，此前主要靠（1）专项打击，如去年5月打击战略矿产走私出口专项行动；（2）企业自律，主动规避敏感地区和最终用户。本次公告则在此基础上全面深化——把社会举报、实名奖励作为常态化、制度化的监管落实渠道，并将报关、货运、金融等第三方服务商纳入连带追责，精准封堵伪报品名、伪报最终目的国和最终用户以及绕道第三国、拆分部件等灰色通道。完成"专项打击+企业自律+全民监督"的常态化闭环。<br><br>#对日断供逻辑强化；看好战略资源价值重估主线。 当前战略金属行情演绎主线为：中国对日原料断供→日本制成品断供→国内制成品国产替代量增+涨价→向上延伸利好战略管制金属。本次举报机制完善，有利于堵死转口贸易及严打擦边球，强化国内定价权，进一步加码对日断供投资主线。我们继续看好锗、镓、钨、钼、稀土、铟、铋等战略资源的价值重估。<br><br>#钨：# 中钨、厦钨、江钨、翔鹭、章源、佳鑫等。<br>#钼：# 金钼、盛龙、国城等。<br>#稀土：# 盛和、中稀有色、中国稀土、北稀、爱迪特、国瓷等。<br>#锗镓：# 云锗、驰宏等<br>#铟：# 锡业、株冶、云锗、有研新材等。<br>#铋：# 株冶、豫光金铅、中钨等#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p071">
+            <div class="full-header">[071] 07:56</div>
+            <div class="full-body">携程集团2026Q1业绩点评：营收/EBITDA双超预期，联营巨亏，Q2指引下修，监管处罚落地或临近<br><br>#经营层面稳健超预期：#<br>五大分部全面增长。住宿预订65.10亿元（同比+17%）、交通票务60.50亿元（+12%）、旅游度假11.30亿元（+19%）、商旅管理6.90亿元（+20%）、其他18.28亿元。对比一致预期，其他收入超预期约12%、商旅超约5%为主要超预期来源，住宿基本符合，交通票务、度假小幅超预期。<br><br>#国际业务是最大结构性亮点：#<br>国际平台预订同比+65%、入境游预订同比+90%，显著快于整体，验证"出境+trip.com+入境游"多期权逻辑。<br><br>#表观与非GAAP盈利双双低于预期：#<br>经调整EBITDA 48.3亿元（同比+13.7%）超预期约3.7%、EBITDA利润率30%；营业利润39.45亿元（同比+10.7%）亦小幅超预期约1.3%。非经层面是本季盈利的最大变量：①联营公司权益亏损由去年同期-1.02亿元扩大至-11.51亿元，且未在非GAAP中加回，是非GAAP盈利同比下滑的主因；②计入其他收入的投资（MMT26Q1大跌）及可交换债公允价值，由去年同期收益5.26亿元转为损失8.76亿元（已在非GAAP中加回）。两者叠加使其他收入由11.37亿元骤降至1.76亿元，构成表观净利大幅下滑的直接原因。<br><br>#Q2指引大幅下修：#<br>管理层预计Q2净营业收入同比仅+3%–8%（一致预期约+14%），并明确将相应拖累当季利润率与盈利，归因于高能源价格、地缘政治波动，以及"就行业标准与合规框架的最新变化主动进行的运营调整"——监管成本开始进入损益表。<br><br>#观点：#<br>携程Q1业绩姗姗来迟，经营层面没太多悬念。在同程下调业绩指引后（Q2 OTA收入增速5-10%），携程Q2经营层面面临压力就已是明牌，此外在监管窗口期内，公司料想也没有动力释放业绩，所以Q2指引下修并不意外，且一致预期也由于更新不及时没有参考意义。更关键的依然是反垄断处罚的具体细节，这决定是一次性失血，还是长期现金流受到影响。本次业绩发布延迟近一个月，且距离1月反垄断调查也近半载，推测监管处罚即将落地，建议等待处罚和未来合规具体细节要求。<br><br>欢迎交流：嵇文欣/曹敦鑫#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p072">
+            <div class="full-header">[072] 07:57</div>
+            <div class="full-body">国内可回收试射在即，请务必关注【太空光伏】低吸机会<br><br>‼首推标的1：东方日升（最便宜的纯正SpaceX链没有之一） 公司地面HJT电池组件50e市值，储能今年4-5e净利，给100e市值，传统主业值150e，目前公司市值仅155e，太空光伏完全白送！作为S链P-HJT电池唯一合格供应商，公司即将实现百兆瓦级供货，按照20元/W加工费计算或将对应20亿收入，4-5e净利，太空光伏看看150e-200e，加上传统主业至少看300-400e市值，仍有翻倍以上空间，请务必重视最便宜的纯正SpaceX供应商没有之一<br><br>‼首推标的2：钧达股份（没有火箭发射的“小SpaceX”） 公司已形成“太空能源及材料+卫星制造+卫星运营”完整卫星产业链闭环，CPI膜27年按照30万平出货，对应4-5亿归母净利润，给30xPE看150e市值，卫星业务承接上海太空算力联盟1000颗算力卫星发射计划，给予100e估值，商业航天业务看250e市值，叠加地面主业100-150e，至少看400e市值，目前依然有翻倍空间，请务必重视国内卫星全产业链完整闭环的小SpaceX#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p073">
+            <div class="full-header">[073] 07:57</div>
+            <div class="full-body">美光科技业绩大超预期，大涨16%，利好存储，存储概念股汇总<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p074">
+            <div class="full-header">[074] 07:58</div>
+            <div class="full-body">【HY交运ZFZ】长锦达成百万湾内租约、船东信心空前坚挺<br><br>🚢产业一线最新成交：长锦商船最新披露新达成中东湾内-印度航线租约运费达WS897点、对应TCE约百万美元/日！ 当前船东与租家仍在博弈通航后首批进湾运价，船东信心与风险偏好明显占据上风。<br><br>💡油运行情远未到终点、坚定持有核心标的<br>当前板块估值仍未充分定价油运长期景气增量。海峡通航+伊油合规只是周期起点，增产货量释放才是主升浪。继续坚定强推油运核心标的【招商轮船】【中远海能A/H】、先看2500e、4000e可期！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p075">
+            <div class="full-header">[075] 07:58</div>
+            <div class="full-body">‼️【汉钟精机更新】260624<br><br>Aidc需求开始兑现：5月离心式制冷压缩机出货同比增长60%，环比增长50%。预计6月同比增速进一步提升至翻倍以上。<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p076">
+            <div class="full-header">[076] 07:58</div>
+            <div class="full-body">新锐股份（慧联电子）重要更新： 新锐收购慧联电子PCB钻针/铣刀及装备交割仪式即将举行，新的开始&amp;强强联合&amp;王者归来<br><br>改变刀具（含PCB钻针）行业格局的收购<br><br>#持续看800e# #文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p077">
+            <div class="full-header">[077] 07:59</div>
+            <div class="full-body">美光科技表示：从 LP5 迭代至 LP6、DDR5 升级至 DDR6，以及新一代 HBM 产品，全部会带来单位比特生产成本上涨。<br>公司判断该行业发展趋势，预计会推动 DRAM 每比特的单位成本在现有基础上持续走高。<br>行业相关统计数据显示，2026 自然年的数据中心 DRAM 与 NAND 闪存的比特出货规模，预计相比两年前实现翻倍以上增长。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p078">
+            <div class="full-header">[078] 07:59</div>
+            <div class="full-body">高通在投资者日活动上发布了升级后的多元化发展战略，将 2029 财年非手机业务收入目标上调至 400 亿美元，该数值几乎为此前原定目标的两倍。<br>公司同步设立多项全新业绩目标，计划到 2029 财年实现：数据中心业务收入超 150 亿美元、汽车业务收入达到 100 亿美元、物联网业务收入超 140 亿美元。<br>高通盘后股价上涨 13%#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p079">
+            <div class="full-header">[079] 07:59</div>
+            <div class="full-body">美光科技财报核心观点、供需判断与战略客户协议解读<br><br>营收与利润率双双大幅超出买方机构预期，每股盈利较我方买方测算基准高出 12%。<br>公司业绩展望给出高达 86% 的毛利率指引，该数值较我方买方测算基准高出 10 个百分点，充分印证了 “内存产业在人工智能时代具备战略价值” 这一核心逻辑。<br>本次业绩发布会中发布了大量具备极强行业影响力的观点论述：<br>公司判断：受人工智能需求拉动全细分赛道增长，叠加供给端存在结构性产能约束，存储市场供需偏紧的格局将延续至 2027 自然年之后。<br>公司表示十分振奋地对外公布，目前已经签署完成 16 份战略客户合作协议，该批协议有望从底层彻底重塑公司经营模式。<br>这 16 份协议合作方包含 4 家超大型客户以及 3 家中型客户。<br>协议常规合作期限为 5 年，汽车业务相关协议期限为 3 年。<br>协议覆盖公司 20% 的 DRAM 出货总量、以及三分之一的 NAND 闪存出货总量。<br>全部协议均采用照付不议模式，合作方在多年合作周期内具备刚性采购履约义务。<br>其中规模最大的几份协议针对现有产品设置定价规则，以当前第二自然季度市场价格作为价格上限，同时在协议完整存续周期内约定价格下限。<br>演示文稿新增第 9 页、第 10 页页面，针对战略客户协议进行了更为详尽的信息披露。<br>在已签署完成的 16 份战略客户协议里，其中 14 份协议按照合同约定最低采购单价测算，在协议剩余存续周期内可实现的累计营收规模约1000 亿美元。<br>公司认为，全球经济各个细分领域能够持续释放大规模技术创新、生产力提升红利，目前仅仅处于发展初期阶段。<br>即便公司预判行业整体供给将在 2028 年迎来缓慢改善，但现阶段依旧无法预判内存供给产能何时能够追上持续扩张的市场需求。<br>公司着重强调，供给产能扩张必须依靠全新晶圆厂房的建设落地，公司正尽可能推进在中国台湾地区布局相关产能；同时存储技术持续迭代，长期会拖累单位晶圆比特产出增速，行业还在将原本用于 NAND 闪存的洁净室产能调配至 DRAM 生产。<br>本次披露的资本开支指引表述较为模糊，但表面数值维持此前水平没有发生变动。<br>⏰本次业绩电话会议召开时间为美东时间下午 4 点 30 分。<br>相关业绩数据统计说明：<br>市场一致预期区间下限：每股收益 35.50 美元，毛利率 81.0%，营收 200 亿美元；业绩指引下限每股收益 41 美元，毛利率 82.0%，第四财季每股收益指引 25 美元，27 财年每股收益 114 美元，28 财年每股收益 120 美元。<br>市场一致预期均值：每股收益 38 美元，毛利率 83.0%，营收 233.81 亿美元；业绩指引均值每股收益 40 美元，毛利率 86.0%，第四财季每股收益指引 34.10 美元，27 财年每股收益 111.30 美<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p080">
+            <div class="full-header">[080] 07:59</div>
+            <div class="full-body">美国股市动态：风平浪静<br>#交易台# <br><br>标普 500 指数收跌 9 个基点，报 7358 点，收盘竞价买入金额为 52 亿美元。<br>纳斯达克 100 指数下跌 43 个基点至 29220 点。<br>罗素 2000 指数上涨 9 个基点至 2978 点。<br>道琼斯指数上涨 36 个基点至 51850 点。<br>全美各股票交易所合计成交 256.44 亿股，对比年初至今日均 196 亿股。<br>VIX 波动率指数下跌 149 个基点至 19.2。<br>WTI 原油下跌 437 个基点至 70.01 美元。<br>美国 10 年期国债收益率下跌 0.095 个基点至 4.402%。<br>黄金下跌 304 个基点至 3994 美元。<br>美元指数上涨 18 个基点至 101.60。<br>₿比特币下跌 354 个基点至 60186 美元。<br>当日市场整体表现平淡，市场资金高度聚焦两大行情主线：美债利率下行、原油价格走弱。<br>美国 10 年期国债收益率下跌 9 个基点至 4.4%，原油方面，受霍尔木兹海峡航运持续恢复通航影响，WTI 原油大跌 5% 至 96 美元。<br>动量因子组合整体下跌 4%，跌幅由两类股票均等贡献：过去 12 个月强势上涨标的下跌 2%，过去 12 个月持续走弱标的上涨 2%。<br>在电信、媒体、科技板块内，中型互联网与软件类公司今日收获因子红利，走势占优。<br>除此以外，今日市场板块行情扩散特征显著，消费类公司的扩散行情表现尤为突出。<br>盘后交易时段：半导体、人工智能板块整体走高，行情催化来自美光科技发布财报。<br>美光科技股价大涨 14%，当前股价仅较周一创下的历史最高点低约 2%；公司给出第四财季每股收益指引 31 美元，远超市场此前 20 多美元区间的乐观预期。<br>高通盘后上涨 10%，公司投资者日活动正在开展，陆续释放多项积极经营信号，其中包含乐观的长期营收、每股收益业绩指引。<br>以 1 至 10 分区间衡量当日场内整体交易活跃度，今日活跃度仅为 4 分。<br>场内收盘阶段买入力度较 30 日均值提升 240 个基点，30 日均值仅上浮 38 个基点。<br>资产管理机构整体操作近乎持平，宏观板块卖出供给量，与工业、必需消费、通信服务板块的买入需求量基本抵消。<br>对冲基金当日合计净买入 10 亿美元，买入需求高度集中三大板块：消费板块（操作以回补空头仓位为主）、科技板块、医疗保健板块。<br>高盛机构经纪业务客户 6 月 23 日交易活动数据显示：<br>6 月 23 日全球信息技术板块出现的净卖出规模，创下近 5 个月新高，同时也是过去一年里第二大规模的净卖出，偏离均值幅度达 2.6 个标准差。<br>该抛售行情由多空双向卖出行为驱动，多单卖出与空单加仓比例为 4.5 比 1。<br>除软件细分板块外，信息技术板块其余几乎所有子板块当日均遭遇净卖出。<br>抛售规模靠前的细分赛道依次为：半导体及半导体设备、电子设备、仪器与元器件、科技硬件、通信设备。<br>衍生品市场：美光科技财报是今日全市场核心关注事件，现货价格在财报披露前持续震荡走弱。<br>标普 500 指数现货同步走低，波动率同步下行；市场存在大额波动率卖方挂单，波动率始终无法获得持续买盘支撑。<br>波动率曲线中段的偏斜度小幅陡峭化，但变动幅度并不突出。<br>在美光科技财报披露前，QQQ 跟踪标的对应的波动率出现压缩行情，投资者提前布局交易。<br>临近收盘，市场出现批量做空 VIX 波动率、买入看跌期权的操作，同时波动率远期组合遭到集中卖出。<br>资金流向层面出现反差行情：罗素 2000 指数对应的波动率买盘交投活跃。<br>个股与主题交易维度：投资者围绕贵金属价格波动开展对应交易；在今晚关键催化事件落地前，针对人工智能主线，投资者构建多组波动率对冲头寸。<br>₿资金再度回流比特币及加密货币赛道，场内多空双向交易同时活跃，资金呈现双向流动特征。<br>截至明日收盘，市场隐含指数波动幅度为 0.98%。<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p081">
+            <div class="full-header">[081] 07:59</div>
+            <div class="full-body">玻璃基产业链调研2：莲花控股董事长交流：纽菲斯—领先的ABF膜供应商【东北计算机】0624<br><br>1️⃣#公司材料之路发展：#    2020年邀请波士顿咨询梳理发展战略，最终选择走味之素发展路径，围绕味精副产物做高科技材料产品。立志打造中国版味之素，重点布局关键材料国产替代业务。<br><br>2️⃣#ABF国内进展：#    国内ABF膜相关研发最早由H发起，国家发改委、工信部2022年牵头相关标准制定，研发攻关任务最初交由SY承担。除传统应用场景外，光模块、玻璃基板、AI手机主板等新场景需求持续释放，市场增量空间较大。<br><br>3️⃣#公司收购纽菲斯股权进军国内主要ABF供应商： 纽菲斯ABF膜产品9层及以下已全部实现技术过关，9-11层技术为国内企业唯一突破的厂商，9-11层技术通过后即可实现全面替代。产品已经向XSKJ、SY等客户供货，正在和SN、HD等客户推进合作。目前处于中试线阶段，年产能约100万平。<br><br>4️⃣#预计ABF下半年价格继续起飞：#    ABF膜价格处于上涨趋势，2026年上半年价格上涨30%，预计下半年还将上涨50%；普通产品价格约250-270元/平，高端A107产品售价可达2000元/平。<br><br>By zyy（详细请私我们三家玻璃基板DSZ交流要点），大佬们大力支持【东北计算机】团队#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p082">
+            <div class="full-header">[082] 08:00</div>
+            <div class="full-body">美光科技首席执行官表示：在供给层面，我们的客户已经意识到内存与存储产品的供应紧缺问题，需要耗费极长的周期才能缓解；现阶段我们完全无法预判内存供给何时能够追上持续扩张的市场需求。<br>一、存储行业供给持续受限的核心逻辑<br>从供给端现状来看，客户普遍认知到内存、存储的供给缺口很难在短期内修复。<br>尽管行业预期 2028 年整体供给会出现缓步改善，但公司目前依旧看不到内存供给能够匹配持续增长需求的明确时间节点。<br>存储行业供给增量高度依赖全新晶圆工厂的大规模扩建项目，这类新建工厂项目体量庞大、流程复杂、建设周期漫长。<br>⏳除此之外，产能扩张速度还会受到多重客观因素约束：全球各地晶圆厂房建设周期漫长、掌握关键工艺技术的产业工人缺口、包含审批流程在内的繁杂监管条例，以及配套能源基础设施升级的硬性需求。<br>存储制程技术属于半导体领域研发、制造难度最高的赛道之一，每迭代一代全新工艺节点，技术复杂度都会同步上升。<br>制程迭代会长期拖累单位晶圆比特产出增速，晶圆产能扩容需要大幅扩充洁净室面积、新增大量全新厂房。<br>HBM 产品持续放量、每一代新品的贸易占比不断提升，进一步挤压非 HBM 存储产品的供给空间。<br>在闪存（NAND）赛道，行业供应商正将洁净室产能从闪存调配至 DRAM 内存赛道，叠加全球洁净室总面积存在硬性上限，直接限制闪存比特出货量的增长空间。<br>综合以上全部因素可以得出结论：即便行业各方都在全力扩充产能，存储供给的增长能力依旧存在结构性瓶颈，难以充分匹配全行业的市场需求。<br>二、人工智能系统对内存存储的战略需求<br>各类人工智能系统均由来源愈发多元化供应商的图形处理器、专用集成电路、中央处理器架构驱动。<br>但所有人工智能系统都具备一项共通核心特征：人工智能系统的整机性能，在架构层面完全取决于内存子系统的性能与容量。<br>这一行业现状催生了分层结构更为复杂的内存体系，也为美光带来了史无前例的产品差异化竞争机遇。<br>同时，这一变化大幅抬升了内存产品在人工智能产业中的定位，内存已经成为具备战略意义的核心资产。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p083">
+            <div class="full-header">[083] 08:00</div>
+            <div class="full-body">美光科技解读汽车与机器人赛道存储需求、资本开支规划<br><br>一、汽车与机器人业务存储需求分析<br>美光科技首席执行官表示：人形机器人搭载的内存容量是普通 L2 + 级别车辆的 10 倍，我们预计在本十年后半段，将会开启一轮持续数十年、规模庞大的内存需求增长周期。<br>美光科技首席执行官补充说明：L2 级及以上自动驾驶车辆的自动化等级持续提升，其搭载的内存与存储容量是普通车辆的 5 倍以上。今年 L2 + 及更高等级车辆的市场占比将实现翻倍，整体占比突破 20%，同时预计到 2030 年，该类车型占比将会超过 40%。<br>汽车领域板块内容<br>在汽车行业中，高级驾驶辅助系统始终是单车存储搭载量增长的核心驱动力。<br>L2 + 及以上等级车辆的自动驾驶程度不断提升，车辆配备的内存与存储容量达到普通车型的 5 倍以上。<br>今年 L2 + 及更高自动驾驶等级车辆的市场渗透率将实现翻倍，占比超过 20%，行业预期到 2030 年该渗透率将突破 40%。<br>随着行业车型结构向更高自动驾驶等级切换，单车搭载的内存、存储容量还会持续走高。<br>机器人领域板块内容<br>仿真技术、基础大模型、软硬件一体化架构持续迭代，正在加速物理人工智能产业发展。<br>这为高带宽、低功耗内存及存储产品带来增量广阔、单设备搭载量大幅提升的市场机遇，这类存储产品可支撑设备完成实时感知、推理与控制工作。<br>人形机器人搭载的内存总量为普通 L2 + 级别智能汽车的 10 倍，公司判断本十年后期会启动一轮持续数十年、体量可观的内存需求上行周期。<br>二、美光科技资本开支规划（CFO 发言）<br>美光科技首席财务官称：第四财季预计资本支出规模约 100 亿美元，全年 2026 财年资本总支出将达到 270 亿美元。<br>公司预期 2027 财年各季度资本支出金额均会高于第四财季的支出水平。<br>2027 财年资本支出同比增量中，超半数增量来自基建建设类资本投入。<br>公司正在提前扩充洁净厂房产能，以此匹配长期市场存储产品需求，因此加大了建设相关资本开支投入。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p084">
+            <div class="full-header">[084] 08:12</div>
+            <div class="full-body">物理AI：人工智能演进的第三波浪潮 [https://share.note.youdao.com/ynoteshare/index.htm...]<br>大摩闭门会：金融及人形机器人行业更新 [https://share.note.youdao.com/ynoteshare/index.htm...]#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p085">
+            <div class="full-header">[085] 08:12</div>
+            <div class="full-body">周期周周谈：行业更新 [https://share.note.youdao.com/ynoteshare/index.htm...]<br>原油：关注海峡通航恢复情况 油价等待企稳时机 [https://share.note.youdao.com/ynoteshare/index.htm...]#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p086">
+            <div class="full-header">[086] 08:12</div>
+            <div class="full-body">液冷更新 [https://share.note.youdao.com/ynoteshare/index.htm...]<br>26Q3看液冷｜观点综述和波纹管推荐 [https://share.note.youdao.com/ynoteshare/index.htm...]#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p087">
+            <div class="full-header">[087] 08:12</div>
+            <div class="full-body">申万AI材料推荐，系列二：AI金属材料 [https://share.note.youdao.com/ynoteshare/index.htm...]<br>AI材料超级周期第1期：如何看待电子布、玻璃基板、超级电容隔膜的产业趋势 [https://share.note.youdao.com/ynoteshare/index.htm...]<br>MLCC经销商调研 [https://share.note.youdao.com/ynoteshare/index.htm...]#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p088">
+            <div class="full-header">[088] 08:12</div>
+            <div class="full-body">PCIe Switch [https://share.note.youdao.com/ynoteshare/index.htm...]<br>算力租赁行业重点更新：Beta复苏原因几何，行业核心边际变化更新讲解 [https://share.note.youdao.com/ynoteshare/index.htm...]<br>AI超一线：见证Token经济学，模型ToB如何打通最后一公里？[https://share.note.youdao.com/ynoteshare/index.htm...]#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p089">
+            <div class="full-header">[089] 08:13</div>
+            <div class="full-body">【中金互联网】2026火山引擎原动力大会-技术主论坛 [https://share.note.youdao.com/ynoteshare/index.htm...]#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p090">
+            <div class="full-header">[090] 08:13</div>
+            <div class="full-body">震荡结束后Tech-STAR扩散上行 [https://share.note.youdao.com/ynoteshare/index.htm...]<br>中美利差倒挂影响人民币升值趋势吗  [https://share.note.youdao.com/ynoteshare/index.htm...]<br>下半年的经济账：怎么算？怎么看？怎么办？[https://share.note.youdao.com/ynoteshare/index.htm...]#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p091">
+            <div class="full-header">[091] 08:13</div>
+            <div class="full-body">近期国内外重要医药政策更新及解读 [https://share.note.youdao.com/ynoteshare/index.htm...]<br>创新药产业链（CXO及科研服务）更新 [https://share.note.youdao.com/ynoteshare/index.htm...]#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p092">
+            <div class="full-header">[092] 08:14</div>
+            <div class="full-body">#国机精工大涨，技术与客户进展双领先，持续看好！<br><br>1️⃣金刚石散热：技术与先发优势显著<br>• #旗下三磨所是超硬材料行业唯一的国家级综合性研究机构，具备从设备到材料的全链条能力。公司拥有近千台MPCVD设备，且大部分布局新疆低电价区域。<br>• 客户进展行业领先，H深度合作。#金刚石铜散热产品26Q4开始批量；纯金刚石散热产品1-2年内进入规模应用。精工锐意MPCVD设备自研自制并外售，对接国内扩产客户。<br><br>2️⃣航天轴承：特种轴承核心卡位<br>#公司航天领域特种轴承配套率＞90%，特种轴承配套长征系列国家队+商业航天企业，订单较去年同期1-2倍增长。后续国内星座部署加速，公司将显著受益。<br><br>3️⃣半导体耗材：国产替代空间广阔<br>公司成功打破精密划片刀、减薄砂轮等关键耗材的海外垄断。主要产品#国产化率不及10%，公司产品对标日本DISCO，随着国产化率及份额提升，有望迎来快速增长。<br><br>#盈利预测及空间#  <br>-预计2026年主业利润3-3.5亿元，30X PE，对应市值100亿元。<br>-金刚石散热：中期假设百亿市场规模，市占率25%测算，净利率30%，30X PE，对应市值200亿。<br>-航天轴承：按发射300发火箭、7000颗卫星测算，净利率30%，30X PE，对应市值150亿。<br>-半导体耗材：25年DISCO相关收入40亿元，若新增40%替代，30X PE，对应市值150亿。<br><br>• 合计目标市值600亿元，当前公司市值370亿元，#关注公司后续金刚石产业集团整合情况与金刚石/铜材料应用落地进展，相信公司会站上并站稳新台阶，继续重点推荐！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p093">
+            <div class="full-header">[093] 08:14</div>
+            <div class="full-body">[拳头]重视国产算力=新国都: 战略入股快手自研芯片-凌川科技【天风计算机团队】<br><br>如果错过了和而泰-摩尔线程（3000亿），不要错过新国都-凌川科技（看4000亿）<br><br>1、根据公司2月公众号，凌川科技由北京市人工智能基金与快手集团#共同发起设立，前身为快手集团的异构计算与芯片事业部。<br>2、北京市人工智能基金是北京市政府主导设立的百亿级产业引导基金。凌川科技外，基金芯片目前布局为#昆仑芯等，大模型为#智谱等。<br>3、根据天眼查，凌川科技股东发生变更，新国都成为股东。考虑模芯一体趋势，预计凌川芯片目标以视频推理为核心方向（#可灵-凌川）。#  <br><br>我们预计新国都入股成本较低，极为类似于当年和而泰早期入股摩尔线程。考虑凌川背靠北京市人工智能基金和快手集团，凌川业务规模和资本进度有望超预期（#凌川上市我们看到4000亿）。新国都有望受益于股权价值量提升和业务合作增量。<br><br>基本面角度，考虑业务情况，预计公司#收入增速25%+。估值角度，新国都在手#自由现金40亿，股息率约为3%（分红率80%）。剔除40亿现金，以最新期股权激励利润计，#公司PE约15X，长期安全边际夯实（最新激励价格已倒挂10%）。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p094">
+            <div class="full-header">[094] 08:17</div>
+            <div class="full-body">26Q2业绩预期部分已出（持续更新），感兴趣欢迎私信交流<br><br>今天洽洽食品发布高管增持计划，华润饮料发布未来三年股东回报方案，H&amp;H 618数据披露表现优秀，具体看：<br><br>1️⃣洽洽食品<br>公司实控人、董事长兼总经理陈总于今日增持公司股份46.6万股，占公司总股本0.09%，增持金额为832万元。并计划未来6个月内继续增持，本次拟增持股份的金额不低于人民币3,000万元，不超过人民币6,000万元。<br>① 26Q2看，公司4-5月受益于高势能渠道（量贩/盒马等）拉动，预计接近双位数增长（坚果增速更优），6月延续改善，成本回落驱动毛利率改善。<br>② 全年看，预计26年收入增长超双位数（直营/高势能渠道拉动为主），其中瓜子或有高单以上增长，坚果增速更高，26年净利率目标为8~10%，远期理想水平为10~12%。<br>③ 分红：25年分红率156%（历史分红中枢50-80%），预计未来盈利修复后仍会保持稳定较高的分红率。<br>④ 盈利预测：预计26年收入/利润增速13%/110%+，对应PE 13X。<br><br>2️⃣华润饮料<br>公司发布未来三年股东回报方案，承诺2026-2028财年每年每股派息不低于0.37元人民币，对应派息总金额不低于8.87亿元，当前股价对应股息率约6%，彰显公司对长期经营质量的信心。<br><br>3️⃣H&amp;H 618数据积极<br>① 618期间，swisse继续保持电商全渠道行业第一，同比增长13%、同比提速（去年618增长11%）。<br>② 618期间，合生元奶粉线上渠道增长72%、同比明显提速（去年618增长30%），其中1段、2段分别同增145%/66%。<br>③ 618期间，合生元益生菌营养品线上渠道增长17%（去年没有披露增速）。<br>合生元奶粉享安全溢价&amp;4-5月奶粉业务保持高双位数增速，ANC线上业务表现积极，Q2有望延续高增。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p095">
+            <div class="full-header">[095] 08:18</div>
+            <div class="full-body">❗️【天风电新】电容开启涨价周期-0625<br>———————————<br>近期，日本&amp;国内铝电解电容企业陆续开启涨价：<br><br>1） Nichicon于6月17日宣布对旗下所有铝电解电容产品实施全面涨价，涨幅由原先的9%至12%进一步扩大至10%至15%；<br>2） 佳美工（Nippon Chemicon）也跟进调涨；<br>3） 江海：本轮整体涨价5-10%（包括铝电解+薄膜+超级电容），ai相关产品为新定价；<br>4） 立隆：本轮涨价5-10%。<br><br>上一轮新能源周期拉动（20-22年），铝电解、薄膜电容都没有涨价（电容公司当时都说，没年降已经算变相涨价了）。<br><br>而本轮，即使没有ai拉动，普通产品也开始涨价，原因为：<br>1）需要好：两大下游工控、户用光储，分别对应制造业扩产（电池、电容、半导体等）、能源平权；<br><br>2）供给端：铝电解电容仅头部企业在扩产，原因为漫长的产能消化+多数企业不盈利，且很多企业认为薄膜是未来。<br><br>电容涨价开启，后续供给持续紧张，q3有望再次涨价。我们认为一体化的电容企业最为受益，原因为铝电解电容成本最大占比是电极箔。<br><br>其中，江海75%电极箔自制，艾华60%+电极箔自制。此外，薄膜电容-法拉电子基膜蒸镀环节自制。<br><br>投资建议：看好电容企业涨价弹性+AIDC业绩加持<br>✅江海：预计27年主业72e收入+AIDC 94e收入，合计166e，假设主业涨价10%（不考虑AIDC涨价），利润+8%，对应涨价后利润55.8e，PE 15X。<br><br>✅艾华：预计27年60e收入（未考虑AIDC收入），假设主业涨价10%，利润+7%，对应涨价后利润10.2e，PE 19X。<br><br>✅法拉：预计27年69e收入（未考虑AIDC收入），假设主业涨价10%，利润+6%，对应涨价后利润20.1e，PE 20X。<br><br>✅万裕：预计27年33e收入（未考虑AIDC收入），假设主业涨价10%，利润+5%，对应涨价后利润3.6e，PE 4X。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p096">
+            <div class="full-header">[096] 08:19</div>
+            <div class="full-body">【山证医药|创新药动态更新】创新药观点更新：短期可关注MASH、RAS、小核酸，长期聚集肿瘤创新药全球商业化<br><br>玫瑰我们认为2024年至今的创新药BD牛市基本结束，包括肺癌、乳腺癌等肿瘤创新药三期临床的全球后线及一线启动窗口未来不久将关闭。今年来说，ASCO行情也已经走完，行业整体性回落符合预期。<br><br>玫瑰短期来看，创新药后续可以关注MASH药物（众生药业）、pan-（K）RAS抑制剂（劲方医药、贝达药业、加科思）、小核酸（舶望制药或上市形成催化）及新股入通行情（英派药业、剂泰科技、基石药业、天辰生物等）。医疗反腐和创新药BD政策为扰动因素，不是行业涨跌的核心驱动。超过60家药企回购说明行业底部扎实，仍然具备配置价值。<br><br>玫瑰长期来看，国产创新药的全球注册临床和商业化是驱动行业估值中枢上抬的核心因素。2027年-2028年科伦博泰SKB264、康方生物AK112、百利天恒01D1、信达生物IBI363、复宏汉霖HLX43等国产肿瘤创新药多种适应症将陆续在全球达到注册临床终点，有望改写全球临床指南。预计随着临床风险出清，商业化逐步兑现，创新药行业长期上行趋势将确认。<br><br>太阳风险提示：临床试验数据未达预期风险、行业竞争加剧风险、政策扰动风险、地缘政治风险、港股通标准提升风险等#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p097">
+            <div class="full-header">[097] 08:20</div>
+            <div class="full-body">【韩国股票交易账户数量突破1.08亿，今年新开户逾1000万个】韩国金融投资协会（KOFIA）周四公布的数据显示，截至6月24日，韩国股票交易账户数量达到1.09亿个，创下历史新高，较去年年底的9828万个增加了1000多万个。今年以来，随着更多散户投资者买入包括三星电子和SK海力士在内的本地重量级股票，股票开户数量大幅上升。去年全年，韩国股票交易账户数量增加了1170万个。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p098">
+            <div class="full-header">[098] 08:20</div>
+            <div class="full-body">【申万电子|存储】美光FY3Q2026财季超预期，击碎“AI泡沫论”！ 20260625<br><br>[庆祝]美光FY3Q：调整后营收414.6亿美元，#超彭博预期350-355亿美元；毛利润率84.9%，超市场预期81.9%，vs NV本季毛利率75%<br><br>[庆祝]分业务营收：数据中心$115.2亿；云存储$137.7亿；移动与客户$115.2亿；#核心增长来自数据中心业务！#<br><br>[庆祝]FY4Q2026展望：营收490亿-510亿美元，超市场预测约20%；毛利率有望升至86%。<br><br>[庆祝]Capex指引：FY4Q2026约为100亿美元，预计FY2026全年约270亿美元；FY2027将加速。<br><br>[烟花]DRAM存储产业链核心机会：<br>国内映射：长鑫科技、兆易创新（DDR4+3D DRAM）、北京君正（利基DDR3）；<br>内存模组：佰维存储、江波龙、德明利；<br>设备供应链：中微公司、北方华创、华海清科、盛美上海、长川科技、精智达；<br><br>申万电子 杨海晏/袁航/杨紫璇/陈俊兆/姜安然#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p099">
+            <div class="full-header">[099] 08:36</div>
+            <div class="full-body">日月光面板级封装年底投产<br><br>日月光投控营运长吴田玉24日在股东会后表示，集团今年正同步推动15座新建及扩建厂区计画，并持续扩大美国布局，同时全球首条具经济规模的高度自动化面板级封装（FOPLP）量产线也将于今年底正式投产。随着AI需求远超过市场原先预期，公司资本支出已由原先规划进一步提高至85亿美元，未来仍不排除再度上修<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p100">
+            <div class="full-header">[100] 08:39</div>
+            <div class="full-body">昨天A股市场热点：<br><br>油运、铝电解电容、电子布、氮化镓、锆、长鑫IPO、半导体设备、洁净室、磷化铟等<br><br>今天新增热点：<br><br>美光科技、存储、康宁、玻璃基板、电容、苹果折叠屏、钒、商业航天等<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p101">
+            <div class="full-header">[101] 08:40</div>
+            <div class="full-body">【中泰电子|美光】点评2：长协大超预期，存储商业模式从根本上改变！<br><br>下季指引高于市场预期，Capex上调至270亿美元。<br><br>1）业绩指引：FY26Q4营收预计490-510亿美元，#继续创历史新高，高于市场预期的414亿美元；毛利率约86%，高于市场预期的83%；EPS 30-32美元，高于市场预期的24.1美元。<br><br>2）Capex：FY26资本支出预计约270亿美元，预计FY27单季资本支出高于FY26Q4的约100亿美元，主要系【洁净室设施】相关支出推动。<br><br>美光与客户已签署16份SCA，#商业模式从根本上改变❗️客户领域覆盖数据中心、消费电子和汽车市场，SCA期限通常5年（2026-2030），汽车相关协议一般为3年；#16份SCA占当期DRAM出货量约20%和NAND出货量约1/3，其中14份协议按最低价格测算累计收入约1000亿美元；预计全部协议落地后超1/2收入来自SCA。协议客户包括 4 家超大型客户、3 家中型客户，其余主要为汽车领域小型客户。#带价格区间的SCA即使按最低价格计算也可带来【远高于以往周期峰值的毛利率】。<br><br>供需展望：供不应求预计持续至CY27以后，预计CY28供应逐步改善，供需拐点尚难确定。<br><br>持续重视存储大行情，建议关注：<br><br>1）存储设计：兆易创新、北京君正、普冉股份、国科微、联芸科技、澜起科技、聚辰股份、东芯股份、恒烁股份等。<br><br>2）存储模组：江波龙、德明利、佰维存储、香农芯创等。<br><br>风险提示：下游增长不及预期。<br><br>派点请支持中泰电子：王芳/杨旭/康丽侠/丁贝渝/张心阳#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p102">
+            <div class="full-header">[102] 08:40</div>
+            <div class="full-body">【中泰电子|美光】点评1：财务数据全面超预期，行业处于供需显著紧张状态！<br><br>‼️美光率先发布FY26Q3财报（26/03-26/05），全面大超预期，昨日盘后涨超16%！<br><br>【营收】415亿美元，qoq+74%，yoy+346%，高于公司指引的335亿美元，高于BBG预期的354亿美元。<br><br>【净利润】289亿美元（非GAAP口径），qoq+106%，yoy+1223%，高于BBG预期的234亿美元。<br><br>【毛利率】85%，qoq+10pcts，yoy+46pcts，高于公司指引的81%，#创存储行业历史新高# <br><br>【净利率】70%，qoq+11pcts，yoy+47pcts，#创存储行业历史新高# <br><br>存储价格继续强势上涨，#行业供需仍处于显著紧张状态！# <br><br>1）分产品看：DRAM、NAND收入均大幅增长，主要由涨价驱动。<br><br>➠FY26Q3 DRAM/NAND营收分别占76%/24%，收入qoq+67%/+99%，yoy+343%/+361%。<br><br>➠DRAM位元出货环比低个位数增长，ASP环比+60%低段。<br><br>➠NAND位元出货环比中个位数增长，ASP环比+80%中段。<br><br>2）分应用看：FY26Q3云存储/数据中心/移动业务/汽车与嵌入式收入分别占33%/28%/28%/11%，收入qoq+78%/+103%/+49%/+71%，yoy+307%/+653%/+254%/+311%；毛利率83%/87%/87%/79%，qoq+9pcts/+13pcts/+8pcts/+11pcts。<br><br>➠本轮涨价不仅局限于AI数据中心，AI需求挤占产能，涨价外溢至普通DRAM、LPDDR、SSD。<br><br>产品进展：HBM4加速放量，新一代DRAM/NAND节点落地节奏明确。<br><br>1）HBM：HBM4 12Hi量产爬坡速度为HBM3E 的2倍，当前累计出货营收已超10亿美元。<br><br>2）1-gamma DRAM节点和G9 NAND节点有望成为公司史上产量最大的节点；新一代DRAM和NAND节点预计CY27H2投入量产。<br><br>风险提示：下游增长不及预期。<br><br>派点请支持中泰电子：王芳/杨旭/康丽侠/丁贝渝/张心阳#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p103">
+            <div class="full-header">[103] 08:41</div>
+            <div class="full-body">【方正固收】债市盘面及数据要闻跟踪<br>●利率债：债市弱修复，超长国债上行0.25bp至2.232%，10Y国债上行0.25bp至1.7465%，10Y国开下行0.35bp至1.788%；国债期货分化，TL2609跌0.12%报113.50。<br><br>●资金面：央行开展6625亿7D逆回购，4203亿到期。银行间资金紧平衡，DR001加权1.4071%，DR007加权1.5385%。<br><br>🎀方正固收|数据要闻跟踪20260616-24<br><br>📊国内数据及要闻<br><br>●审计署：2025年用于置换存量隐性债务的2万亿元地方政府债券全部发行完毕，超82%的融资平台实现退出；<br><br>●统计局：5月社零同比-0.6%，前值+0.2%；工业增加值同比+4.5%，前值+4.1%；<br><br>●陆家嘴论坛：提出完善短端利率调控机制和特定情况下给与非银机构流动性支持，对内政策注重精准滴灌调控，控制资金价格，对外进一步推动人民币国际化<br><br>🌍全球数据及要闻<br><br>●美国：6月Markit制造业PMI55.7，前值55.1；5月零售销售同比+6.88%，前值4.79%；进口物价指数同比+6.7%，前值4.2%，环比+1.9%，前值+2.0%；工业产出同比+1.67%，前值+1.37%；美联储FOMC维持基准利率不变，主席沃什强调当前物价持续高企不会成为常态，委员会将实现物价稳定目标；<br><br>●欧洲：欧元区6月Markit制造业PMI初值51.3，前值51.6；欧元区5月贸易帐-10亿，前值+49亿；5月CPI同比+3.2%，前值+3.0%；德国5月PPI+2.2%，前值1.7%；英国5月CPI同比+2.8%，前值+2.8%，季调后零售销售同比+3.2%，前值+0.1%<br><br>📊本周关注<br><br>●国内：今日公开市场2480亿7D逆回购到期，另有3000亿1YMLF到期，将开展5000亿1YMLF；37只地方债共860.41亿发行；1047亿CD发行，3192亿缴款，1792.1亿到期；<br><br>●美国：今日公布一季度GDP终值和PCE物价指数；明日公布6月密歇根大学消费者信心指数；<br><br>●欧洲：明日公布欧元区6月消费者信心指数<br><br>免责声明：本段文字信息来源于公开信息，方正证券不对本段文字所载资料的准确性和完整性做任何形式的保证，在任何情况下，本段文字信息均不构成对任何人的投资建议，仅供参考。<br><br>欢迎联系方正固收团队：李清荷 /饶加贝#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p104">
+            <div class="full-header">[104] 08:41</div>
+            <div class="full-body">【华泰宏观| 海外每日评论】<br>数据：美国5月新屋销售年化58万户，低于前值和预期的62.6、63.9万户。<br><br>政策：地缘政治方面，特朗普表示，对通过霍尔木兹海峡的船只征收通行费将触及美国红线。特朗普与参议院共和党人矛盾升级，他临时取消签署住房法案，敦促国会尽快通过与选举改革有关的《拯救美国法案》。联储方面，美国财长贝森特表示，美联储主席沃什对通胀态度强硬，特朗普无论公开还是私下都表示对沃什充满信心。贝森特强调美元主导地位至关重要，并暗示美伊谈判涵盖伊朗重返美元体系。欧洲方面，英国下任首相热门人选伯纳姆的团队着手勾勒经济议程，酝酿上台后拆分财政部并推动英国央行改革。<br><br>股市：周三美股三大股指涨跌不一，标普、纳指分别下跌0.1%、0.4%，道指上涨0.4%。分行业看，标普能源、油气、美国光伏等板块下跌，标普工业、区域银行、可选消费等板块上涨。<br><br>债市：周三美债收益率均下跌。2年期美债收益率下行5bp至4.15%，10年期美债收益率下行10bp至4.39%。联储2026年加息预期为36bp。<br><br>汇市：周三美元指数上涨0.2%至101.6；欧元贬值0.2%，报1.14；日元贬值0.1%，报161.78。<br><br>商品市场：周三大宗商品涨跌不一。布伦特原油期货下跌4.3%，报73.74美元/桶；黄金现货下跌2.9%，报3999.41美元/盎司；白银现货下跌6.8%，报57.42美元/盎司；LME期铜下跌2.1%，报13086.5美元/吨。<br><br>今日关注：美国5月个人收入环比（预估为0.4%，前值为0%）；美国5月个人支出环比（预估为0.6%，前值为0.5%）；美国5月核心PCE同比（预估为3.4%，前值为3.3%）；美国上周首次申领失业救济人数（预估为22.5万，前值为22.6万）；美国5月耐用品订单环比初值（预估为-5%，前值为8%）；欧洲央行首席经济学家Lane讲话，美联储负责监管的副主席鲍曼讲话，美国芝加哥联储主席古尔斯比讲话，美国纽约联储行长威廉姆斯讲话。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p105">
+            <div class="full-header">[105] 08:41</div>
+            <div class="full-body">【国泰海通军工】商业航天观点更新：长十乙航警发布，年中迎来密集发射，可回收火箭产业拐点有望实现突破<br><br>🚀#产业拐点#  长征十号乙航警发布，瞄准7月10日-13日发射窗口，同步测试海上网系回收。准备工作扎实，火箭状态稳定，有望率先实现国内火箭可回收技术突破。<br><br>🚀#密集发射#  下半年国内多款商业火箭计划密集发射，重点关注朱雀三号陆地回收试验、天龙三号复飞、谷神星二号首飞、智神星一号首飞、力箭二号遥二发射、引力二号首飞、双曲线三号首飞等。<br><br>🚀#我们认为#  国内可回收技术突破是规模化复用的先决条件，降低发射成本/解决运力焦虑有望显著提振板块信心；海外SpaceX三大业务未来规划清晰，星舰技术进展基本符合预期。商业航天是大国博弈主战场和产业共振的大方向。关注壁垒高、格局优、卡位好相关标的。<br><br>🔥#推荐标的：航天电器、电科蓝天、航天电子、国博电子、陕西华达、西部材料、智明达、光威复材、中航高科<br><br>🔥#相关标的：六九一二、烽火通信、信科移动、信维通信、超捷股份、斯瑞新材、上海瀚讯、航天工程、高华科技、西测测试、铂力特<br><br>☎欢迎联系国泰海通军工团队杨天昊/宋博/周明頔/蔡天舒#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p106">
+            <div class="full-header">[106] 08:42</div>
+            <div class="full-body">【长江电子】美光科技FYQ3点评：#16份战略客户长协（SCA)重塑商业模式、AI驱动供不应求周期持续至27年后<br><br>#战略客户长协（SCA）彰显存储行业高景气度<br>公司已与数据中心、消费电子、汽车客户完成16份SCA协议，已签署SCA#占据公司DRAM出货量20%、NAND出货量的1/3/，覆盖#四家大型客户和三家中型客户。SCA协议期限#通常为5年（汽车类SCA为3年）。<br>SCA采用“照付不议”模式，最大规模SCA价格设定以Q2市场价格为上限价格、整个协议期间设有最低价格，部分占收入比例较小的SCA采用固定价格/设定价格区间，定价依据市场情况而定（#底价对应毛利率水平远高于以往任何周期的最高季度毛利率水平）。预计以Q2市场价格/接近改价格的固定价格/最高限价签订的SCA占公司最应收的40%。<br>16份SCA中14份剩余合同期内按合同最低价计算的累计收入为1000亿美元，公司预计通过SAC获得220亿美元的客户预付款。预计，#公司未来超一半收入来自SCA。#   #FYQ3业绩持续超预期#   <br>FYQ3，Non-GAAP，公司实现营收415亿美元、同比+346%、环比+74%，毛利率为84.9%、同比+47.2pct、环比+13.5pct，净利润为289亿美元、同比+1223%、环比+106%，净利率为70%；EPS为25美元，FYQ3业绩持续超预期。<br>分产品而言，DRAM营收313亿美元、环比+67%，ASP环比+60%、出货量环比低个位数增长，NAND营收99亿美元、环比+99%，ASP环比约+85%、出货量环比约5%增长。<br>分业务而言，云业务、核心数据中心、移动与客户端、汽车与嵌入式部门分别实现营收138、115、115、46亿美元，环比分别为+78%、+103%、+49%、+71%；受益于ASP提升，毛利率分别为83%、87%、87%、79%、环比+9pct、+12pct、+9pct、+11pct。<br>FYQ4指引，Non-GAAP，收入490-510亿美元、毛利率86%、EPS为30-32美元。<br><br>HBM方面，截至FYQ3，公司HBM4收入已超10亿美元。<br><br>资本开支方面，预计FY26Q4资本开支为100亿美元、全年资本开支约270亿美元，并指引27年季度资本开支超FY26Q4水平，为了布局满足长期发展所需的洁净室产能，公司超一半资本开支的同比增长来自建设类资本开支。<br><br>#存储超级周期、全面看多存储产业链#   <br>美光预计26年数据中心存储出货量较2年前翻倍，指引存储供需预计27年后仍保持持续紧张。<br>#核心推荐：#   <br>原厂：美光、海力士、闪迪、三星、铠侠<br>利基存储及配套公司：#兆易创新、澜起科技、普冉股份、北京君正、恒烁股份、东芯股份、聚辰股份、联芸科技<br>模组公司：江波龙、德明利、佰维存储、香农芯创、大普微<br>设备&amp;材料：拓荆科技、精测电子、中科飞测、微导纳米、中微公司、北方华创、精智达、华海清科、屹唐股份、盛美上海、雅克科技、鼎龙股份、安集科技<br>两长logic die外协：晶合集成、华润微、燕东微<br>封测：汇成股份、深科技#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p107">
+            <div class="full-header">[107] 08:42</div>
+            <div class="full-body">[红包]【华泰科技-黄乐平团队】舜宇光学投资者日：加速“光学+AI”转型，上调目标价至100港币<br><br>6月24日我们赴余姚参加舜宇2026投资者日。公司明确“光学+AI”战略，将光互连器件定位为三大发展方向之一，并通过香港新设投资平台（舜宇资本）加速内生+外延布局，向2030年1000亿人民币收入目标迈进。<br><br>我们维持“买入”、上调目标价至100港币（前值87.7），目标价对应约19.3x FY26E PE。<br><br>⭐#光学互连器件：#  公司依托超精密玻璃模压工艺布局器件到模组产品线，战略投资爱顺光电、与歌尔合建舜宇奥来加速卡位，已部分进入客户验证、有望在2027年贡献收入。<br><br>⚙️#机器人/XR：#  仓储/割草机器人等场景已规模出货；XR有望依托光波导卡位实现量价齐升。<br><br>💰#手机：#  2026年手机大盘虽受存储成本走高冲击，公司有望凭折叠化/小型化/全焦段无缝切换等高端趋势#在北美大客户份额显著提升。# <br><br>📞 联系人：黄乐平/陈旭东/于可熠/李晨晖#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p108">
+            <div class="full-header">[108] 08:42</div>
+            <div class="full-body">行云科技：锁定AlayaDB合作，携手首席科学家唐博打造国内顶级Token工厂<br><br>事件：行云科技宣布联手唐博/AlayaDB，打造Token工厂。行云提供算力基建的核心支持，AlayaDB提供推理加速、KV压缩、异构协同等核心技术，共同打造Token工厂。任何模型可一键接入行云Token云（包括GLM-5.2），该平台具备实现5倍并发，10倍上下文的能力，即单卡Token产出效率5-10倍。<br><br>AlayaDB+行云打造的Token工厂盈利能力较强，使用智谱GLM 5.1，单台8卡的B300服务器按TPM（每分钟Token产出），输出（Input）300万，缓存（Cache）2,100万，输出（Output） 120万。<br><br>#盈利能力极强：一台B300仅需8个月回本。假设每天运行10小时（考虑排队、夜间使用率低带来的爬坡影响等因素），参考目前行业Token工厂拿走70%，预计每台B300收入为87.54万/月，扣除电费、折旧、IDC机柜租金等成本，一台B300月盈利60.02万。<br><br>#盈利测算：算力租赁净利润26亿+配套业务3.7亿+Token工厂18.8亿<br>①算力租赁铸造盈利基础：公司目前累计已签订50亿+在手订单，租赁业务27年4000台B300+4000台H卡（8个集群），净利润26亿，28年随着潜在Rubin及GB300新代际产品导入，算力租赁业务整体净利润超过50亿。<br>②配套SSD+国产卡提升盈利水平：公司基于N系列产品，绑定销售企业级SSD与配套国产卡，按公司目前每年3.2万卡（2000台B300/2000台H200），配套国产卡销售每年增厚利润1.5亿，企业级SSD增厚利润2.2亿，配套业务预计3.7亿利润。<br>③Token工厂打开空间：公司自有资金维度+合作模式预计27年可以支撑256台规模的B300工厂，预计18.8亿归母净利润【未来基于现有团队大规模做Token工厂，盈利将大幅上修】。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p109">
+            <div class="full-header">[109] 08:42</div>
+            <div class="full-body">[太阳]【申万宏源化工】新乡化纤简评：拟定增13亿元投资于粘胶长丝及菌草高值化利用项目，叠加氨纶拐点已现，公司弹性可期<br><br>[烟花]公司公告：向特定对象发行股票拟募集资金总额不超过13亿元，用于高品质生物质纤维素长丝及配套工程（9.7亿）、菌草材料高值化利用研发中心项目（0.7亿）及补充流动资金（2.6亿）。白鹭集团及新乡国资集团（控股股东）合计认购金额不低于1亿元，且在发行后合计持股比例不低于25%。<br><br>[玫瑰]公司定增建设2万吨差异化粘胶长丝产能，以及布局菌草基PTMEG及SAF的产业化制备。1）高品质生物质纤维素长丝及配套工程：新增2万吨粘胶长丝产能，重点聚焦功能性、差异化产品，优化公司产品结构、提升高附加值产品占比。本项目投资额11.3亿元、建设于新疆图木舒克市、建设期24个月。依托本次项目落地新疆地区的区位契机，公司同步布局菌草产业化种植，推广“以草代木”新型原料替代模式。2）菌草材料高值化利用研发中心项目：本项目聚焦菌草全组分高值转化开展专项研发，重点布局生物基可持续航空燃料（SAF）、生物基氨纶原料等领域。通过对菌草中组分的精准分离，依托半纤维素组分转化生成 BDO，并进一步合成生物基PTMEG，可用作氨纶原料；依托菌草制浆过程中产生的副产物，开展生物基航空煤油产业化制备。本项目拟投资1.59亿元，建设期36个月。<br><br>[玫瑰]定增项目扩大粘胶长丝产能优势，菌草高值化利用将助力公司持续降本。26年1-5月，国内粘胶长丝出口5.37万吨（yoy+26%），3月以来粘胶长丝开工率维持在93%以上（同比提升超10pct），价格自3月16日提升至4.45万元/吨（此前，价格自24年8月以来一直维持在4.35万元/吨）。1）公司当前拥有11万吨长丝产能，基本处于满负荷生产状态，本次定增的2万吨扩产项目将扩大公司粘胶长丝的产能优势。2）菌草高值化利用将助力公司持续降本：公司通过部分加工菌草，25年子公司新疆华鹭25年利润率达11%，实现净利润0.35亿元。随着菌草“三素分离”技术成熟，纤维素制浆、半纤维素制PTMEG、木质素制SAF（可持续航空燃料）等逐步落地，将助力公司持续降本。未来菌草价值将充分体现，公司盈利弹性可期。<br><br>[玫瑰]氨纶行业拐点已现，价格和盈利持续向上。氨纶行业本轮资本开支已至尾声，未来十五五期间仅有华峰化学25万吨以及新乡化纤10万吨新增产能。年内公司的氨纶（40D）出厂价已提升9000元/吨。价差方面，根据我们测算，截止6月23日，氨纶价差为14560元/吨，较26Q1/25年价差分别提升4145/4450元/吨，公司目前产能20万吨，基本处于满负荷生产，盈利弹性大。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p110">
+            <div class="full-header">[110] 08:43</div>
+            <div class="full-body">【申万电子】涨价函再催化，AI引爆，重视被动元件全产业链机会！已连续多次会议推荐！ 202606<br><br>思路1：重视MLCC上游公司，受益于全球景气度提升，涨价确定性和利润弹性同样很大！洁美科技（MLCC纸质载带供应商），博迁新材（MLCC用镍粉、铜粉供应商），国瓷材料（国产MLCC陶瓷粉末）。<br><br>思路2：军工MLCC企业补涨，特种MLCC收入规模体量国内靠前的有火炬电子、鸿远电子等。<br><br>行业：AI算力引爆，产能转移带来挤出效应或被低估。以MLCC为例，假设全球1000万台AI服务器，单台AI服务器4-5万颗MLCC，AI带来的需求4000-5000亿颗；每年MLCC需求量大概在4-5万亿颗，从量上看AI对全球MLCC需求的拉动在10%。但由于高容产品产能是不兼容，产能所带来的挤出效应高达20-25%（村田法说会：每增加一颗高端MLCC产能，可能需要减少两颗多普通MLCC产能）。<br><br>涨价：整体来看，2H26高容MLCC产能缺口仍将持续，年中或迎来二次涨价。由于高端高容MLCC生产对设备精度、工艺良率要求极高，普通中低端产能无法转产高端产品，参考海外大厂扩产进度，我们判断高容MLCC产能缺口将至少持续到2027年。<br><br>标的梳理：<br>1）mlcc涨价：三环集团，风华高科；<br>2）mlcc上游：洁美科技，国瓷材料，博迁新材；<br>3）被动行情蔓延：艾华集团，法拉电子，顺络电子，某被动领军等<br>——————————————<br><br>重视【洁美科技】MLCC上游纸质载带全球第一，离型膜受AI需求拉动加速放量！明年乐观看50亿营收，500e市值！<br><br>公司纸质载带全球市占率超60%+，净利率20%+。纸质载带为MLCC运输耗材，三星、国巨、村田为公司前五大客户，受益于全球行业景气度提升，涨价确定性高，落地后利润弹性大。<br><br>AI算力引爆，离型膜加速导入全球头部MLCC厂商。离型膜是MLCC制造过程中的关键耗材，用于流延成型工艺，受益于AI算力需求暴增，近期三环、三星等下单量翻倍，预计本月离型膜整体出货量达3000w平米，下月有望增加至4000w平米。后续微容订单加速，太阳诱电小批量，TDK在审厂验证。产能：公司已规划产能约10亿平米/年。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p111">
+            <div class="full-header">[111] 08:43</div>
+            <div class="full-body">【天风海外科技】美光业绩点评<br><br>这个季度营收41.5B，预期38.1B；毛利率84.9%，预期83.1%；EPS 25.1，预期22.4<br><br>下个季度指引50.5B，预期46.4B；毛利率86%，预期84.3%；EPS 31.5，预期28.3<br><br>业绩会所有的要点都是围绕着一点去展开的，也就是这一轮存储的cycle不会很快结束，这不是一轮普通 memory 上行周期，而是供给受限、需求多点爆发、客户愿意签长约锁供给、产品成本曲线抬升共同驱动的一轮结构性重估。<br><br>1.供应紧张持续到2027日历年以后<br><br>2.签了16份长协（SCA），14份按照合同最低价计算，协议通常覆盖26-30年的5年周期，剩余期限内累计收入约为1000亿美金。其中已签协议覆盖约 20% DRAM 出货量、约三分之一 NAND 出货量。未来美光超过50%收入会进入长约体系，其中大约 40% 总收入会有比较明确的价格框架，锁固定价格，或者给予一个上限，上限接近日历年2季度的价格。客户不只是覆盖4家大客户，还有3家中型客户，和一些小客户，主要是汽车行业。收入的可见性明显提升。SCA 本质上是客户承认存储是战略瓶颈，愿意签5年肯定也不是客户善良，而是怕拿不到货<br><br>3.LP5 到 LP6、DDR5 到 DDR6、新一代 HBM 都会带来更高 bit cost，并预计 DRAM cost per bit 会从当前水平上升。过去存储行业长期逻辑是：制程进步推动 cost per bit 下降，厂商靠降本抵消价格下行。现在先进节点、先进封装、高带宽、高堆叠、低功耗要求，使得单位 bit 成本不再持续下降，甚至可能上升。这会改变 DRAM/NAND 的长期定价逻辑。如果单位 bit 成本上升，客户对更高价格中枢的接受度也会被迫提高。<br><br>4.还放了彩蛋：即使 HBM 和 server memory 这轮上行结束，后面还有机器人接棒。机器人单机 memory 是 L2+ 车的 10 倍。<br><br>另外，MU 在 HBM 的 execution 被管理层着重强调，HBM4 12-high 的量产速度是 HBM3E 12-high 的 2 倍，并且已经贡献超过 10 亿美元收入。<br><br>在这样的框架下，市场最终愿意给多少倍 PE 确实很难判断，但肯定不止当前估值水平。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p112">
+            <div class="full-header">[112] 08:44</div>
+            <div class="full-body">重申锂行业观点：板块进入击球区<br><br>昨天锂板块大涨，主要原因为：①第三方机构预计7月排产为283GWh，环比+5.6%，打破此前市场对三季度需求淡季的预期；②当前时间窗口临近半年报，Q2碳酸锂均价环比上涨2万元/吨，板块业绩预计高增长。<br><br>交易角度看，21年在碳酸锂价格20万元/吨时，股票担心价格传导不畅，板块进入杀估值阶段，龙头个股普遍回调幅度在30%左右，本轮自5月见顶以来，回调幅度已经接近30%，股票端已经过度定价了需求的悲观预期。<br><br>基本面来看，根据我们此前在成都锂产业链调研情况反馈，15-16万元/吨的价位买货意愿较为强烈，已经是价格回调的底部区间。供给端，虽然Jxw复产预期不断增强，但流程上以及项目爬坡仍需要时间，同时智利发运量开始回落，津巴布韦锂矿受制于运力不足，集中到港预计到8月份，矿端仍然延续偏紧的格局。需求端，产业反馈三季度排产较Q2环比继续提升，锂盐厂年内的产能基本已经被锁完，年底抢出口进一步抬升需求景气度，当前碳酸锂价格更多是易涨难跌。<br><br>大周期来看，过去每轮碳酸锂周期通常持续在3年左右，这是由于锂矿扩产周期普遍需要3年或更久，本轮周期涨至当下，虽然看到了澳矿的复产，但大多都是预期内的供给增量，行业新的Capex并未看到出现明显激增的趋势，从上市公司来看，上一轮周期的锂矿龙头企业未来1-2年普遍是没有明显增量的。<br><br>估值端看，按照15w价格计算，对应26年业绩，板块公司估值普遍跌至10-15x的区间；对应28-29年，PE已经不足5x，已经跌出较高的赔率。<br><br>个股角度看，推荐①高成长性的弹性标的：国城矿业、盛新锂能、大中矿业、中矿资源；②今年业绩兑现程度较强的龙头白马：永兴材料、雅化集团、赣锋锂业、天齐锂业等。<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p113">
+            <div class="full-header">[113] 08:44</div>
+            <div class="full-body">【招商电子】存储跟踪之美光FY26Q3点评：营收与利润均大超预期，现已签署16份SCA剩余RPO达1000亿美元，盘后大涨近16%<br><br>FY26Q3业绩：营收414.56亿美元，同比+346%/环比+73%，毛利率84.9%，同比+46pcts/环比+10pcts，净利率69.6%，同比+39pcts/环比+11pcts，净利润288.57亿美元，同比+1223%/环比+106%，均超预期。本季数据中心业务营收突破250亿美元，折合年化运行规模超1000亿美元，其中数据中心存储解决方案（SSG）营收超50亿美元，环比增幅超一倍。<br><br>FY26Q4指引：营收预计500亿美元（±10亿美元），中值同比+342%/+21%，毛利率约86%，同比+40pcts/环比+1.1pcts。<br><br>市场展望：DRAM与NAND行业供需紧张格局至少将延续至2027年之后。①DRAM：2026年全行业位元出货增速区间小幅上调至20%–25%；②NAND：2026年全行业位元出货增速维持20%。<br><br>SCA：现已签署16份SCA，协议常规期限为2026年至2030年末，共计五年，汽车行业专项协议期限普遍为三年。这16份协议覆盖周期内，约占美光DRAM总出货量20%、NAND总出货量三分之一。签约客户包含四家超大型客户、三家中型客户，剩余合作方均为汽车行业中小型企业，待全部计划内SCA协议落地后，预计公司半数及以上营收将由跨终端市场的长期锁单协议构成。<br><br>SCA价格：头部大单针对现有成熟产品设置价格上限，对标当前2026二季度市场价格，同时合约全程锁定价格下限。少量SCA订单采用固定定价或无上下限约束、价格随市场行情浮动。已签署的16 份SCA协议中，有14份合约在价格底线基础上，剩余合作周期内保底营收规模合计约1000亿美元。根据现有已落地 SCA，预计将收到客户预付保证金及配套金融承诺资金合计220亿美元。<br><br>投资建议：美光业绩再创新高，后续将陆续进入海外大厂二季度业绩披露期，我们认为存储作为半导体核心主线将长期持续，建议关注存储+设备+产业链三大核心环节相关公司：<br>��海外存储：闪迪、美光、SK海力士、西部数据、铠侠、三星、希捷等；<br>��模组：江波龙、佰维存储、德明利、朗科科技等；<br>��利基存储：兆易创新、普冉股份、北京君正、东芯股份、恒烁股份、聚辰股份等；<br>��代工和封测：中芯国际、华虹公司、长电科技、通富微电、华天科技、汇成股份、深科技等；<br>��设备：北方华创、中微公司、拓荆科技、华海清科、微导纳米、芯源微、精测电子、中科飞测、矽电股份、金海通、精智达、强一股份、ASMPT等。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p114">
+            <div class="full-header">[114] 08:45</div>
+            <div class="full-body">携程集团-S（09961.HK，TCOM.O）2026年一季报点评<br><br>🔺26Q1公司收入端整体符合预期、各业务线稳健，利润端受所得税率上升及附属公司溢利走弱（料主要系MakeMyTrip股价大跌影响）影响，经调归母净利润略低于预期；公司同步给出26Q2净收入同比+3%~8%的指引，增速较一季度显著放缓且低于市场此前预期，倒算国内收入或下降个位数~增长低个位数，反垄断及油价对出行影响双重压力。<br><br>🔺收入：符合预期，国际及入境游延续高增。26Q1公司实现净收入162.08亿元，同比+17.2%，环比+5%，略优于中信证券研究部及彭博一致预期（约+2.2%），亦高于公司此前约+16.6%的指引（+3.6%）。分业务看：住宿预订收入65.10亿元，同比+17.5%，基本符合预期（-0.1%）；交通票务收入60.50亿元，同比+11.7%，略超预期（+1.2%）；旅游度假收入11.30亿元，同比+19.3%，略超预期（+2.0%）；商旅管理收入6.90亿元，同比+20.4%，超预期（+4.8%）；其他收入18.28亿元，同比+33.3%，大幅超预期（+12.4%）。公司披露国际平台（Trip.com）预订同比增长约65%，入境游预订同比增长约90%，国际业务协同与入境红利持续兑现。<br><br>🔺成本费用：毛利率略低于预期，费用端运营效率维持，经营利润超预期。26Q1公司毛利率79.5%，同比-1.0ppt，略低于预期（较中信预测低1.48ppts），我们判断主要系海外业务占比提升、以及国内酒店tr相对下降影响。费用端，营销费用率23.1%，同比+1.4ppts但低于预期，海外投放效率维持；研发费用率25.1%、管理费用率6.9%，同比分别-0.4/-0.6ppt，整体费用优化趋势明显。经调（Non-GAAP）经营利润46.36亿元，同比+14.7%，经调OPM28.6%，超预期（+4.3%）；经调EBITDA48.30亿元，同比+13.7%，超预期（+3.7%），主要系控费程度优于预期。<br><br>🔺利润：经调归母净利润略低于预期，主因税率上升及附属公司溢利走弱。26Q1 经调归母净利润39.05亿元，同比-6.8%，经调净利率24.1%，略低于中信证券研究部及彭博一致预期（约-6.9%）。经营利润超预期但归母净利低于预期，原因在经营利润线以下：其一，所得税费用升至8.93亿元（去年同期6.38亿元、上季度8.35亿元），公司披露系不同税率子公司盈利结构变化、预扣税相关递延所得税负债变动、非应税投资公允价值变动及递延所得税资产估值拨备变动的综合影响；其二，附属公司（联营/合营）溢利及投资相关收益同比走弱。截至26Q1末，公司在手现金及短期投资等约1040亿元（151亿美元）。<br><br>🔺展望：26Q2收入指引放缓至+3%~8%，低于市场预期。公司披露预计26Q2净营业收入同比增长约3%~8%，较一季度显著放缓，并对当季利润率及盈利表现产生相应影响。公司将放缓主要归因于高能源价格、地缘政治波动等宏观不利因素的直接与间接影响，同时就行业标准与合规框架的最新变化主动进行运营调整。监管方面，公司披露自2026年1月起接受国家市场监管总局（SAMR）反垄断调查并积极配合，调查结果可能涉及重大罚款、其他财务处罚及/或经营惯例变更，时点与影响尚待观察。<br><br>🔺风险因素：国际政治及经济环境波动；宏观经济增速承压；监管处罚力度超预期；海外业务竞争加剧及投放不及预期；新业务拓展不及预期。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p115">
+            <div class="full-header">[115] 08:45</div>
+            <div class="full-body">#可转债#  <br>可转债发行规模：19.6亿港元。<br>初始转股价：23.54港元，较6/23收盘价溢价15.5%。全额转股可新增8300万股，占当前总股本3.5%。<br>资金用途：发售所得款项净额拟用于海外扩张、采购原材料及设备、偿还借款、同步股份回購及一般企业用途<br><br>#配套回购#  <br>预期回购数量： 3400万股。回购后注销。<br>预期回购价： 20.38港元，即6/23收盘价。<br>对应股息率： 本次股份回购预计7亿港元，结合承诺分红率不低于50%，预期股息率近5%。<br><br>[礼物]发行可转债的原因：考虑到公司未来分红、海外扩张和采购原材料及设备、回购的需求，在海外的现金相对来说比较紧张，发行可转债能够让公司在较短时间内以低资金成本的方式获取海外的流动性；配合同步回购、注销再发行的方式，短期一定程度上稳住股价，且实际上公司的总股数不会发生变化，不存在股权稀释的问题。<br><br>[礼物]时间点的选择：当前可转债市场热度较高，叠加公司股价处于相对基本面的低位，转股预期明确，更易获得投资人认购，同时便于转股溢价的定价谈判。<br><br>[礼物]核心观点：<br>1）可转债发行可以较低成本在较短时间内获得海外流动性，便于公司分红以及为后续海外扩张做准备，打开长期增长空间。 同时配合股份回购降低可转债发行影响，彰显管理层长期增长信心。<br>2）古茗门店经营情况稳定，26Q2-Q3在高基数与补贴退坡影响下，预期同店控制在-5%以内，全年力争持平，并重点推动回归堂食，持续提升实收率。年初至今开店节奏稳健，同步六代店调改，咖啡品类渗透持续提升。当前股价对应26年利润预期仅13XPE，兼具成长弹性与估值性价比，维持“推荐”。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p116">
+            <div class="full-header">[116] 08:45</div>
+            <div class="full-body">一则不成熟的解读：<br><br>康宁玻璃桥（Glassbridge）<br>1️⃣  2025年9月发布与GF合作，ECOC展示，#并非刚刚提出#   ；<br>2️⃣具体是用玻璃波导的边耦合，靠玻璃波导的模式匹配加 V 形槽的机械定位来实现可拆卸（#玻璃波导用于PIC与光纤阵列的桥接介质， 以实现可拆卸），是#耦合方式和扩束方式的改变而非取代FAU，且是为把传统不可插拔fau转换为可插拔的另一种实现方式；<br>3️⃣官方文件强调了此项技术在玻璃与FAU的结合，而非取代关系；<br>4️⃣康宁本身针对FAU和dfau方案积极扩产；革去FAU不符合康宁建设逻辑；<br>5️⃣技术本身较为前期，预计落地实现仍需时间，建议期间理清技术细节#去伪存真，避免提前恐慌导致错杀。# #文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p117">
+            <div class="full-header">[117] 08:46</div>
+            <div class="full-body">美光业绩亮眼<br>1、美光科技盘后一度大涨16%，公司第三财季经调整营收414.6亿美元，上年同期93.0亿美元，预估356.9亿美元；第三财季调整后每股收益25.11美元，上年同期1.91美元，预估20.49美元。美光科技预计第四财季经调整营收490亿美元至510亿美元，市场预期432.4亿美元；预计第四财季调整后EPS为30-32美元，市场预期25.31美元。<br>2、美光科技CEO表示，预计第四财季资本支出约为100亿美元，预计2026财年全年资本支出约为270亿美元。2027财年各季度的资本支出将高于2026第四财季的水平。<br>3、美光科技发布财报后，美股芯片股盘后全线上涨，西部数据、闪迪涨超10%，希捷科技涨超9%，ARM、应用材料涨超6%，阿斯麦、英特尔涨超4%，AMD涨超3%。<br>4、由于美光科技亮眼业绩的提振，纳斯达克100指数期货早盘涨超2%。iShares MSCI韩国ETF在美股盘后涨超6%。<br>5、美光科技表示，下一代DRAM与NAND节点的研发进展良好，预计将在2027年下半年开始进入量产阶段。HBM4 12层产品的量产爬坡速度目前是HBM3E 12层版本的两倍。公司已经累计交付超过10亿美元的HBM4收入。<br>6、美光科技宣布季度分红每股0.15美元，并计划提高资本回报。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p118">
+            <div class="full-header">[118] 08:46</div>
+            <div class="full-body">【美光FQ3 2026财报 | 2026.6.24】<br><br>▎增量信息<br><br>美光交出了一份全面超指引的季度成绩单，营收、毛利率、EPS均创历史新高。数据中心收入单季突破250亿美元，年化超过1000亿美元；数据中心SSD收入超50亿美元，环比翻倍。HBM4 12-high量产速度是HBM3E的两倍，已产生10亿美元收入。<br><br>最重磅的增量是16份战略客户协议（SCA）。这些协议覆盖了未来五年约20%的DRAM和33%的NAND需求，14份协议的最低收入承诺合计1000亿美元，已收押金及财务承诺220亿美元。SCA预计将覆盖公司总收入的50%以上，其中40%收入设有接近当前市价的价格上限。<br><br>▎逻辑验证<br><br>SCA的本质是把存储行业从「周期品」重构为「合约品」。美光用长期供不应求的确定性（DRAM和NAND行业需求显著超过供给，紧张持续到2027年之后）换取客户的长约承诺，同时用价格上限锁定毛利率下限。对美光而言，SCA意味着收入下限被1000亿美元承诺托住、毛利率被40%价格上限保护、扩产风险被押金对冲。这与瑞银此前将美光从P/B切换至P/E估值的逻辑完全一致——市场定价的不再是周期弹性，而是收入可见性。<br><br>数据中心SSD环比翻倍到50亿美元以上，验证了AI架构演进中存储容量的指数级扩张。Vera Rubin将DRAM配比砍半（55TB→28TB）的冲击，正在被SSD侧承接——KV Cache压力从DRAM向NAND转移，美光同时吃到了HBM（DRAM侧）和SSD（NAND侧）两波需求。<br><br>供需紧张持续到2027年之后的判断，基于三个结构性因素叠加：AI加速器对HBM的需求、数据中心SSD替代HDD的空间、以及边缘设备（PC/手机）AI化带来的内存含量提升。汽车ADAS和人形机器人是更远期的增量，L2+车辆内存含量是普通车5倍以上，人形机器人是L2+的10倍。<br><br>▎边际变化<br><br>与6月初《[财经]》封面报道「存储大繁荣：盛宴与倒计时」时的市场认知相比，边际变化有三点。第一，美光产能扩张提速：台湾铜锣工厂提前一个季度到2027年中投产，新加坡2027上半年成为HBM封装中心，爱达荷ID1工厂2027年中投产。第二，HBM4量产爬坡速度翻倍，缓解了此前市场对良率的担忧。第三，1γ DRAM和G9 NAND节点量产顺利，下一代节点（1δ）2027下半年量产，与ASML签了多年期EUV供应协议。<br><br>产能加速扩张本身是双刃剑。三巨头一边用长协锁价、一边大举扩产，新产能释放会压低市场价格——如果现货价跌破长协价，客户续约时必然要求重谈。SCA的1000亿美元承诺是下限保护，但不是天花板。<br><br>▎投资含义<br><br>美光这份财报的核心信号是：存储超级周期的持续时间可能比市场预期更长（到2027年后），但行业结构正在从「周期波动」向「长协锁定」转变。对于投资者，这意味着估值锚从「PE谷值/峰值切换」转向「合约收入折现」。美光已从周期股变成了基础设施股。<br><br>A股映射方面，HBM4量产加速和SSD需求翻倍利好国内存储产业链：长鑫科技（DRAM）、长江存储（NAND）在国产替代逻辑下继续受益。封装和测试环节（长电科技、通富微电）在先进封装需求扩张中持续受益。液冷和散热需求随数据中心SSD密度提升而增加。<br><br>▎风险<br><br>存储行业最经典的周期终结信号就是「所有人都认为周期已经终结」。SCA锁定了收入下限，但16份协议中60%的收入没有价格上限，现货价下行时这部分收入会直接暴露。1δ节点2027下半年量产如果推迟，技术代差会被三星和海力士拉开。地缘政治层面，对华设备限制可能影响全球供需平衡的再分配。<br><br>（不代表公司及团队观点）#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p119">
+            <div class="full-header">[119] 08:46</div>
+            <div class="full-body">康宁今晚大涨的原因是玻璃桥。<br>康宁（GLW）于2026年6月24日发布的GlassBridge（玻璃桥）技术，它瞄准的是当前制约共封装光学（CPO）大规模商用的核心瓶颈——光纤与光子芯片（PIC）的耦合难题，试图用半导体级的精密制造，替代传统依赖人工和机械的装配流程。<br>利好玻璃板块，比如京东方，沃格，凯盛，帝尔这些，都是明牌了。<br>当然也可以当作光纤炒，反正市场不一定知道发生了什么。<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p120">
+            <div class="full-header">[120] 08:47</div>
+            <div class="full-body">【中信证券前瞻】美光科技（MU）FY26Q3业绩速评：业绩及指引超出预期，长协进展积极<br><br>【业绩概览】<br>1）当季营收415亿美元（同比+346%，环比+74%），高于公司此前指引的327.5-342.5亿美元（中值335亿美元），高于彭博一致预期的356亿美元。<br>2）当季Non-GAAP毛利率84.9%（同比+45.9ppts，环比+10.0ppts），高于公司此前指引的约81%，高于彭博一致预期的81.8%。<br>3）当季Non-GAAP净利润289亿美元（同比+1223%，环比+106%），对应EPS为25.11美元，高于公司此前指引的18.75-19.55美元（中值19.15美元），高于彭博一致预期的20.5美元。<br>4）业绩指引：公司预计FY26Q4营业收入490-510亿美元，高于彭博一致预期的430.9亿美元；预计Non-GAAP毛利率约86%，高于彭博一致预期的83.5%；预计Non-GAAP EPS为30-32美元，高于彭博一致预期的25.3美元。<br><br>【业务概况】<br>1）DRAM：当季营收313亿美元（环比+67%），占总营收的76%。当季bit出货量环比增长low-single digits，ASPs环比增长low-60s。<br>2）NAND：当季营收99亿美元（环比99%），占总营收的24%。当季bit出货量环比增长mid-single digit，ASPs环比增长mid-80s。<br><br>【长协】<br>1）公司已与数据中心、消费电子和汽车市场领域的客户完成了16份SCA（战略客户协议）的签订，涵盖四家超大型客户和三家中型客户，其余协议涉及汽车行业的小型客户。<br>2）通常SCA的期限为五年（CY2026-CY2030年底），汽车相关协议的期限一般为三年。<br>3）在此期间，签署的16项协议约占公司DRAM出货容量的20%，以及NAND出货容量的三分之一。<br>4）公司预计约一半或更多的收入将来自这些与各终端市场客户签订的SCA，客户重视公司的美国供应规划<br>5）SCA采用take-or-pay结构，约定在多年期内必须购买特定数量的产品。<br>6）规模最大的协议通常为现有产品设定一个上限价格（CY26Q2的市场价格），同时在整个协议有效期内设定一个下限价格。部分SCA（占SCA收入modest portion）采用固定价格，或者没有相关的价格区间，其定价将随市场情况而定。当所有计划的SCA都执行完毕后，定价为固定价格或价格上限（等于或接近当前CY26Q2市场价格）的协议收入预计约占公司总收入的40%。<br>7）对于包含价格区间的SCA，定价在整个合作期内均会控制在该上下限范围内，且底价为公司带来了非常稳健的毛利率，远高于过往任何周期的季度峰值毛利率。<br>8）已签署的16项协议中，有14项在协议剩余期限内，按合同约定的最低价格计算的累计营收约为1000亿美元。<br>9）根据迄今为止签署的SCA，公司预计将收到220亿美元的现金存款及相关财务承诺。<br><br>【供需&amp;其他】<br>1）公司预计供不应求的紧张态势延续至CY27之后。<br>2）公司预计CY26行业DRAM和NAND bit出货量将分别增长low-to-mid-20s、约20%（此前预计同比增长low-20%、约20%）；公司预计CY26自身DRAM bit出货量增长将大致与行业增长保持一致，NAND bit出货量增长略低于行业增速。<br>3）资本开支：公司预计FY26资本开支约270亿美元（此前指引为超过250亿美元，FY26Q4指引为100亿美元）。同时，公司预计FY2027季度资本支出将高于FY26Q4季度水平，FY2027资本支出同比增幅中有一半以上来自建筑类资本支出，扩充洁净室产能。<br>4）工厂进度：（a）铜锣厂：公司预计现有晶圆厂将在CY27中期开始实现有意义的产品出货（提前一个季度），同时在该厂区启动建设一座规模相近的第二间洁净室。（b）Idaho：维持预计首批晶圆将在CY2027中期产出，第二个晶圆厂将在CY2028年末实现首批晶圆产出。<br><br>------------------------------<br>欢迎联系中信证券前瞻研究团队！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p121">
+            <div class="full-header">[121] 08:47</div>
+            <div class="full-body">美光最新的财报电话会议和会后分析师问答，整体来看，可以说CEO Sanjay Mehrotra 不但没有给市场降温，反而进一步强化了 AI 存储超级周期的逻辑。  <br><br>几个最重要的信息，我按重要程度总结：<br><br>1. CEO再次强调：AI需求远远超过供给，而且会持续多年（这是最重要的一句话）<br><br>Sanjay表示：<br><br>HBM（高带宽内存）的需求仍远远超过供应。<br><br>并且明确表示：<br><br>* 供需紧张不仅持续2026年；<br>* 很可能持续到2027年以后（beyond 2027）；<br>* AI正在从训练(Training)进入推理(Inference)，而推理阶段反而更加依赖内存容量。  <br><br>这实际上比很多投资人原来预期的还更乐观。<br><br>⸻<br><br>2. 分析师重点追问：2027会不会因为大家扩产导致供过于求？<br><br>这是今晚最关键的问题之一。<br><br>CEO基本回答是：<br><br>目前完全没有看到这种情况。<br><br>原因包括：<br><br>* AI需求增长速度比扩产更快；<br>* HBM制造极其复杂；<br>* DRAM先进制程转换速度有限；<br>* 即使增加资本开支，也很难快速释放大量产能。<br><br>所以他认为：<br><br>行业仍然会保持结构性供给不足。  <br><br>⸻<br><br>3. 关于长期订单（Strategic Customer Agreements）<br><br>这是今晚最大的新增亮点之一。<br><br>上一季度：<br><br>只有1份五年长期协议。<br><br>今晚CEO宣布：<br><br>已经增加到了16份长期战略协议。<br><br>他说：<br><br>这些协议：<br><br>* 是多年合同；<br>* 有非常强的约束条款；<br>* 能提高收入可预测性；<br>* 会明显降低Micron过去周期股的波动。<br><br>Morgan Stanley分析师在会后直接表示：<br><br>这是Micron商业模式变化的重要里程碑。  <br><br>这个其实比很多人关注的单季度EPS还重要。<br><br>⸻<br><br>4. 分析师问：是不是客户开始害怕拿不到货？<br><br>CEO回答也非常明确。<br><br>他说：<br><br>很多客户现在已经：<br><br>* 提前几年锁产能；<br>* 提前签多年协议；<br>* 提前规划未来AI路线图。<br><br>换句话说：<br><br>以前是Micron找客户。<br><br>现在很多情况下：<br><br>客户主动提前锁货。  <br><br>⸻<br><br>5. 关于资本开支（CapEx）<br><br>CEO表示：<br><br>Micron准备继续提高资本支出。<br><br>目的不是因为需求疲软，<br><br>而是：<br><br>现在订单太多，需要拼命扩产。<br><br>Reuters报道称，公司第四季度资本支出计划约100亿美元，高于市场此前普遍预期。 <br><br>⸻<br><br>分析师问答整体氛围<br><br>今晚分析师的问题几乎全部集中在：<br><br>* AI需求还能持续多久？<br>* HBM什么时候供需平衡？<br>* 长期合同怎么签？<br>* 资本开支是否继续增加？<br>* 是否会重演以前存储周期？<br><br>几乎没人再问：<br><br>* PC是不是不好；<br>* 手机是不是不好；<br><br>因为这些已经不是Micron估值核心。<br><br>现在大家已经默认：<br><br>AI Data Center才是决定Micron未来估值的核心。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p122">
+            <div class="full-header">[122] 08:48</div>
+            <div class="full-body">茂莱光学重大更新：<br>近日，茂莱光学发布公告称，公司预计2026年度与关联方茂威精控发生日常关联交易总额1150万元，其中向关联方购买商品920万元，向关联方销售商品230万元。<br>茂莱通过关联交易将高精密配套"准内部化"，缩短了半导体/生命科学等领域高端光学系统的开发周期。茂威精控提供精密运动控制等定制组件，茂莱反向输出光学器件，形成技术闭环，以增强供应链弹性。<br>此外，今年美国Onto将变成公司第一大客户，公司为Onto研发的G5机型检测性能超出KLA同类产品数倍，在台积电验证效果突出，这是茂莱在台积电的第二次成功。Onto 2027年要求公司供货15亿元。<br>公司已将光通信业务作为重点拓展方向，计划3-5年内打造出与半导体业务规模相当的新业务板块。主要业务三条线：<br>1）谷歌Taara（已量产）：整机交付，tube lens/光纤耦合器/准直器/隔离器自研，下一代星地组网跟SpaceX合作；<br>2）光器件业务：为康宁、Lumentum 等客户提供基于波片类的器件和模组；<br>3）CPO 封装：第一承接玻璃基底的wafer研磨加工需求；第二基于10nm对准（公司现有设备1nm）、光波导光性能检测/串扰的独家优势，布局光波导CPO的过程检测方案与检测设备，以提升CPO封装良率，解决行业痛点。<br>2026年年报将单独列示光通讯板块收入。<br>产能方面，茂莱光学泰国基地一期今年8月交付，定位为匹配光通信业务，作为海外出货地应对地缘政治风险，一期交付后将立即启动二期扩建。南京、上海、北京、美国等基地陆续的释放最终有望将公司现有产值×5。<br>一句话来说，公司光刻机是硬卡位（SMEE独家+ASML唯一中国供应商）；光通信是Taara整机+CPO光波导检测两条稀缺线 + OCS。两条线的放量节奏确实都能看到，不是平推，是阶梯式跳。---xz<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p123">
+            <div class="full-header">[123] 08:50</div>
+            <div class="full-body">梅花庄：再次跟大家讲一下：<br>从6月10号，大盘三天不新低以来，我们不断提示可以逢低吸筹；<br>6月10日，三天不新低的时候提示；<br>6月13-14日，大盘均线趋势粘合提示；<br>6月17日，美股大跌的时候提示；<br>6月18日，沃什讲话的时候提示；<br>昨天，大盘大跌的时候，继续提示；<br>但是我要说的是，一个大的波动中，时机是有限且个“过期不候”，实际上市场在一个波段中，每上一个台阶，时机的确定性就会降低一分；<br>接下来到月底前，比较好的低吸阶段，应该是已经过去，除非大盘出新的大叙事；<br>为什么我这么说，主要是基于2点：<br>1.科创板指数距离均线中枢的偏离度，依然非常高；（显示出了市场的不理性）<br>因此，市场是容易反复回踩的，但我们不能够小看指数的小回踩，因为从昨天的表现来看，大盘指数稍微回踩，科技的波动率就非常大；<br>所以，后续的市场波动将很难把握；<br>2.月底是“季末”，季末容易出变化；<br>我讲上述内容，并不是看衰，而是我认为接下来的阶段只能是“放子弹飞”，而不能再“上弹开枪”的阶段，大家可以维持仓位，但不要新增仓位。---ms<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p124">
+            <div class="full-header">[124] 08:51</div>
+            <div class="full-body">如果用排排站的比较方法，茂莱，臻宝，珂玛同样作为零部件公司，收入体量其实本质差异不大，都是单季度2亿左右，而且茂莱的技术卡位和北美客户，未来国内光刻机量检测和北美光通信CPO带来的估值弹性和想象空间可能更性感，但是现在茂莱仅300亿市值，珂玛600亿市值，臻宝900亿市值，属于严重低估，今年在持续落地的新业务与新技术的进展催化中继续先看向500亿保守市值，远期在产能释放业绩高增后再进一步上调市值目标。---xz<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p125">
+            <div class="full-header">[125] 08:52</div>
+            <div class="full-body">【GF】“电”仍然是服务器架构中潜在锐度最高的方向，继续重点推荐 功率半导体 新洁能 三次电源PCB 中富电路<br><br>1️⃣新洁能：功率很有可能是下一个历史级别的涨价品种，从现实看，功率半导体的二轮涨价已全面开启，扬杰等企业已发二轮涨价函，当前整体行业的情况是 企业有同比+150%以上的积压订单，交期从此前的2-3个周延长到50周以上（部分料号已无库存），经销手中无库存（这点可以排除因非理性囤货带来的涨价行为），下游企业因为小个位数成本占比的mos料号而无法正常生产。 从逻辑上看，供给端的关键词是 Tighter-for-longer（更自律的供给端）和结构性的挤压（AI&amp;amp;先进封装对于传统的强挤压），需求端的关键词 AI敞口快速提升（200美金/kw的价值量占比） AI对能源侧功率的拉动 和 国内半导体的产业转移。新洁能当前维度中性乐观看27年近18-20亿利润（产能1x以上，价格1.5倍，尚未考虑下半年NV、谷歌等ai强期权），坚定看翻倍空间。<br><br>2️⃣中富电路：站在现在这个时间点需要从产业端重新去审视三次电源PCB的角色，这很有可能是未来最核心的三次电源卡位标的，三次电源PCB的设计密度将最终决定电源模块甚至是主芯片的功率密度极限。三次电源市场空间未来三年有望逐年数倍增长，是功能性PCB中最陡峭增速的环节，中富电路卡位全球最核心的二三次电源PCB项目，当前订单景气度极高，看本轮500-600e+ 市值。 p.s：三次电源的市场空间远不止当前的XPU#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p126">
+            <div class="full-header">[126] 08:52</div>
+            <div class="full-body">长川科技最新更新：市场低估了AI算力芯片放量【DW机械】<br><br>我们认为，长川Q2业绩超预期是刚刚开始，公司卡位测试机国产替代龙一+国产算力GPU高景气+壁垒最深环节卡位优势被低估<br><br>国产测试机龙一：测试机最难的是SoC测试机，目前仅长川大规模放量（华峰进展也领先于其他公司），GPU测试设备关键优势体现在测试时长增加带来的设备大规模通胀。<br><br>国产算力GPU芯片刚刚开始放量：GPU芯片是未来大国AI发展的关键卡位，设备格局好（长川龙一地位明显），当前国产算力芯片刚刚放量，未来空间预计是3-5年增长10倍的速度发展。<br><br>叠加稀缺的存储测试机CP+FT设备单价通胀逻辑，未来存储大扩产带来历史性机遇。今年业绩有望达25e，明年看继续50%+增长，年内看2500-3000e。继续强call！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p127">
+            <div class="full-header">[127] 08:52</div>
+            <div class="full-body">【华泰电子】盛剑科技：半导体市场零部件缺货后续会远超大家预期，部分零部件公司出海会加速兑现。当前盛剑科技尾气处理设备已经打入英飞凌（别的大厂验证中）获得批量订单（预期27年5-6亿订单），温控器chiller进入海外不同大厂验证中，真空泵在国内大厂验证。估值最低的出海小半导体设备公司，看好公司半导体业务全面扭转，预期28年3-4亿利润（股权激励保守2亿多），空间看150亿。<br>后续重点关注陶瓷石英件,MFC,真空泵缺货力度。<br>华泰电子：郭龙飞#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p128">
+            <div class="full-header">[128] 08:55</div>
+            <div class="full-body">$MU 美光：𝐀𝐈 𝐌𝐞𝐦𝐨𝐫𝐲 𝐁𝐨𝐨𝐦 𝐃𝐫𝐢𝐯𝐞𝐬 𝐑𝐞𝐜𝐨𝐫𝐝 𝐐𝐮𝐚𝐫𝐭𝐞𝐫, 𝐐𝟒 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞 𝐒𝐡𝐚𝐭𝐭𝐞𝐫𝐬 𝐄𝐱𝐩𝐞𝐜𝐭𝐚𝐭𝐢𝐨𝐧𝐬<br><br>📊 𝐑𝐞𝐬𝐮𝐥𝐭𝐬<br>• 调整后每股收益：$25.11（预期 $20.28）✅<br>• 收入：$41.46B（预期 $35.25B）✅<br>• 调整后毛利率：84.9%<br>• 调整后营业收入：$33.68B<br>• 调整后自由现金流：$18.3B<br>⠀<br>🎯 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞<br>• Q4 收入：$50.0B ± $1.0B（预期 $42.50B）✅<br>• Q4 调整后每股收益：$31.00 ± $1.00（预期 $24.80）✅<br>⠀<br>📌 𝐊𝐞𝐲 𝐓𝐚𝐤𝐞𝐚𝐰𝐚𝐲𝐬<br>• 创纪录季度由爆炸性AI内存需求和HBM出货驱动<br>• 多年战略客户协议旨在提升长期收入可见度<br>• 云内存和核心数据中心收入同比翻倍以上<br>• HBM4进入高量产出货阶段，而下一代HBM4E仍按计划推进至2027年<br>• 管理层预计Q4业绩将更强劲，创下收入和盈利纪录<br>⠀<br>💬 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭 𝐂𝐨𝐦𝐦𝐞𝐧𝐭𝐚𝐫𝐲<br>“美光的创纪录财政Q3财务业绩以及Q4更强劲的前景，反映了内存在AI时代中的战略价值。”#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p129">
+            <div class="full-header">[129] 08:55</div>
+            <div class="full-body">🔥【国联民生电子】美光业绩超预期，AI存储景气持续强化<br><br>🌹领导好！美光公布FY26Q3业绩，收入、利润及Q4指引全面超市场预期，管理层继续强调#HBM供不应求将持续至2027年以后，并首次披露220亿美元长期战略协议（Take-or-Pay+价格底线+预付款），标志存储行业商业模式进一步升级。美光盘后股价一度上涨约16%。<br><br>1️⃣ 业绩、指引全面超预期<br>#FY26Q3业绩远超市场预期#<br>➠ 营收 414.6亿美元，YoY +346%<br>➠ Non-GAAP EPS 25.11美元<br>➠ 毛利率 84.9%，继续创历史高位<br>#FY26Q4指引再次超预期#<br>➠ 营收 500±10亿美元<br>➠ Non-GAAP EPS 31±1美元<br>➠ 毛利率约 86%<br>➠ 管理层预计FY26全年业绩继续创新高  <br><br>2️⃣ 电话会核心增量：长期协议+HBM供需持续紧张<br>#长期战略协议#<br>➠ 已签署16份长期战略供货协议<br>➠ 客户锁定金额达220亿美元<br>➠RPO约1000亿美元<br>#HBM持续供不应求#<br>➠ HBM4已开始规模供货，HBM4E研发顺利推进<br>➠ 公司明确表示AI带来的存储供需紧张预计持续至2027年以后<br><br>3️⃣ CAPEX继续提升，上游设备景气强化<br>➠ FY26Q3资本开支约70亿美元<br>➠ FY26Q4预计提升至约100亿美元<br>➠ 公司表示FY27季度CAPEX仍将进一步提升，主要用于洁净室建设及先进存储产能扩张。  <br><br>🎁 投资建议：继续看好存储+设备材料<br>🤔我们认为，本次财报再次验证AI驱动下存储行业高景气延续，同时设备CAPEX持续提升，上游设备、材料景气度有望继续外溢，#持续推荐存储、设备材料板块#<br>相关标的梳理如下：<br>➠ 存储：兆易创新、普冉股份、北京君正、德明利、江波龙、佰维存储、香农芯创等。<br>➠ 设备材料：拓荆科技、北方华创、中微公司、微导纳米、芯源微、中科飞测、鼎龙股份、安集科技等。<br><br>⚠风险提示：AI需求不及预期；HBM进展不及预期；存储扩产不及预期等<br><br>☎联系人：薛宏伟/李少青/王海#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p130">
+            <div class="full-header">[130] 08:56</div>
+            <div class="full-body">如图，更新【电容】涨价弹性<br>电容开启涨价，本轮日本企业涨幅10-15%，国内江海、立隆5-10%。后续供给持续紧张，q3有望再次涨价。<br><br>#一体化的电容企业最为受益，原因为铝电解电容成本最大占比是电极箔。1）江海：75%电极箔自制；2）艾华：60%+电极箔自制；3）薄膜电容-法拉电子：基膜蒸镀环节自制。<br><br>投资建议：看好电容企业涨价弹性+AIDC业绩加持<br>✅江海：涨价前27年利润50e，假设主业涨价10%（不考虑AIDC涨价），利润+8%，对应涨价后利润55.8e，PE 15X。<br><br>✅艾华：涨价前27年利润6e，假设主业涨价10%，利润+7%，对应涨价后利润10.2e，PE 19X。<br><br>✅法拉：涨价前27年利润16e，假设主业涨价10%，利润+6%，对应涨价后利润20.1e，PE 20X。<br><br>✅万裕：涨价前27年利润1.7e，假设主业涨价10%，利润+5%，对应涨价后利润3.6e，PE 4X。<br>[含1张图]</div>
+        </div>
+
+        <div class="full-item" id="p131">
+            <div class="full-header">[131] 08:56</div>
+            <div class="full-body">康宁发布新一代玻璃基光互连技术，该技术将光纤与光半导体（硅光子学）连接起来，利用光传输信号。这项技术的目标应用领域是下一代共封装光学器件（CPO）和玻璃芯封装。传统方式是把水管一根根对准接头插进去，Glass Bridge是在玻璃里预埋好管道，光纤直接插进去就行，TGV玻璃基板+CPO封装这个组合，等于把玻璃基板从载板升级成光互连载板。玻璃基板：京东方A、沃格光电、彩虹股份、北玻股份光纤：通鼎互联、长飞光纤、亨通光电、中天科技<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p132">
+            <div class="full-header">[132] 08:56</div>
+            <div class="full-body">$MU 财报和电话会最大的启示：存储行业已经变了<br><br>今天Micron交出了一份几乎无可挑剔的成绩单。<br>Q3营收414.6亿美元，远超市场预期的355.9亿美元。<br>调整后EPS 25.11美元，远超市场预期的20.63美元。<br>更夸张的是Q4指引：<br>营收490-510亿美元，市场预期429亿美元。<br>EPS 30-32美元，市场预期25.5美元。<br>这已经不是beat，是直接把华尔街模型打穿了。<br><br>电话会透露了三个足以影响未来几年的核心变化。<br>第一，存储已经从周期品变成战略资源<br>CEO说了一句话让我印象非常深：“AI系统的性能，本质上取决于内存子系统的性能和容量。”<br><br>随着Agentic AI、多智能体系统和超长上下文的发展，内存正在成为整个AI基础设施的瓶颈。GPU负责计算。存储负责记忆。没有记忆，再强的大脑也没用。<br><br>MU CEO甚至直接表示：AI已经把内存提升到了战略资产（Strategic Asset）的地位。这是一个非常大的变化。战略资产意味着客户不会只看价格。而会优先考虑供货能力、安全性和长期合作关系。<br><br>第二，DRAM和NAND供给紧张可能持续到2028年以后<br>管理层明确表示：“我们目前看不到内存供给何时能够追上需求。”甚至进一步指出：预计DRAM和NAND供需紧张将持续到2027年以后。<br><br>为什么？因为扩产太难了。新晶圆厂建设周期长。先进节点越来越复杂。HBM正在吞噬大量DRAM产能。而NAND厂商甚至开始把部分洁净室资源转移给DRAM生产。<br><br>这意味着什么？很多人觉得DRAM涨价周期快结束了。<br>MU却在告诉市场：这可能不是一个普通周期。是一次供给侧被永久重构的行业变化。<br><br>第三，未来需求来源已经不只是AI服务器<br><br>电话会给出了一个更大的故事。<br>数据中心：2026年服务器出货量预计增长高十几个百分点。Agentic AI正在推动CPU机柜、存储机柜同步扩张。<br>AI不只是增加GPU需求。也在增加存储需求。<br><br>汽车：L2+以上车型平均存储容量已经达到普通汽车的5倍以上。今年L2+车型占比将超过20%。2030年预计超过40%。<br><br>机器人：人形机器人平均存储容量达到L2+汽车的10倍。<br>MU CEO直接表示：预计本世纪后半段将开启持续数十年的存储需求周期。<br><br>另外还有一个市场可能还没有充分定价的信息：Micron宣布已经签署16份战略客户协议（SCA）。<br><br>这些协议覆盖：数据中心，消费电子，汽车期限最长到2030年。更重要的是这些协议采用Take-or-Pay模式。简单理解就是客户必须买，不买也要付钱。<br>目前这些协议已经锁定：约20%的DRAM产能，约三分之一的NAND产能。这意味着Micron正在把过去极度周期性的商业模式，逐渐转变成更接近长期合同模式。<br>这也是为什么CEO特别强调，MU正在经历业务模式转型。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p133">
+            <div class="full-header">[133] 08:56</div>
+            <div class="full-body">🔥【XN汽车/川渝团队】持续看好金富科技：AI液冷行业景气上行+业绩确定性—0625<br>🔥1、行业双重催化，液冷进入规模化高景气：英伟达Rubin平台落地45℃全液冷方案，高端算力全面替换风冷；叠加英特尔冷板工质权威验证完成，行业正式从主题预期转向批量落地，金属冷板、精密管路环节需求持续扩容。<br><br>🔥2、Q2实现液冷实质业绩落地，盈利高度可量化：公司4月完成卓晖、联益并表，Q2正式兑现液冷利润。Q2单月液冷营收1e+，单季度3-4e，20%净利率，6000-8000万（上市公司51%股权），加上主业约2000w，单Q2预计6000万左右，净利率大幅增长。<br><br>🔥3、3亿定增扩产+优质订单储备，成长空间明确：公司拟3亿元定增全部用于液冷产能扩建，主业现金流充足支撑扩张；产品直供奇宏、宝德、双鸿等头部散热Tier1，在手订单饱满，产能持续释放支撑中长期业绩高增。<br><br>🔥4、液冷板块其他核心标的梳理<br>#高温换热&amp;CDU系统：川润股份、申菱环境、英维克、强瑞技术、同星科技<br>#液冷板精密加工：金富科技、胜蓝股份、美利信、银轮股份、中鼎股份、五洋自控<br>#耐高温管路连接件：胜蓝股份、溯联股份、川环科技<br>#密封辅料&amp;配套部件：金富科技、鸿富瀚、锦富技术<br>#液冷循环泵组：大元泵业、飞龙股份# <br><br>欢迎咨询对口销售或万红兵/郭婧雯！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p134">
+            <div class="full-header">[134] 08:58</div>
+            <div class="full-body">【国金电新】#强瑞技术# 更新0624<br><br>1. 公司AI算力行业产品：NV L10计算托盘组装线设备、inner manifold、波纹管部件、铝件框架（铝宝35%）、风冷散热器（三烨49%）<br><br>2. 价值量：计算托盘组装线4000-5000万/条；inner manifold 4300元/套（零部件+焊接）、3000元/套（零部件）；波纹管部件（600元/套）<br><br>3. 盈利指引：目前OEM方式毛利率30%+，净利率20%；后续rubin ultra相关产品转向ODM模式，毛利率有望突破40%。<br><br>4. 计算托盘组装线：26年预计交付10-13条线，已经交付2条，未来2-3年有改造持续性。<br><br>5. inner manifold：当前产出~100套/天，随着rubin放量在即，7月产出有望提升至400-500套/天，年底展望1000套/天；客户AVC、富联、健策、CM，公司份额往20%努力，26年目标营收3-4亿，27年目标营收20-30亿。<br><br>6. 光模块组装&amp;检测设备：富联明年共30亿需求（设备20亿+治具10亿），公司目标份额50%，ODM模式。<br><br>7. 业绩指引：铝宝科技26年目标#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p135">
+            <div class="full-header">[135] 08:58</div>
+            <div class="full-body">【国金电子】美光业绩高速增长，推进长协落地，供需持续紧张<br>美光FQ3营收415亿美元，环比+74%，同比+346%，DRAM营收313亿美元（占76%），同比+343%，环比+67%；出货量低单位数增长，价格涨幅60%+。NAND营收99亿美元（占24%），同比+361%，环比+99%；出货量中单位数增长，价格涨幅80%+。<br>指引FQ4营收500亿±10亿。毛利率约86%，EPS：31美元±1。<br>公司推进SCA（战略客户协议）签署，已经签署16个SCA（覆盖数据中心、消费、车用）。期限一般5年（2026-2030），车用一般3年。覆盖约**DRAM 20%、NAND 30%**出货量，约占公司收入25%（目标最终达约40-50%+）<br>SCA结构：take-or-pay，大客户协议设地板价+天花板价（天花板=当前CQ2市价），地板价毛利率仍高于历史peak。14/16个SCA累计最低收入（float价）约1000亿美元RPO。客户现金存款及相关承诺约220亿美元（其中现金存款约180亿，FQ3已收约4亿+，FQ4预计再收约100亿），属financing cash flow，不影响FCF#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p136">
+            <div class="full-header">[136] 08:58</div>
+            <div class="full-body">欧委会批准西班牙未来10年投入90亿欧元建设容量市场，有望带动30-40GWh储能装机需求 <br>事件： <br>欧盟委员会批准西班牙90亿欧元容量保障计划，自2026年5月起补贴十年，每年9亿欧元，补贴对象为发电、需求侧响应和储能，资金来自西班牙政府而非欧盟，项目通过招标竞价选出。<br><br>点评： <br>西班牙为欧洲前五大光伏市场，新能源渗透率高、人口和用电体量较大，当前大储渗透率极低，年新增装机在1GWh+，缺口较大。<br><br>SPE最新报告预计，2030年西班牙有望成为欧洲第五大储能市场，以匹配光伏、人口带来的需求。<br><br>同时，BeyondFossilFuels组织表示，容量招标应优先支持储能以提升需求侧灵活性。<br><br>目前已建立容量市场的欧洲国家，包括英国、意大利、波兰、比利时、爱尔兰等。其中意大利MASCE机制提供177亿欧元支持超71GWh储能，因此西班牙若类比意大利，90亿欧元约对应支持35GWh+储能新增装机。<br><br>投资建议： <br>与此前德国抢装政策类似，我们认为欧洲新能源转型无法脱离中国供应链完成。同时，该容量政策资金来自西班牙财政而非欧盟，预计受到欧盟方面的限制较少，此前西班牙也正是中欧贸易战的反对方#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p137">
+            <div class="full-header">[137] 08:59</div>
+            <div class="full-body">日本铝电解电容龙头尼吉康（Nichicon）宣布对旗下所有铝电解电容产品实施全面涨价，涨幅据悉由原先的9%至12%进一步扩大至10%至15%。<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p138">
+            <div class="full-header">[138] 08:59</div>
+            <div class="full-body">【国金计算机&amp;科技】#江海股份：电Ram首推标的_涨价打响周期底部第一枪<br><br>#事件：江海股份发布涨价函，调整范围包括铝电解电容器、薄膜电容器、超级电容器三大品类。<br><br>【1】#AI牛角电容跻身全球AI产业链_有望享受涨价及份额提升双弹性<br>——江海已跻身全球AI产业链。AI牛角电容主要用于服务器电源层级电Ram，公司已跻身台资及内地供应商，进入全球AI产业链。<br>——涨价开启。近期日系厂商铝电解电容龙头厂商尼吉康、佳美工NCC将全系列产品涨幅上调至10%至15%，目前日系厂商报价100元以上，涨价前公司报价30-50元，涨价空间巨大，此次涨幅只是第一次调价，预计后续涨价带动利润弹性巨大。<br>——国内厂商拓产优势大于日本。电容拓产对高比容铝箔需求紧迫，江海自供比例70-80%，拓产需要电力能耗和环保指标，日本厂商无拓产优势。<br>——江海有望享受涨价与份额提升双红利。我们预计明年全球AI牛角电容月需求量预计超4000万支，公司2027年AI牛角电容有望拓产至1000-1200万支，伴随涨价的同时份额大幅提升。<br><br>【2】#超级电容Rubin标配_公司LIC与EDLC双线并行全面拓产<br>——超容需求大。超级电容主要用于机柜层级的电Ram，不仅新的Rubin机柜标配超级电容架，且GB300存在大量未选配超容的机柜，需要替换电磁方案补充配置超级电容。<br>——公司LIC与EDLC双线发力。LIC海外主要以武藏为核心供应商，但武藏工艺涉及纯锂、扩产难度和安全约束较高，公司LIC有望抢占更大份额，预计扩产300-400万颗/年。EDLC方案虽体积大但寿命长，需求巨大，我们预计公司有望拓产至400-600万颗/月。<br><br>【3】#MLPC松下已开启涨价_公司产品加速导入AI客户<br>——MLPC用于GPU的PCB板，解决最近距离的瞬时充放电需求。全球高容MLPC目前仍以松下为主，已发布涨价函将于7月1日起对SP-Cap涨价，产业链预计涨幅达20%～30%。<br>——公司与国内头部AI芯片客户联合研发，突破MLPC技术，有望同时供给国内与海外客户需求。预计海外MLPC需求量在10亿颗/年以上，松下产能仅可满足6亿颗/年，叠加国内AI客户需求，江海潜在MLPC空间巨大。<br><br>风险提示：Rubin放量节奏不及预期、公司扩产进度不及预期、价格传导不及预期。<br><br>联系人：郑元昊/孙恺祈/刘高畅#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p139">
+            <div class="full-header">[139] 08:59</div>
+            <div class="full-body">🥇【天风电子】半导体大涨：AI推动半导体超级周期🚀<br><br>🔥事件：今天半导体板块大涨，华虹+15%、中科飞测+13%、中芯+9%、兆易+10%。。。我们此前反复推荐，强调AI产业趋势很强，需求会把大部分相关的芯片环节供给拉爆，存储、GPU、CPU、模拟功率等供需紧张程度会持续加剧，上游晶圆厂产能也会被拉爆，无论是先进制程还是成熟制程，#我们全面看好半导体产业各个环节。#<br><br>🥇#长期看好晶圆代工厂有望价值重估！！！# 晶圆厂将持续成为稀缺资源！<br><br>AI需求旺盛，推动全球先进制程产能&amp;成熟制程产能持续吃进，先进代工&amp;成熟代工均#持续涨价，我们看好这一轮AI产业浪潮下，晶圆代工厂的价值重估！！！<br><br>— 台积电计划于下半年再度上调3纳米制程报价，涨幅最高达15%，明年可能进一步上涨5%至10%；<br>—联电宣布，2026年下半年将展开选择性涨价，2027年将更全面与客户就价格调整进行商议；<br>— 中芯国际今年明年分别涨价15%，华虹今年涨价10-15%，晶合集成3月涨价10%，6月将再涨10%，成熟制程全面紧缺；<br>— 我们判断这一轮AI产业浪潮带动的芯片需求增长将持续虹吸全球先进&amp;成熟代工产能，量价齐升逻辑#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p140">
+            <div class="full-header">[140] 08:59</div>
+            <div class="full-body">【HYDZ HL】美光财报一骑绝尘，持续看好存储及存储扩产链<br>🔥3QFY26收入、利润大超预期。美光3QFY26实现收入414.56亿美元，同比+346%、环比+74%，超市场预期（356.88亿美元）；实现净利润288.57亿美元，同比+1223%、环比+106%，超市场预期（235.63亿美元）；实现EPS 25.11美元，同比+1215%、环比+106%，超市场预期（20.49美元）。<br><br>🔥4QFY26指引超市场预期。美光指引4QFY26收入500亿美元，同比+324%、环比+21%，超市场预期（432.43亿美元）；指引4QFY26 EPS 31美元，同比+923%、环比+23%，超市场预期（25.31美元）。<br><br>🔥分业务来看：<br>1）DRAM：313.28亿美元，同比+343%、环比+67%，超预期（275.13亿美元）；<br>2）NAND：99.43亿美元，同比+361%、环比+99%，超预期（77.46亿美元）；<br><br>🔥【存储行业供给】DRAM和NAND在2027年以后仍保持紧张，即使预计2028年供给会逐步改善，但目前仍无法预见内存供应何时能够满足日益增长的需求；<br><br>#文字观点#</div>
+        </div>
+
+  <div class="footer">每日简报 · 自动生成</div>
+
+</div>
+</body>
+</html>
