@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+  }
+  .wrapper {
+    max-width: 680px;
+    margin: 0 auto;
+    background: #fff;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 24px 20px 20px;
+    text-align: center;
+  }
+  .header .label { font-size: 12px; color: #aaa; letter-spacing: 2px; margin-bottom: 4px; }
+  .header h1 { font-size: 20px; font-weight: 700; margin: 0 0 6px; color: white; }
+  .header .meta { font-size: 12px; color: #888; }
+  .stats-bar {
+    background: #f0f4ff;
+    border-bottom: 1px solid #dde5ff;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #555;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .sep { color: #ccc; }
+  .section { padding: 0 16px; margin-bottom: 4px; }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    padding: 16px 0 8px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 10px;
+  }
+  .section-title-star {
+    font-size: 15px;
+    font-weight: 700;
+    color: #92400e;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border: 1px solid #f59e0b;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 16px 0 10px;
+    display: block;
+  }
+  .star-item {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .star-count {
+    display: inline-block;
+    background: #f59e0b;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .star-analyst {
+    font-size: 13px;
+    font-weight: 700;
+    color: #92400e;
+    margin: 12px 0 6px;
+    padding: 4px 0;
+    border-bottom: 1px dashed #f59e0b;
+  }
+  .brief-item {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    border-left: 3px solid #ddd;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .alert-item {
+    background: #fff5f5;
+    border-left: 3px solid #e53e3e;
+  }
+  .tag-alert {
+    display: inline-block;
+    background: #e53e3e;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .tag-normal {
+    display: inline-block;
+    background: #4a5568;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .stock-label {
+    display: inline-block;
+    background: #f6ad55;
+    color: #7b3800;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin: 4px 4px 4px 0;
+    vertical-align: middle;
+  }
+  .stock-badge {
+    display: inline-block;
+    background: #fefcbf;
+    color: #744210;
+    border: 1px solid #f6ad55;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 3px 3px 3px 0;
+    vertical-align: middle;
+  }
+  .ref-link {
+    display: inline-block;
+    color: #3182ce;
+    background: #ebf8ff;
+    font-size: 11px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    margin-left: 2px;
+  }
+  .divider { border: none; border-top: 6px solid #f0f0f0; margin: 16px 0; }
+  .fulltext-header {
+    padding: 14px 16px 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #444;
+    border-bottom: 1px solid #eee;
+  }
+  .full-item { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; }
+  .full-header { font-size: 12px; font-weight: 700; color: #999; margin-bottom: 4px; }
+  .full-body { font-size: 13px; color: #333; line-height: 1.65; }
+  .footer { text-align: center; padding: 16px; font-size: 11px; color: #aaa; background: #f9f9f9; }
+  strong { color: #c05621; }
+  .plain { padding: 4px 0; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="label">每日简报</div>
+    <h1>【午报】2026年07月31日</h1>
+    <div class="meta">生成于北京时间 12:37</div>
+  </div>
+
+  
+    <div class="stats-bar">
+      <span>📅 09:00 – 12:30</span>
+      <span class="sep">|</span>
+      <span>共 <strong>138</strong> 条</span>
+      <span class="sep">|</span>
+      <span>覆盖 09:00 – 12:15</span>
+    </div><div class="section-title">📊 本地数据引擎（新增层）</div><div class="brief-item"><span class="tag-alert">【昨日战况】</span>07/30 暗盘68只/294亿（前一日07/29为102只/373亿）· 涨停52家。</div><div class="brief-item"><span class="stock-label">⭐潜伏池·讨论升温未启动</span><span class="stock-badge">机器人⭐提及339</span><span class="stock-badge">国泰海通⭐提及37</span><span class="stock-badge">兆易创新⭐提及29</span><span class="stock-badge">三环集团⭐提及25</span><span class="stock-badge">行云科技⭐提及24</span><span class="stock-badge">德明利⭐提及20</span><span class="stock-badge">金山办公⭐提及20</span><span class="stock-badge">博迁新材⭐提及17</span><span class="stock-badge">中文在线⭐提及17</span><span class="stock-badge">华熙生物⭐提及17</span><span class="stock-badge">贵州茅台⭐提及15</span><span class="stock-badge">巨人网络⭐提及15</span></div><div class="brief-item" style="font-size:12px;color:#888">图例：徽章 🔥=涨停级(红) · 暗盘N亿 · ⭐=潜伏池 · 绿=大跌 ｜ 标注=当日11:30午盘,暗盘为昨日</div>
+
+  <div class="section">
+    <div class="section-title">午报（2026-07-31）</div>
+<div class="section-title">🔍 上午验证</div>
+<p class="plain">**①早间/昨晚观点被盘面证实：**</p>
+<div class="brief-item"><strong>存储短缺至2028年、AI基建ROI回正</strong> → 三星Q2创史最强盈利季、SK海力士ADR涨28%、美光涨18%，五年长约60-70%产能锁定供缺预期</div>
+<div class="brief-item"><strong>云厂AI商业化拐点</strong> → 微软Azure +43%年化破千亿美元、AWS +37%创18季新高、OpenAI 7月ARR增量超Q2整季，企业付费与应用订单全面加速</div>
+<div class="brief-item"><strong>光互连/PCB成AI基建瓶颈</strong> → 费城半导体+8.19%、DRAM指数+16.70%，Lam Research +18%用真实订单反驳中国DUV替代论，光模块和CPO长交期推高价值量</div>
+<p class="plain">**②下午关键观察点：**</p>
+<div class="brief-item"><strong>Token降价驱动应用爆发拐点</strong> → OpenAI Luna降80%应对中国大模型竞争，类杰文斯悖论Token成本下降往往带来调用量非线性增长，AI编程/影视/办公变现加速</div>
+<div class="brief-item"><strong>机器人产业化实锤双催化</strong> → Gemini Robotics 2跨本体迁移突破，宇树IPO时间确定（8月中下旬），从论文→产业→融资的完整闭环形成</div>
+<div class="brief-item"><strong>消费AI硬件需求确认</strong> → 小米澎程定价大幅下探，北美AIDC电力约束拉高SOFC长期订单，数据中心一体化成本下降推高渗透率</div>
+<p class="plain">**③上午新冒出标的与突发新闻：**</p>
+<div class="brief-item">🔥 <strong>宇树科技IPO时间确定</strong>：8月5日初步询价、8月10日网下申购，预计8月中下旬登陆科创板</div>
+<div class="brief-item">🔥 <strong>小米澎程N70/N90定价公布</strong>：分别25.99/29.99万元，大幅低于同尺寸竞品，空间与续航刷新上限</div>
+<div class="brief-item">🔥 <strong>OpenAI主动降价Luna 80%</strong>：直击DeepSeek & Kimi压力点，Token经济学进入平价竞争阶段</div>
+<div class="brief-item">🔥 <strong>Gemini Robotics 2架构突破</strong>：无需微调驱动多本体，跨本体迁移成为产业技术路线统一信号</div>
+<p class="plain">---</p>
+<div class="section-title">📊 提及热度Top</div>
+<div class="brief-item">机器人(20次)·<strong>多头</strong>·Gemini Robotics突破、宇树IPO启动，两大催化激活产业链</div>
+<div class="brief-item alert-item">国际复材(7次)·<strong>多头</strong>·电子布涨价延续，8月单月涨幅有望超预期</div>
+<div class="brief-item">中信证券(5次)·<strong>中性</strong>·存储与光通信投资机会覆盖聚焦</div>
+<div class="brief-item alert-item">宏和科技(5次)·<strong>多头</strong>·特种电子布快速起量，高端结构支撑涨价</div>
+<div class="brief-item">金山办公(5次)·<strong>多头</strong>·腾讯WorkBuddy深度绑定，AI办公付费用户持续高增</div>
+<div class="brief-item">国联民生(5次)·<strong>中性</strong>·宏观与产业研究重点强调CSP与应用闭环</div>
+<div class="brief-item">易点天下(4次)·<strong>多头</strong>·微软Azure生态ISV首选，出海营销赛道稀缺</div>
+<div class="brief-item">税友股份(4次)·<strong>多头</strong>·AI驱动财税产业数字化，WorkBuddy概念受益</div>
+<p class="plain">---</p>
+<div class="section-title">🧭 星球×系统</div>
+<p class="plain">**情绪向好但资金介入仍需落地验证**：隔夜美股存储与云业绩双击激活风险偏好，A股今晨竞价定调偏多、创业板高开5.15%，标志市场情绪从"恐慌杀跌"向"业绩兑现"翻转。但系统端竞价中位仅+0.62%、昨强承接-1.3%（62只破位），反映资金介入仍有节制。**以数据为准**：AI商业化闭环需要更多实装订单与付费数据落地验证，建议观察下午高开能否维持、盘中成交额与产业资金流向决定反弹高度。</p>
+<p class="plain">---</p>
+<div class="section-title">♻️ 延续观点</div>
+<div class="brief-item">存储供缺至2028年 · 早报已覆盖 · 三星HBM4四季度收入环比3倍+，五年长约60-70%产能锁定，供缺预期由渠道进入客户体系</div>
+<div class="brief-item">云业务加速 · 早报已覆盖 · 微软Azure续破预期至45%、亚马逊AWS订单4960亿美元同比+150%，长期Capex能见度至2028年</div>
+<div class="brief-item alert-item">涨价共振 · 早报已覆盖 · MLCC全线满载、电子布8月持续涨价、光模块长交期推高mSAP价值量</div>
+<div class="brief-item">光互连成瓶颈 · 早报已覆盖 · 英伟达投资康宁、光模块800G→1.6T→3.2T非线性升级驱动</div>
+<p class="plain">---</p>
+<div class="section-title">🔴 分类1：供需/涨价/缺货/交期信号</div>
+<div class="brief-item alert-item"><span class="tag-alert">【MLCC三季度加速涨价·3次新增】</span>原厂全线满载、Q3进入加速涨价期，现货价格已于本周企稳回暖，部分代理商停止接单；三季度AI服务器Rubin等单柜用料增速超100%，供需缺口进一步放大，终端逐步接纳涨价预期。<span class="stock-label">相关标的</span><span class="stock-badge">风华高科</span><span class="stock-badge">三环集团</span><span class="stock-badge">昀冢科技</span><span class="stock-badge">火炬电子</span>[→ #037 #048]</div>
+<div class="brief-item"><span class="tag-normal">【存储芯片长协供缺至2028年·1次新增】</span>三星将60-70%产能分配给五年长期协议，HBM4三季度收入环比3倍+、年内占HBM收入60%以上；亚马逊表示即便2200亿美元Capex仍无法满足26年需求，27年同样面临产能不足。<span class="stock-label">相关标的</span><span class="stock-badge">长鑫科技</span><span class="stock-badge">兆易创新</span><span class="stock-badge">SK海力士</span><span class="stock-badge">美光</span>[→ #003 #028]</div>
+<div class="brief-item alert-item"><span class="tag-alert">【电子布八月涨价持续超预期·2次新增】</span>七月初7628电子布涨至8.5-8.7元/米，8月预计单月涨幅1.5元/米以上；供给端再现短缺（光远停产），2116/1080薄布月涨幅20%，电子纱G75环比+17%，下游库存告急确保涨价延续。<span class="stock-label">相关标的</span><span class="stock-badge">国际复材</span><span class="stock-badge">宏和科技</span><span class="stock-badge">中国巨石</span><span class="stock-badge">中材科技</span>[→ #031 #037 #038]</div>
+<div class="brief-item alert-item"><span class="tag-normal">【光模块mSAP产能吃紧价格上涨·2次新增】</span>800G→1.6T→3.2T升级路径中mSAP价值量非线性增加，26年市场规模超百亿、27年有望超400亿；工艺难度超BT载板、设备交期近2年，产能吃紧预计下半年价格继续上涨。<span class="stock-label">相关标的</span><span class="stock-badge">景旺电子</span><span class="stock-badge">鹏鼎控股</span><span class="stock-badge">胜宏科技</span>[→ #037 #127]</div>
+<div class="brief-item"><span class="tag-normal">【钽铌矿供需剪刀差扩大·1次新增】</span>国内钽矿进口量仅增13%远低于中下游出口增速，下游国巨/有研新材纷纷扩产，中游东方钽业扩产300%，但上游非洲停产、刚果金资源税升至10%，剪刀差进一步强化、下半年钽矿价格有望上涨。<span class="stock-label">相关标的</span><span class="stock-badge">新金路</span><span class="stock-badge">东方钽业</span><span class="stock-badge">中矿资源</span>[→ #017 #048]</div>
+<div class="brief-item"><span class="tag-normal">【液冷一体化方案成AIDC核心约束·1次新增】</span>品牌方现期交期均已满，AI数据中心液冷模组批量出货预期下半年超千套，公司与头部本体厂商谈股权合作有望落地。<span class="stock-label">相关标的</span><span class="stock-badge">东方电热</span><a href="https://wx.zsxq.com/group/15555851111822/topic/45544225584184858" class="ref-link" target="_blank">→ #107</a></div>
+<p class="plain">---</p>
+<div class="section-title">💻 分类3：半导体/晶圆代工/芯片设备</div>
+<div class="brief-item"><span class="tag-normal">【CSP财报验证AI CapEx ROI回正·5次新增】</span>微软Azure +43%同比加速、年化营收破1000亿美元，企业Copilot付费席位环比+50%至3000万；亚马逊AWS +37%创18季新高、AI与自研芯片年化收入双双破250亿；四大CSP长期履约订单1.7万亿美元同比+152%，AI投入从"纯消耗"转向"高效生产资料"、服务器回本周期不到3年、客户长协期限至少5年。<span class="stock-label">相关标的</span><span class="stock-badge">中芯国际</span><span class="stock-badge">华虹宏力</span><span class="stock-badge">长川科技</span><span class="stock-badge">华峰测控</span><span class="stock-badge">北方华创</span><span class="stock-badge">中微公司</span>[→ #003 #007 #028 #046 #098]</div>
+<div class="brief-item"><span class="tag-normal">【LRCX二季度超预期·1次新增】</span>设备系统收入创新高、毛利率超指引上限，存储收入创历史新高占比46%；上修全年WFE市场至1500亿美元、预计连续三年跑赢；2027年DRAM预计为增长最快细分市场，先进封装业务收入预计同比增长70%+。<span class="stock-label">相关标的</span><span class="stock-badge">北方华创</span><span class="stock-badge">拓荆科技</span><span class="stock-badge">中科飞测</span><span class="stock-badge">屹唐股份</span><a href="https://wx.zsxq.com/group/15555851111822/topic/45544225584854848" class="ref-link" target="_blank">→ #082</a></div>
+<div class="brief-item"><span class="tag-normal">【国产内存替代进展·1次新增】</span>苹果获批将长鑫DRAM用于国行入门iPhone与基础款iPad，最快2027年下半年小批量供货，打开国产替代空间。<span class="stock-label">相关标的</span><span class="stock-badge">长鑫科技</span>[→ #043 #059]</div>
+<p class="plain">---</p>
+<div class="section-title">🤖 分类4：AI/算力/光模块/数据中心</div>
+<div class="brief-item"><span class="tag-normal">【Gemini Robotics 2跨本体迁移突破·6次新增】</span>谷歌DeepMind发布三层架构：VLA（全身执行）+ER 2（推理大脑）+On-Device 2（端侧），首次解锁全身控制、精细灵巧操作与多机器人协作；无需微调驱动2个本体与3个灵巧手，跨本体成功率未公布但架构收敛标志产业技术方向统一。<span class="stock-label">相关标的</span><span class="stock-badge">宇树科技</span><span class="stock-badge">优必选</span><span class="stock-badge">上纬新材</span><span class="stock-badge">睿创微纳</span><span class="stock-badge">奥比中光</span>[→ #006 #010 #014 #051 #069 #078]</div>
+<div class="brief-item"><span class="tag-normal">【光互连成AI基础设施核心瓶颈·5次新增】</span>Lumentum涨15%、Coherent涨12%、订单排至2028年；英伟达投资康宁5亿美元新建三座AI专供工厂产能提升50%；光互连龙头份额稳中有升、27年估值不到10倍性价比高；AI基础设施瓶颈已扩散至电力、机房、网络设备，综合整合能力成核心竞争力。<span class="stock-label">相关标的</span><span class="stock-badge">中际旭创</span><span class="stock-badge">新易盛</span><span class="stock-badge">源杰科技</span><span class="stock-badge">天孚通信</span><span class="stock-badge">东山精密</span><span class="stock-badge">光迅科技</span>[→ #120 #121 #122 #123]</div>
+<div class="brief-item"><span class="tag-normal">【OpenAI 7月ARR加速，降价驱动Token消耗·2次新增】</span>7月单月新增ARR超整个Q2，从6月底420亿美元增至7月底逼近600亿美元；同步推出Luna模型降价80%应对中国DeepSeek竞争，Token成本大幅下降有望驱动应用爆发、单价下探往往带来调用量非线性增长。<span class="stock-label">相关标的</span><span class="stock-badge">金山办公</span><span class="stock-badge">泛微网络</span><span class="stock-badge">税友股份</span><span class="stock-badge">腾讯</span><span class="stock-badge">美图</span><span class="stock-badge">迈富时</span>[→ #087 #119 #122 #123]</div>
+<div class="brief-item"><span class="tag-normal">【特斯拉Optimus V3产业链受益·2次新增】</span>V3新增电子皮肤、高阶液冷、精密关节等环节产业链拉动，同步宇树IPO启动、人形机器人产业化加速。<span class="stock-label">相关标的</span><span class="stock-badge">恒帅股份</span><span class="stock-badge">鸣志电器</span><span class="stock-badge">斯菱股份</span><span class="stock-badge">科达利</span><span class="stock-badge">新泉股份</span><span class="stock-badge">福赛科技</span><span class="stock-badge">北特科技</span>[→ #051 #070]</div>
+<p class="plain">---</p>
+<div class="section-title">📱 分类5：消费电子/被动元器件</div>
+<div class="brief-item"><span class="tag-normal">【苹果26Q2业绩超预期，Q3指引受供应限制·1次新增】</span>收入创6月季记录同比+16.4%、净利润同比+27.1%；iPhone +21.7%、Mac +28.7%创新高；Q3指引同比9-11%，供应短缺显著加剧、存储成本进一步上涨、正在评估增加供应商。<span class="stock-label">相关标的</span><span class="stock-badge">立讯精密</span><span class="stock-badge">大族激光</span><span class="stock-badge">高伟电子</span><a href="https://wx.zsxq.com/group/15555851111822/topic/82255442255158212" class="ref-link" target="_blank">→ #015</a></div>
+<div class="brief-item"><span class="tag-normal">【百胜中国同店持续正增，门店高速增长·2次新增】</span>26Q2同店+1%连续第14季度正增，净新增560家创Q2新高；必胜客收购利润率提升2.8pcts，预计27年新增超800家门店；外卖占比54%同比+26%为收入主驱动。<span class="stock-label">相关标的</span><span class="stock-badge">百胜中国</span>[→ #102 #104]</div>
+<div class="brief-item"><span class="tag-normal">【小米澎程N70/N90定价超预期·1次新增】</span>N90 Max定价29.99万、N70 Max定价25.99万，显著低于同尺寸竞品；昆仑架构纯平地板、可变座舱刷新SUV空间逻辑、续航与安全配置同步升级，预计销量超预期。<span class="stock-label">相关标的</span><span class="stock-badge">小米集团</span>[→ #061 #062]</div>
+<p class="plain">---</p>
+<div class="section-title">🏭 分类6：PCB/CCL/覆铜板</div>
+<div class="brief-item alert-item"><span class="tag-alert">【PCB产业链高端化接力，涨价共振·5次新增】</span>（续早报）电子布涨价驱动下，CCL树脂与铜箔作为高频传输支撑核心，供给紧缺格局持续；东材科技+15倍估值提升空间，树脂特种化难度奠定技术壁垒；铜冠铜箔表面粗糙度直接决定高频信号质量，26-27年利润增长150%+。<span class="stock-label">相关标的</span><span class="stock-badge">生益科技</span><span class="stock-badge">圣泉集团</span><span class="stock-badge">德福科技</span><span class="stock-badge">东材科技</span><span class="stock-badge">铜冠铜箔</span>[→ #031 #037 #038]</div>
+<div class="brief-item"><span class="tag-normal">【mSAP光模块PCB成下一个通胀主角·2次新增】</span>800G→1.6T→3.2T升级推动mSAP价值量数倍提升，1.6T已全面采用、3.2T价值量又有数倍增长；景旺电子是全球mSAP量产供应商、光模块客户突破超预期、良率爬坡与扩产成明年核心增速来源。<span class="stock-label">相关标的</span><span class="stock-badge">景旺电子</span><span class="stock-badge">鹏鼎控股</span><span class="stock-badge">胜宏科技</span><span class="stock-badge">深南电路</span>[→ #037 #127]</div>
+<p class="plain">---</p>
+<div class="section-title">🦾 分类8：机器人/物理AI</div>
+<div class="brief-item"><span class="tag-normal">【人形机器人产业化加速两大催化·3次新增】</span>Gemini Robotics 2突破跨本体迁移能力，宇树科技IPO启动时间确定（8月中下旬登陆科创板），标志具身智能从论文走向产业化的拐点；本体企业启动融资/IPO，国产机器人产业资本化加速。<span class="stock-label">相关标的</span><span class="stock-badge">宇树科技</span><span class="stock-badge">优必选</span><span class="stock-badge">锋龙股份</span><span class="stock-badge">上纬新材</span>[→ #006 #051 #069 #078 #128]</div>
+<div class="brief-item"><span class="tag-normal">【特斯拉Optimus全产业链受益·4次新增】</span>V3新增灵巧手、电子皮肤、液冷、关节拉动零部件产业链迭代；恒帅股份主供电机、斯菱股份谐波减速器、北特科技关键零部件、浙江荣泰总成，产业链高度确定。<span class="stock-label">相关标的</span><span class="stock-badge">恒帅股份</span><span class="stock-badge">鸣志电器</span><span class="stock-badge">斯菱股份</span><span class="stock-badge">科达利</span><span class="stock-badge">新泉股份</span><span class="stock-badge">福赛科技</span><span class="stock-badge">北特科技</span><span class="stock-badge">浙江荣泰</span>[→ #051 #070 #128]</div>
+<div class="brief-item"><span class="tag-normal">【数据采集成物理AI核心卡点·2次新增】</span>大规模数采是具身模型走向成熟的必经之路；奥比中光发布数据采集全系列新品、大订单有望持续落地，传感器与数据平台企业成核心受益方。<span class="stock-label">相关标的</span><span class="stock-badge">奥比中光</span><span class="stock-badge">睿创微纳</span><span class="stock-badge">源杰科技</span>[→ #078 #125]</div>
+<p class="plain">---</p>
+<div class="section-title">💊 分类9：医药/生物/创新药</div>
+<div class="brief-item"><span class="tag-normal">【先声药业中报超预期·1次新增】</span>26H1收入45.5-46.1亿元同比+26.9-28.6%、归母净利同比+34.8-43.1%；创新药销售+对外许可收入驱动利润高增，多款新药临床进展顺利。<span class="stock-label">相关标的</span><span class="stock-badge">先声药业</span><a href="https://wx.zsxq.com/group/15555851111822/topic/22255442285551111" class="ref-link" target="_blank">→ #060</a></div>
+<div class="brief-item"><span class="tag-normal">【英派药业塞纳帕利欧洲独家授权·1次新增】</span>与Pharmanovia达成66国独家授权、总对价最高4.235亿欧元+分级特许权费，EMA预计下半年获批；国内已纳入医保由华东医药推广。<span class="stock-label">相关标的</span><span class="stock-badge">英派药业</span><a href="https://wx.zsxq.com/group/15555851111822/topic/14422114452855442" class="ref-link" target="_blank">→ #113</a></div>
+<p class="plain">---</p>
+<div class="section-title">🔩 分类10：材料/有色/稀土</div>
+<div class="brief-item alert-item"><span class="tag-alert">【有色金属涨价预期形成·3次新增】</span>PCE转负、美债利率下行、宏观逆风消解，黄金+1.58%、期铜+1.6%；央行购金再创新高、铜库存极端低位、极端天气扰动供给，黄金与铜板块估值回归11-12倍后有望实现盈利与估值双击。<span class="stock-label">相关标的</span><span class="stock-badge">洛阳钼业</span><span class="stock-badge">江西铜业</span><span class="stock-badge">五矿资源</span><span class="stock-badge">西部矿业</span><span class="stock-badge">招金矿业</span><a href="https://wx.zsxq.com/group/15555851111822/topic/82255442285111142" class="ref-link" target="_blank">→ #118</a></div>
+<p class="plain">---</p>
+<div class="section-title">🏦 分类11：宏观/货币/大宗</div>
+<div class="brief-item alert-item"><span class="tag-normal">【美国二季度GDP放缓、PCE转负缓解通胀压力】</span>二季度GDP低于预期、私人消费+投资增速反而回升至3.9%；PCE环比-0.1%六年来首次转负、同比涨幅从4.1%收窄至3.7%，缓解长端利率失控担忧。<a href="https://wx.zsxq.com/group/15555851111822/topic/82255442258588512" class="ref-link" target="_blank">→ #027</a></div>
+<div class="brief-item"><span class="tag-normal">【韩国政府向主权财富基金注入140亿美元投资AI】</span>政府在韩国投资公司内设新账户、初始资金至少20万亿韩元，首次将基金投资范围扩大至国内资产。[→ #001 #008 #074]</div>
+<div class="brief-item alert-item"><span class="tag-normal">【日本央行维持利率1%，日元汇市干预·1次新增】</span>日本央行与纽约联储同步进行大规模日元干预，日元盘中暴涨超3%至158.26创2024年8月来最大涨幅。<a href="https://wx.zsxq.com/group/15555851111822/topic/82255442288455482" class="ref-link" target="_blank">→ #129</a></div>
+<p class="plain">---</p>
+<div class="section-title">📊 分类12：市场策略/盘面观点</div>
+<div class="brief-item"><span class="tag-normal">【底部已至，AI景气验证激活反弹】</span>费城半导体指数22次大跌后反弹历史经验表明阶段性止跌信号出现，后续一个月平均上涨3-4%；微软+15.51%、亚马逊+9.53%标志AI商业化闭环从财报指引转向实装订单落地验证。[→ #039 #046 #050 #085 #097 #115]</div>
+<div class="brief-item"><span class="tag-normal">【AI应用变现开启驱动全线大涨】</span>OpenAI降价Luna 80%刺激Token消耗爆发、腾讯WorkBuddy突破2000万月活、美图AI应用环比+46%，AI应用从"逻辑叙事"转向"业绩兑现"、估值底部配置窗口开启。[→ #080 #083 #086 #093 #123 #124]</div>
+<p class="plain">---</p>
+<div class="section-title">📰 分类13：其他重要信息</div>
+<div class="brief-item"><span class="tag-normal">【国家发改委：十五五算力网投资4万亿元·2次新增】</span>发改委研究制定2026-2030年扩大内需战略方案；十五五算力网建设新增直接投资4万亿元，为民间投资创造巨大空间。[→ #073 #117]</div>
+<div class="brief-item"><span class="tag-normal">【宇树科技FCC认证现有产品无碍，后续需豁免·1次新增】</span>美国FCC新增先进机器人设备列入管制清单，现有G1、H2、R1、Go2等主要产品已取得认证不受影响，后续新型号需获特定豁免才能销售。<a href="https://wx.zsxq.com/group/15555851111822/topic/14422114452542142" class="ref-link" target="_blank">→ #081</a></div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="fulltext-header">📄 全文（点击简报中的编号可跳转）</div>
+  
+        <div class="full-item" id="p001">
+            <div class="full-header">[001] 09:00</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 韩国计划在市场暴跌后为财富基金 的AI投资注入140亿美元 由彭博AI总结 • 韩国计划向其主权财富基金注资20万亿韩元，用 于在人工智能、数据中心和基础设施领域的战略投 •政府将在韩国投资公司内部设立该账户，初始 资金至少为20万亿韩元，资金将来自包括公 共机构股权投入在内的多种来源。 • 该新账户将支持战略产业的增长，同时为后代创 造收入，并作为国家经济安全、外汇和资产市场 的缓冲。</div>
+        </div>
+
+        <div class="full-item" id="p002">
+            <div class="full-header">[002] 09:00</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 李在明 首席投资官（青瓦台投顾） KOSPI V 3245.88（+1.10%） SAIS 三星69,500（+0.5%） SK海 士（+1.2%） KOSPI 今日KOSPI（綜合指數） 3241.5 KOSP！ T场概览 +1.1% 股市直播 BLUE HOUSE 青瓦台投顾 是你自己在最低点卖掉 抱怨黄金时代结束了那不关我的事 KOSA KOSR！</div>
+        </div>
+
+        <div class="full-item" id="p003">
+            <div class="full-header">[003] 09:01</div>
+            <div class="full-body">三星2Q26：五年长约锁定供给，HBM4三季度收入环比3倍+<br><br>三星2Q26收入171.5万亿韩元（QoQ+28%），营业利润89.5万亿韩元（QoQ+56%）；DS营业利润89.2万亿韩元，存储收入120.8万亿韩元（QoQ+62%）。业绩会增量如下：<br><br>1：五年长约预计覆盖60%–70%产能<br>已与全球Top 5数据中心客户完成长约，另有五家进入最终谈判，落地后DRAM及NAND长约预计覆盖60%–70%产能。合同以五年为基础滚动续期，包含双向约束、预付款及价格底线。公司预计2028年前难有显著新增供给，2027年缺口将较2026年进一步扩大。<br><br>2：存储量价继续超预期<br>2Q DRAM bit环比+low teens、ASP+mid-40%，NAND bit环比+low single digit、ASP+high-60%。3Q DRAM/NAND bit指引分别为环比mid-single digit/high-single digit，供给增长仍受产能限制。服务器SSD预计占全年NAND收入60%以上，同比提升20pct+。<br><br>3：HBM4三季度收入环比3倍+<br>公司预计3Q HBM4收入环比增长3倍以上，2H占HBM收入比例显著超过60%，下半年HBM份额有望提升至与三星整体DRAM份额大致相当。2027年HBM供应协议已经签署，HBM4E样品验证顺利，计划按主要客户进度商业化。<br><br>4：奖金仍将影响后续利润，特别分红待公布<br>2Q累计计提上半年特别奖金，规模约为累计营业利润的10.5%，约15万亿韩元量级；部分计入存货，将从3Q起随销售逐步进入成本。公司正讨论今年特别分红及下一周期股东回报政策，预计近期披露，相关股份回购倾向分阶段执行。<br><br>5：先进晶圆厂满载，Taylor二厂年底开工<br>8nm及以下产线已满载，2nm获得主要CSP及AI/HPC客户项目，2026年项目获单数预计同比翻倍以上。Taylor Fab 1计划年内运营并爬坡2nm，Fab 2计划年底开工、2030年量产；利用率、良率及价格改善推动Foundry近期扭亏预期升温。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p004">
+            <div class="full-header">[004] 09:02</div>
+            <div class="full-body">太阳循着新增需求找投资方向<br>礼物强call龙星科技（002442）： 可持续炭黑sCB已量供，正规划扩产<br><br>红包据7月23日公司公告，<br>1、万吨级订单： 公司可持续绿色炭黑sCB已量供，首期订单近万吨，并与欧洲大型轮胎企业达成sCB开发计划/正推进其他客户的送样和认证工作。<br><br>2、经济性更优： 可持续炭黑sCB与传统回收炭黑rCB不同，是轮胎热裂解产生的轮胎裂解油（TPO）部分或全部替代煤焦油等作为原料生产的炭黑，被视为最具潜力和确定性的绿色炭黑发展方向，#其经济效益优于传统炭黑。#  <br><br>3、已规划扩产： 基于下游需求，sCB的扩产计划已在规划中。<br>————————————<br>❓投资思路？#循着新增需求找方向#  <br>欧盟绿色监管愈加严苛，多家轮胎企业到2030年要实现40%的再生材料替换目标，催生绿色炭黑百万吨需求/百亿蓝海市场；<br><br>📈量价齐升： 龙星科技已经顺利量产，斩获欧洲大型轮胎客户万吨级订单，后续就是扩产&amp;拿订单的逻辑（公司明确指出已在规划扩产，并开拓其他客户）；据公告，sCB经济效益优于传统炭黑。<br><br>👍强烈推荐！<br>HXi化工-WLL#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p005">
+            <div class="full-header">[005] 09:03</div>
+            <div class="full-body">🔴【上海电气】：燃机出海持续推进，自身盈利能力持续提升中<br><br>➡公司目前努力推进首台重燃出海，在首台出海后有望获得海外运行业绩，进而推动公司在其他获准区域获取订单。<br><br>➡公司合资燃机产能充足，足以应对未来几年潜在的全球燃机市场订单需求；公司自主知识产权燃机-35MW级进展顺利，有望于2027年推出。<br><br>➡其他主业维度，煤电收入及订单持续增长，低价订单已完全消化，毛利率恢复正常水平，无需担忧；储能业务新增订单及收入增长明显，成为拉动公司设备增长的另一引擎；输配电业务受益于国内&amp;海外电力基建投资增加，未来将成为公司出海战略重要一环。<br><br>➡考虑GEV二季报披露燃机订单增速依然较高、海外三大燃机巨头产能受限供应能力不足，全球其他市场燃机需求将被延迟满足，公司具备的重燃产能或将采取直接或间接方式匹配客户需求（AIDC&amp;公用&amp;工业），叠加公司持续改善的管理及费用控制能力，后续公司自身盈利能力将进一步修复。在当前市场形势下，我们建议重点关注港股买入机会。<br><br>欢迎联系：西部电新刘荣辉#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p006">
+            <div class="full-header">[006] 09:03</div>
+            <div class="full-body">🌸Gemini Robotics 2：“跨本体+长任务”和“分层架构”-0731<br><br>我们在0718的WAIC见闻（上）中重点提到#“跨本体+长任务”是具身模型泛化性的较高评判标准，近期包括0723 发布的GEN-1（针对灵巧手的“跨本体”）、0727发布的智元τ0-VLA（针对“长任务”）纷纷印证产业朝着这两大趋势发展，而0730发布的Gemini Robotics 2进一步强化了“跨本体+长任务”这两大方向。另外，我们在上周周报提到的#“分层架构”# 思想在Gemini Robotics 2亦有显著体现。<br><br>结合个人理解，简单阐述DeepMind三个模型在模型架构和模型能力的亮点：<br><br>🥇模型架构：分层。虽有3个模型，但仍然是两层架构，分别是Gemini Robotics ER 2负责高层语义子任务，Gemini Robotics 2负责低层连续动作生成。从结果来看，分层结构对下面两大能力有重要影响。<br><br>🥈模型能力：跨本体+长任务。<br><br>#跨本体。博客提到，在无需微调的情况下，模型能驱动2个本体和3个灵巧手操作。<br><br>要实现跨本体，最重要是完成对不同本体和灵巧手数据的动作空间对齐，将这些数据放在放在同一架构中共同建模，比如阿里近期发布的Qwen-RobotManip，实际上就是设计了设计80维的通用动作模版，让不同数据全部映射至同一表征空间。（这一思想和能力亦在蚂蚁、智元、星海图等模型中出现，差别实际上要看最终跨本体的成功率）<br><br>#长任务。博客提到，机器人能够更可靠地执行数分钟以及数百个决策的长任务序列，且能精确定位关键事件发生的时刻。<br><br>这一长任务的能力本质是就是来自分层架构。从原理来看，实际上是将复杂任务拆分为多个小任务，能让机器人在长时间内跟踪各个小任务的进度，同时依靠上层的抽象记忆完成对单个小任务失败后的快速恢复。（这一思想和能力在pi0.5、Gemini Robotics 1.5、τ0-VLA等均有体现，差别实际上要看最终长任务的成功率）<br><br>‼️简而言之，结合我们在上述举例提到的其他顶级具身模型，可以发现，Gemini Robotics 2从架构和能力来看，沿用了产业聚焦的几大前沿方向，从影响意义来看，我认为这实际上代表着#行业顶级玩家在“通用具身模型”奠定了技术路线收敛的基调。<br><br>By Lsk#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p007">
+            <div class="full-header">[007] 09:04</div>
+            <div class="full-body">至今日，四大科技财报都已落地：<br><br>Ai回报（cloud）均大超预期<br>（gcp+80% beat 65%，azure+43% beat 40%，aw+37% beat 31%）<br><br>Ai capex温和上修<br>（goog+100，msft/meta不变，amzn+200）<br><br>自由现金流转负落地，<br>市场从goog时抗拒到amzn时的默许。<br>（goog amzn都转负 meta也近似）<br><br>平心而论，这已是最理想的剧本。<br><br>只要中国模型冲击、美伊冲突有所收敛，8月全球Ai应开启反弹。<br>下一个高点，应是A社ipo造势+沃哥暗示不再加息，预计在9月。<br>#文字观点#<br>[含1张图]<br>[图1OCR] 全部上调指引，仅微软出现一次会计口径微调，但全年投入规模依然远高于去年 1.谷歌上调 2026全年指引从1800~1900亿一1950~2050亿美元，Q2单季 capex 449亿同比翻 倍，明确2027年开支继续大增。 2.特斯拉上调 2026全年指引由200亿上调至≥250亿美元，投向Dojo算力、Terafab晶圆厂、机器人 产线，未来2~3年资本开支持续上行。 3. 英特尔上调 全年资本开支从180亿上调至200亿美元以上，加码先进制程、代工与封装产能，2027 年开支将进一步提升。 4.海力士上调 2026年资本开支上调至48？50万亿韩元区间高位（约275亿美元），高于2025年的 30.17万亿韩元，重点扩产HBM产能。 5. Meta上调 最新Q2财报将指引下限抬升：由1250~1450亿 一 1300~1450亿美元，年初最初指引 仅1150~1350亿，连续两轮上调。 6. 微软特殊情况 4月上调至1900亿美元（同比大增61%）；7月末公告小幅下调至1750亿，原因为会计 规则调整（部分资产重分类），实质AI硬件采购、算力建设投入并没有收缩，整体投入 依旧是大幅扩张，相比2025年依然是高增长。 7.亚马逊上调 2026年开支至2200亿美元，此前预期2000亿美元，AWS 业务增速达37%，超出市 场预期的 35-36%（创 18个季度以来最快增速），AI</div>
+        </div>
+
+        <div class="full-item" id="p008">
+            <div class="full-header">[008] 09:04</div>
+            <div class="full-body">韩国计划向其主权财富基金注入 20 万亿韩元（139 亿美元），用于人工智能、数据中心和基础设施领域的战略投资。<br>[含1张图]<br>[图1OCR] 韩国计划斥资140亿美元投资主权财富基 金的人工智能项目，此前韩国股市暴跌 作者：Haram Lim July 31, 2026 at 7:30 AM GMT+8 更新于July 31, 2026 at 8:42 AM GMT+8 阅读最多 芯片股创7 市场综述 贝节省）（亥翻译~（の听 2:32） 债券收益 告 韩国计划向其主权财富基金注入20万亿韩元（139亿美元），用于人 工智能、数据中心和基础设施领域的战略投资。此前，韩国科技股遭 遇重挫，这是韩国首次将该基金的投资范围扩大到包括国内资产。 华纳兄弟 亿美元 微软市值森 高 根据周五发布的一份声明，政府将在韩国投资公司（Korea Investment Corporation）内设立该账户。声明称，该账户初始资金 至少为20万亿韩元，资金来源包括政策性银行等公共机构的股权出 资。 Meta 在回 智能投资后 虽然声明没有将政府的计划与当前的市场动荡联系起来，但该声明是 在本周该国股市遭受重创之后发布的，此前政府也采取了一系列措施 来稳定股市。 韩国综合股价指数（KOSPI）周五早盘一度飙升14%，从本周早些时候 的暴跌中反弹。此前三个交易日，该指数累计下跌超过17%，原因是市 场担忧债务水平上升，以及对两大芯片巨头支撑人工智能行业的巨额 资本支出日益产生疑虑。 韩国政府表示，做出这一决定是出于“积极应对”全球对韩国日益增长</div>
+        </div>
+
+        <div class="full-item" id="p009">
+            <div class="full-header">[009] 09:05</div>
+            <div class="full-body">☎中信主题策略刘易团队-“AI+上游通胀”主题核心品种【平安电工001359】2026年中报业绩解读电话会议邀请<br><br>#股权激励落地&amp;特种电子布进入快车道#<br><br>[烟花]PCB、覆铜板向高频高速方向持续提升趋势下，普通玻纤布难以满足相关性能要求，带来了LowDk、LowCTE系列特种电子布新增需求。平安电工依托全资子公司同力玻纤，全面布局特种电子布。公司在手高端织机充裕（且争取到的新订额度亦较为可观），特种电子纱自供能力快速提升ing，【日韩、台及大陆】头部客户同步拓展中。<br><br>为匹配新业务快速拓展，公司亦在今晚公告了其上市以来首次股权激励计划，拟授予股票期权及限制性股票合计600万股，达总股本2.49%，力度大、时点准🎯<br><br>值此中报披露之际，特邀公司领导与投资者就经营近况及新产品进展，第一时间进行线上解读和分享!<br><br>[烟花]同时，我们也将在8月5日（下周三）组织公司【武汉工厂织布车间首次】公开调研，实地感受车间繁忙的生产现状，欢迎各位投资者与我们团队联系。<br><br>⏰<br>时间：2026年7月31日（周五） 上午8:30<br>嘉宾：董秘 李俊<br>主持人：中信主题策略首席 刘易；中信主题策略分析师 田鹏<br> <br>加入电话端：<br>中国大陆 4008108228/4008108128<br>海外 861058084166<br>中国香港 85230051313/85230051355<br>中国台湾 0800666425<br>新加坡 6568185374<br>美国 16462543594<br>英国 441213680466<br><br>电话参会人密码：411140  提问 *1<br>白名单： 启用crm白名单 <br>网络参会: [中信证券]<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p010">
+            <div class="full-header">[010] 09:05</div>
+            <div class="full-body">【中泰机械】谷歌新一代机器人大模型点评<br><br>事件：Google发布新一代机器人模型 Gemini Robotics 2，官网点评为这标志着通往AGI道路上重要里程碑，以解决物理世界的AI难题。<br><br>具体看，是三个模型：<br>1.Gemini Robotics 2: VLA模型，将视觉/语言转位电机控制指令。<br>2.Gemini Robotics ER 2:推理模型，负责任务规划、交互和工具调用。<br>3.On- Device 2:端侧本地推理，小于200个示例适配新本体。<br><br>特点能力：<br>1.长序列任务处理：ER2基于连续视频流跟踪任务进度，实时调整。长序列本质上是ER2的能力体现。<br>2.多机器人协作：共享语义理解并通信与交互，从而实现协作。<br><br>点评：<br>1.# 三模型技术栈与Optimus架构极像： grok接入负责任务管理、fsd负责执行、AI5-6芯片提供超高端测算力。这一安排也为一套软件不同本体提供基础，推理层与硬件解耦、从而实现跨本体通用性，# 我们可以认为巨头的机器人软件在技术收敛。<br><br>2.巨头围绕物理世界AI持续投入研发可见效果显著，资本市场大可不必担心“机器人脑子不好用”的问题。# 软件/硬件/量产三驾马车都在齐头并进。<br><br>3.产业进展在今年是真正迎来技术收敛与落地速度超预期的，坚定看好！# 机器人是最大的AI应用，天花板够高且进展够快！<br><br>风险提示：产业进展不及预期<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p011">
+            <div class="full-header">[011] 09:07</div>
+            <div class="full-body">完成补跌，缩圈反弹（更聚焦）--（更新0731）<br><br>1️⃣ 国际复材：风险偏好最高的资金最先抄了复材，别问为什么，代表了市场最勇敢的选择。#电子布唯一20cm# <br><br>2️⃣中国巨石：你对那次扩产记忆犹新，摁一下计算器，影响的又是 28 年、对 27 年没影响，忍一忍、海阔天空。#还是那个、每个月都涨价的7628# <br><br>3️⃣芯碁微装：国产算力还能这么补跌，你的眼神、越跌越坚定。pcb/载板/msap/cowos-l/copos/玻璃基板，10后的小应材。#什么都有不是因为蹭、是真有、真硬核# <br><br>4️⃣铜冠铜箔：pcb反弹怎能不带我，一季报超预期，二季报环比不明显，三季报再战，逻辑先行是因为电子布跑得太快，#坚信是金子总会出业绩# <br><br>5️⃣生益科技（plus联瑞新材）：M9必炒，我的上游、和我的下游、国产替代都在加速，ccl 也一定会。#高端挺进、是村里的希望# <br><br>6️⃣宏和科技：上半年领跑，都开始传2替t了，事实并没有，跌下来什么都有。#无论如何、T布首选# <br><br>------<br>1，和一个月前对比，哪怕是港姐，也发了业绩预告，#财报层面全部出尽（包括#  7 巨头财报、中美 各国政策会、韩国加速去杠杆、世界杯结束）<br><br>2，和一个月前对比，高景气赛道都迎来了扩产、是最大的变化。转念一想，巨石扩总比别人扩要好（可控），#关键是缺口有多大# <br><br>3，和一个月前对比，深刻体会“均衡”，#非洲标的始终如一、我们没变过，科达/华新/乐舒适（4 月去非洲、黑非洲手机普及率高、喜生娃 、不喜储蓄、 AI消费潜力大）<br><br>4，和一个月前对比，AI 叙事讨论不断，话题都会继续留在桌上。勿谈短期对错，会有更多深入思考<br><br>5，和一个月前对比，深调50% 以上，纠偏-矫枉过正-估值修复-再战 or 另选，从拿放大镜找问题、到接受美中不足，#估值一直是那杆秤# <br><br>------<br>（一马平川）#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p012">
+            <div class="full-header">[012] 09:08</div>
+            <div class="full-body">超大规模云服务商的容量/供需约束引述<br><br>ALPHABET<br><br>Sundar Pichai（CEO）：“我们继续面临供应约束，这是势头强劲和快速采用的迹象。”<br><br>Anat Ashkenazi（CFO）：“我们和其他行业一样，在供应受限的环境中工作。”<br><br>Anat Ashkenazi（CFO）：“需求仍然超过这项投资。”<br><br>META<br><br>Susan Li（CFO）：“我们目前以及在可预见的未来预计将面临需求约束。”<br><br>Susan Li（CFO）：“行业历史上一直低估了AI采用浪潮的规模，这使得现有容量，包括我们自己的，变得极其宝贵。”<br><br>Mark Zuckerberg（CEO）：“计算资源远远不足以满足所有需求。”<br><br>MICROSOFT<br><br>Amy Hood（CFO）：“需求继续超过可用供应。”<br><br>Amy Hood（CFO）：“你甚至可以在资产现货市场的定价中看到这一点，我认为。”<br><br>Satya Nadella（CEO）：“客户需求继续超过可用容量。”<br><br>AMAZON<br><br>Andy Jassy（CEO）：“增长继续加速，同比增长28%，这是15个季度以来最快的增长率。”<br><br>Andy Jassy（CEO）：“我们从未见过任何技术像AI这样增长如此迅速。”<br><br>Brian Olsavsky（CFO）：“我们在第一季度的现金资本支出为432亿美元。”#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p013">
+            <div class="full-header">[013] 09:08</div>
+            <div class="full-body">📑 高盛中国早盘<br><br>💹市场情绪<br>💡伴随隔夜美股走强、区域市场反弹，中国市场有望迎来回升。<br>💡截至昨日，创业板录得月度最大跌幅，但 ETF 在下跌过程中成交量显著放大，释放出逢低买入资金入场信号，同时可能存在北向资金交易行为。<br>💡最新政治局会议传递的信息符合市场预期，没有超预期重大变化，不会成为今日驱动市场的核心因素。<br>💡另一方面，宇树科技即将登陆科创板 IPO（8 月 5 日询价，8 月 10 日申购），有望提振人形机器人板块情绪，对冲近期地缘局势带来的负面压力。<br>💡今日需要重点观察资金是否回流科技板块、ETF 成交规模以及市场整体成交额，以此判断技术底是否确立。<br><br>📰资讯要点<br>🔹7 月政治局会议释放更强宽松表述，强调加快落实已出台政策举措。核心要点：<br>▪政策层面对持续向新增长动能切换的方向保持认可<br>▪对国内需求短期承压的判断更为谨慎<br>▪释放力度更强的宽松相关表述<br>▪重心在于加快落地已规划的宽松政策，而非短期内推出新一轮刺激政策<br>▪持续将高端制造与人工智能产业链作为战略重点<br>▪高盛研究部预期，未来数月中央及地方政府将加快债券发行、推动资金投放，加速落实新型政策性金融工具；若后续形势需要，年内仍保留进一步宽松的空间。<br>🔹高盛深度解读<br>🔹机器人赛道<br>🤖宇树科技启动科创板 IPO 流程，线下初步询价定于 8 月 5 日，线上及线下申购时间为 8 月 10 日。<br>🔹新能源车<br>🚗1. 小米公司发布两款全新混动车型 ——SkyNomad 运动型多用途汽车，搭载增程动力系统，车内空间宽敞。<br>🚗2. 尽管阿根廷总统米莱奉行 MAGA 相关路线，中国新能源汽车仍大量进入阿根廷市场。<br>🔹煤炭<br>🔥热浪推高空调使用需求，拉动国内煤炭需求上行。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p014">
+            <div class="full-header">[014] 09:08</div>
+            <div class="full-body">【中泰汽车】机器人更新：谷歌Deepmind重磅发布更通用泛化的具身智能模型Gemini Robotics 2<br><br>事件：Google DeepMind 昨晚（7月30）发布Gemini Robotics 2等3个新一代具身智能Vla模型<br><br>三个模型<br>Gemini Robotics 2 ：我们最先进的VLA，这个模型有能力控制完整的人形机器人，从脚掌到指尖，也能控制其他双臂机器人，同时在双手和夹爪两类末端执行器上带来了新层级的灵巧操作能力。<br>Gemini Robotics ER 2：我们能力最强的具身推理（ER）模型。它是一个视觉语言模型（VLM），扮演我们的智能体角色，让机器人能够与人沟通、理解物理世界并规划长达数分钟的多步任务。我们也在其中引入了让机器人作为团队协同工作的能力。<br>Gemini Robotics On-Device 2： 我们效率最高的视觉语言动作模型（VLA），经过优化后可以在机器人设备本地运行。这个模型现在能够用几个小时的数据快速适配到全新的机器人本体上。<br><br>本次模型解锁的技能：<br>#首次解锁全身控制：#  Gemini Robotics 2 把物理 AI 从此前的上半身桌面任务扩展到了全身动作，比如可以完成“把洒水壶放进最下层货架的绿色箱子里”，是迈向更复杂真实任务所需技能的重要一步。<br>#解决了精细化操作和跨本体迁移：#  Gemini Robotics 2 在不同末端执行器上都解锁了新层级的物理灵巧度，无论机器人用的是手还是夹爪，都比以往更加有用。这个模型现在可以控制 Apollo 2 机器人上那只五指、22 个自由度的 SharpaWave 手，完成打结或者封住保鲜袋这类精细动作。 我们正在继续推进精度和速度，目标是达到人类水平的灵巧度。我们的具身推理模型 Gemini Robotics ER 2 充当机器人的高层大脑，负责处理用户指令并与人沟通，它推理出完成任务所需的步骤，与 VLA 协同来执行动作，并且一路跟踪进度直到任务完成。#这套配置让机器人能够执行复杂的多步任务（本次更新任务序列持续时间长达数分钟涉及数百个决策）、并泛化到全新的情境和目标上。Gemini Robotics ER 2 现在能理解任务何时开始、何时结束，也能精确定位关键事件发生的时刻，这在进度理解上是一次台阶式的变化。<br>解锁多机器人协作。让不同类型的机器人可以互相沟通、协同工作，去解决单台机器人独自无法完成的复杂工作流。<br><br>附原文连接：[Gemini Robotics 2 brings whole body intelligence t...]<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p015">
+            <div class="full-header">[015] 09:12</div>
+            <div class="full-body">🍎【招商电子】苹果26CQ2跟踪：Q2业绩超预期，Q3展望略受外汇逆风和供应限制影响，把握产业链优质alpha龙头<br><br>#1、26Q2：# 收入、利润均超预期，iPhone及Mac主要推动。<br>苹果6月季营收1094.2亿美元，同比+16.4%，超市场预期（1089.6亿美元）；净利润297.9亿美元，同比+27.1%，超市场预期（276.8亿美元）。收入创下6月季记录，尽管存在供应限制，所有地区均实现双位数增长。<br><br>分业务：<br>1）iPhone：营收542.5亿美元，超市场预期（538.6亿美元），创6月季记录，同比+21.7%，由iPhone 17系列拉动，在绝大多数市场实现两位数增长。<br>2）Mac/iPad：Mac营收103.5亿美元，超市场预期（87.4亿美元），同比+28.7%，创下6月季记录，MacBook Pro和全新MacBook neo拉动，尽管存在明显供应限制仍实现增长；iPad营收61.9亿美元，低市场预期（69.2亿美元），同比-5.9%，同比下降由于去年同期新品发布带来的高基数。<br>3）可穿戴/家居/配件：营收78.8亿美元，超市场预期（78.2亿美元），同比+6.5%，所有地区均实现增长。<br>4）服务：307.4亿美元，低于市场预期（312.2亿美元），同比+12.1%，在绝大多数市场实现两位数增长。<br>分地区：美洲/欧洲/大中华/日本/亚太其他地区营收，分别同比+11.1%/+22.4%/+22.4%/+13.4%/+15.6%。<br><br>盈利方面：综合毛利率50.1%，同比+3.6pcts，其中关税退款带来约2pcts有利影响；净利率27.2%，同比+2.3pcts。<br><br>#2、26Q3展望：# 收入同比增长9-11%，受外汇逆风和供应限制。<br>假设宏观情况不变，苹果预计9月季收入同比增长9-11%，因受到两个负面影响，一是外汇逆风对收入产生2.5pcts负面影响，二是供应短缺带来的影响将显著加剧，供应短缺将影响iPhone、Mac和iPad产品线；毛利率将在47%至48%之间，其中包括关税退款带来的约1pcts的正面影响。关于存储，苹果表示9季存储成本预计会进一步上涨，部分仍可被库存收益抵消，但库存收益的影响会随时间逐步降低，非内存组件成本下降也可提供部分抵消；当前DRAM市场主要有3家供应商，苹果正在评估增加供应商的所有选项，增加供应商有助提升供应稳定性。<br><br>[拳头]短期看，尽管有存储涨价压力，但从硬件业务仍在逆势增长，苹果相对安卓在持续扩大份额；中长线看，苹果26H2-27年AI硬件加速创新，叠加上游外观大创新（3D打印等）具有创新看点。我们建议精选果链alpha优质标的，重点推荐【立讯精密】（苹果新品及零部件全面受益、AI算力大幅增量、显著低估）、【大族激光】（26年苹果设备拉货超预期，27年3DP核心卡位）、【高伟电子】（苹果折叠机、AI穿戴参与多个料号，光学份额持续提升，26年PE不到10倍，Microled卡位）等。<br><br>联系人：鄢凡18601150178/涂锟山18682200047#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p016">
+            <div class="full-header">[016] 09:12</div>
+            <div class="full-body">特斯拉考虑出售中国业务，为潜在SpaceX合并铺路，将特斯拉在华业务(包括一家电动汽车工厂)剥离，将解决其与美国主要国防承包商SpaceX合作可能引发的潜在冲突。<br>[含1张图]<br>[图1OCR] EXCLUSIVE AUTOS Tesla Weighs Sale of China Business to Pave Way for Potential SpaceX Merger The U.S. automaker could sell or spin off the business in its second-largest market over geopolitical concerns By Becky Peterson and Raffaele Huang July 30,20269:00pm ET 口Aa口 Gift unlocked article 6 Listen （6min）： mluenon A Model 3 on display at a Tesla store in Shanghai. CFOTO/FUTURE PUBLISHING/GETTY IMAGES</div>
+        </div>
+
+        <div class="full-item" id="p017">
+            <div class="full-header">[017] 09:13</div>
+            <div class="full-body">❗️❗️【强推新金路|14】#钽矿需求篇分析六——下游国巨有研宣布扩产，钽全产业链景气共振，#近期非理性杀跌，当前是绝佳上车机会，坚定推荐<br><br>[玫瑰] #钽终端龙头同步扩产。1）Q2国巨钽电容收入同比+44%环比+14%，订单出货比从Q1的1.0升至Q2的2.2，公司宣布扩大钽电容产能。2）有研新材公告拟投4.86亿建设靶材二期，因德州基地靶材产能已饱和，新增扩产钽铜钛靶产能3万块/年。<br><br>[玫瑰] #中游加工环节同步加码。1）JX金属旗下TANIOBIS 6月宣布泰国钽粉产能扩产1.5倍。2）东方钽业规划氟钽酸钾产能扩至1100吨/年、熔炼钽扩至80吨/年，稀美资源湿法产能扩至6000吨/年。<br><br>[玫瑰] #钽矿将成为最稀缺环节。1）此前我们反复强调的剪刀差逻辑正在进一步强化——下游和中游全线扩产，而H1国内钽矿进口量同比仅增13%，远低于中下游出口增速。2）供给端非洲主产区持续停产，刚果金5月将钽纳入战略矿产、资源税率升至10%按收入征收。3）剪刀差持续扩大，随着中游低价库存去化，下半年钽矿价格有望上涨。<br><br>公司经营一切正常，近期非理性杀跌，当前是绝佳上车机会，推荐重点关注，欢迎联系交流。[抱拳]#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p018">
+            <div class="full-header">[018] 09:13</div>
+            <div class="full-body">【Cpo板块】（95）：非但没delay，还上调了<br><br>Formfactor上调Cpo指引，目前大涨21%，业绩会表述：<br><br>“一个季度前，我们曾预测2026年的 CPO收入将达到年初时我们公布的1000万至2000万美元区间的高端水平。如今，我们预期这一目标将在第三季度末前实现，并且全年整体收入将显著超过2000万美元的门槛。”<br><br>在市场的质疑声中，产业进展反而加快得很明显，可以说是市场今年最大的认知差之一。坚定【罗博特科】、【致尚科技】。<br><br>By Txy#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p019">
+            <div class="full-header">[019] 09:13</div>
+            <div class="full-body">微软<br>[含3张图]<br>[图1OCR] 韭研公社 分类 核心伙伴 AI垂直场景 徼软 Azure相关 个般 浙大网新 奥比中光 云赛智联 檸州数码 博蔗科技 软通动力 南兴服份 洲明科技 汉朔科技 万兴科技 汉得信息 漱捇数韶 易点天下 垒知集团 微软Azure云平台（250731） 相关性 子公司网新图灵是微Azure的分销商，该业多目前体最铰小 公司与微软、英伟达联合研发制造3D iToF相机Femto Mega，接受微软Azure Kinect技术产品线的授权 全资子公司南洋万邦和信诺时代是微软合作伙伴，合作期均超过20年，几乎获得了微软全线产品、行业、技术资质认证 云业务生态方面今年启动并以微软厂商为试点完成了神州数码云平台一期建设 已经在国内数个客户落地了参于Azure OpenAI的办公自动化、智能机器人等场景的产品和解决方素的交付与实施 作为微软Azure独立软件供应商（ISV），积极加入微软Azure全球生态休系 已上线与微软展开联合创新的小盟AIGC智能助手 公司数字人技术依托洲明Agent来台，可習能没度微软Azure等各类横型能力，.满足用户个性化常求 依托微软云服务平台，充分集成和应用微软Azure能力，在智能购物助手、零售媒体网络（RMN）等方的进行布同 已完成微软Azure OpenAi-GPT等能力的接入賦能公司名类数字创意软件产品 微软的金牌合作伙伴，已经与微软Azure OpenAI系列<br>[图2OCR] 微软 Azure Azure 年化收入破干亿美元 大涨15%½ A股三大官方合作标的：云赛智联|易点天下|南兴股份 #微软 Azure #AI 云计算|＃算力生态 #AI 商业化落地 ） 核心逻辑 微软最新财报显示，Azure 云业务年化收入首度突破干亿美元， 业绩增速超预期，股价大涨15%。全球 AI 云需求持续升温，微软 加码算力与大模型服务，A股 Azure生态合作方有望受益于云业务 扩容与 AI商业化落地。 666 1、云赛智联 600602 2、易点天下 301171 3. 南兴股份 002757 上海本地算力核心企业，深化与微软 Azure、华为云、阿里云合作，发力 AI行业解决方案。业务覆盖智慧政务、 智慧交通、智慧医疗、文旅展陈等场景。 公司年报实锤合作微软 Azure，同时 协同谷歌云、AWS等平台。自研多款 Al驱动商业化平台，聚焦跨境数字 营销，客户覆盖Temu、米哈游、 Shein 等知名企业。 子公司唯一网络为微软官方认证云 合作伙伴，主营IDC、云服务、网络 运维。既可为 Azure 国内节点提供 机房配套资源，也能基于 Azure OpenAI能力输出行业数字化方案。 算力 習惹政务 智意交通 盌慧医疗 文旅展陈 出海宫销 Al 应用 全球云资源 知名客户 DC 资源 Azure 增长超预期，AI云产业链价值重估。 云赛智联着上海算力＋政企方案，易点天<br>[图3OCR] 代码 301171 002757 600602 600449 002657 002649 微软涨15% 微软带领美股绝地反弹，涨超14%，微软云业务加速增长，创2022年以来最快增速。 名称 易点天下 南兴股份 云赛智联 宁夏建材 中科金财 博彦科技 流通市值 121亿 43.32亿 96.44亿 28.98亿 46.25亿 45.76亿 主要逻辑 公司年报实鍾合作微软Azure，同时牵手谷歌云、AWS、国内各大云厂商以及多家头部 大模型企业。自研多款AI驱动商业化平台，面向跨境数字化营销，依托Azure全球云端资源， 赋能国内企业出海AI营销，客户包含Temu、米哈游、Shein等知名企业，AI出海赛道稀缺标的。 子公司唯一网络为微软官方云合作伙伴，手握IDC机房资源，既为Azure提供底层机房配套， 又基于Azure大模型为各行各业输出定制化上云、AI数字化解决方案，贯通IDC基建与云服务环节。 子公司南洋万邦、信诺时代是20年以上微软金牌伙伴；擅长政务、大型国企Azure部署、 多云管理、Azure行业方案。 子公司中建信息是微软云Azure的国内总代理商。 公司是微软中国的云合作伙伴及经销商，可进行微软云及微软产品的代理销售，拥有20名 微软认证（Microsoft Credentials）工程师。公司还基于微软云及ChatGPT的能力， 研发了汽车AI Agent、 多场</div>
+        </div>
+
+        <div class="full-item" id="p020">
+            <div class="full-header">[020] 09:14</div>
+            <div class="full-body">Amazon2026年Q2业绩电话会议纪要<br>[https://share.note.youdao.com/ynoteshare/index.htm...]<br>#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p021">
+            <div class="full-header">[021] 09:14</div>
+            <div class="full-body">美东时间周二（7月28日），美国燃料电池公司Bloom Energy公布了全面碾压市场预期的第二季度财报，并大幅上调全年业绩指引。今晚美股开盘，Bloom Energy涨超10%。<br><br>　　作为AI基础设施领域的重要供应商，该公司在经历7月做空冲击和板块轮动回调后，凭借强劲的基本面重获市场关注。<br><br>　　单季营收首破10亿美元<br><br>　　财报显示，Bloom Energy第二季度营收达10.65亿美元，同比增长165%，远超华尔街预期的8.26亿美元，这也是该公司单季营收首次突破10亿美元大关。二季度每股收益升至0.78美元，较去年同期暴增680%，大幅高于FactSet分析师预期的0.41美元。<br><br>　　盈利能力的飞跃得益于AI算力扩张带来的电力需求井喷。公司首席执行官KR Sridhar在财报声明中表示：“目前，美国所有主要超大规模企业都在与Bloom Energy合作，以满足其AI工厂的电力需求。”<br><br>　　基于强劲的业绩表现，Bloom Energy将2026年全年营收指引上调至39亿至42亿美元，全年每股收益预期上调至2.55至2.85美元。此前市场对全年营收和每股收益的预期分别为37亿美元和2.15美元。按上调后的指引中值计算，公司2026年营收有望在2025年20.2亿美元的基础上实现接近翻倍的增长。<br><br>　　Bloom Energy于2024年首次实现年度盈利，2025年每股收益更增长逾一倍，增长轨迹持续加速。<br><br>　　受财报提振，Bloom Energy盘后股价大涨逾10%，突破184美元，试图重返200日均线上方。<br><br>　　不过，在周二常规交易时段，该股下跌11.3%至166.93美元，盘中一度下探更低。自6月底触及351.28美元的历史高点以来，该股已回撤逾50%。<br><br>　　AI风口波动<br><br>　　尽管业绩亮眼，Bloom Energy仍面临多重压力。7月初，做空机构Hunterbrook Capital指控Bloom Energy暗中依赖中国供应氧化钪——其固体氧化物燃料电池的关键材料。公司坚决否认相关指控，但股价已受到冲击。<br><br>　　此外，近期市场风格从AI和高成长股向防御性板块切换，也对Bloom Energy股价形成压制。<br><br>　　以上因素叠加影响下，Bloom Energy股价本月已累计下跌45%，2026年迄今涨幅收窄至92%。但过去一年Bloom Energy股价累计涨幅仍达近五倍。<br><br>　　值得关注的是，Bloom Energy与Brookfield的AI基础设施合作持续深化。后者是全球最大的数据中心开发商之一，双方的合作框架已从去年10月的50亿美元扩大至250亿美元。<br><br>　　Bloom Energy是此轮AI基建风口的重大受益企业之一。公司生产的燃料电池通过氢氧反应发电，使用端零碳排放，使其成为AI超大规模企业的理想能源方案。随着AI数据中心电力需求远超地方电网承载能力，Bloom Energy等替代能源供应商正填补这一关键缺口。<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p022">
+            <div class="full-header">[022] 09:14</div>
+            <div class="full-body">🌞德才股份：Seedance 2.5今日拟正式上线，火山引擎信控额度升至5000万元，Agent/AI漫剧业务迎来新催化<br><br>事件：7月30日消息，字节跳动旗下视频生成大模型Seedance 2.5预计于7月31日正式上线，预计上线时间为12点—15点，届时用户可在即梦等国内外C端渠道使用，目前即梦已上线相关预热页面。<br>相比上一代模型，Seedance 2.5在单段生成长度、多素材参考和视频编辑三个维度实现升级：支持30秒单段原生视频直出；全模态参考素材容量提升至最多50个；同时强化视频生成的可控性与编辑能力。<br>与此同时，7月28日，公司、奇想无限与火山引擎签订《查找图书担保合同补充协议》，将火山引擎提供给奇想无限的信控额度由2000万元提升至5000万元，账期仍为30天，奇想无限按照实际消耗金额支付费用。<br><br># Seedance 2.5上线叠加信控额度扩容，进一步验证火山引擎与奇想无限紧密合作关系，Agent/AI漫剧业务有望加快规模化落地<br>4月2日，火山引擎Force Link——AI创新巡展会上，火山引擎总裁曾公开宣传“福建奇想无限”（德才股份子公司），奇想无限此前为【Seedance 2.0首批邀测客户】。<br>本次Seedance 2.5进入正式上线窗口，同时奇想无限在火山引擎的信控额度由2000万元提高至5000万元，反映公司正在为更大规模的模型调用、算力资源消耗和AI内容生产提前进行资源准备。<br>Seedance 2.5在30秒原生视频、多模态素材参考和生成编辑能力上的升级，有望改善AI漫剧生产过程中的角色一致性、场景连续性及复杂镜头可控性，减少逐镜头生成、人工拼接和重复返工成本。奇想无限基于Seedance模型构建的Agent工具及AI漫剧业务，有望伴随模型升级加快产品迭代和商业化落地。<br><br>再次重申公司逻辑：<br># 建筑龙头战略布局AI漫剧及智算业务，26Q1新业务订单加速释放<br>国内建筑全产业链龙头企业，25年实现扭亏为盈，利润率与现金流有望持续修复。战略布局Agent、智算、AI漫剧，26Q1公司AI新业务板块已实现单季新签总金额超3.4亿元。<br># AI漫剧迎来“黄金窗口期”，动态漫Agent“卖铲人”逻辑或持续演绎<br>——漫剧赛道已跨越概念验证期，进入供需共振的高速成长期，商业化数据快速提升；<br>——多模态技术推动内容产能与视觉表现双重升级，AI漫与动态漫爆款频出，如《查找图书斩仙台下》播放量超10.6亿；<br>——Seedance 2.5支持30秒单段原生视频及最多50个全模态参考素材，有望进一步提高连续剧情、角色一致性和复杂场景的生产效率；<br>——字节跳动依托“流量+IP+AI”全栈闭环，在AI视频及漫剧产业链中具备较强竞争优势。<br># 奇想Agent持续迭代，打通基座模型、头部IP和分发平台<br>——Agent业务：奇想无限自研端到端AIGC智能体平台，此前为Seedance 2.0首批邀测及合作方。伴随Seedance 2.5上线，其Agent平台在视频生成质量、长片段生产和内容编辑效率方面有望进一步提升。<br>——资源能力：奇想无限在火山引擎的信控额度已由2000万元提升至5000万元，为后续扩大模型调用和AI内容产能提供资源保障。5000万元为最高信控额度，实际费用仍按照资源消耗金额结算，并非已经确认的订单或收入。<br>——AI漫剧：公司深入合作头部IP和分发平台，优质作品产能持续爬坡。与阅文、番茄等合作锁定核心IP，并为红果、腾讯等平台提供精品承制，持续打通内容生产与商业变现链路。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p023">
+            <div class="full-header">[023] 09:16</div>
+            <div class="full-body">利柏特：发布员工持股及股权回购计划，彰显中长期发展信心<br><br>✨发布第二期员工持股计划（草案），划定2026-2029年业绩17%复合增速目标。公司拟以7.33元/股向不超过160名高管及骨干员工转让不超过315万股，占总股本0.62%；业绩考核以2025年归母净利润为基数，2027-2029年目标增长率分别为20%/40%/60%（触发值15%/33%/50%），假设2026年归母净利润同比持平，对应2027-2029年目标业绩同比增速分别为20%/17%/14%（26-29年复合增速17%）。本次计划覆盖核心骨干、锁定期限较长，在近期股价充分回调后推出，有利于进一步绑定员工与公司中长期利益。<br><br>✨同步推出3000-6000万元股份回购方案，进一步强化中长期发展信心。公司拟以自有及自筹资金回购股份，回购价格不超过22.80元/股，实施期限不超过3个月，按照价格上限测算预计回购131.58-263.16万股，占总股本0.26%-0.52%，回购额3000-6000万元；本次回购用于维护公司价值及股东权益，叠加员工持股计划落地，充分彰显公司对自身长期价值及未来发展前景认可。<br><br>✨核电模块产业拐点将至，业务成长空间广阔，当前位置继续坚定看好。核电产业自“十五五”进入建造高峰期，模块化发展系大势所趋，相关项目已纳入广核招标计划，公司此前依托联合研发已与中广核形成深度绑定。截至2025年12月，中广核在建核电机组20台，预计2026-2027年平均约6.5台处于土建施工环节。按单机组年均土建价值量40亿元测算，对应约260亿元土建需求；假设土建模块化占比50%、公司市占率60%，对应增量收入78亿元，业务成长性优异。#需要最新模型欢迎小窗#   <br><br>风险提示：化工资本开支大幅收缩风险、核电模块化业务不及预期、测算误差风险等。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p024">
+            <div class="full-header">[024] 09:16</div>
+            <div class="full-body">#GRIP#    长景气绩优股 · 优选？<br><br>#GRIP框架强调：#    寻找积极面向全球份额外扩、利润内生的优势资产：<br><br>#睿创微纳，谷歌Deepmind推出GeminiRobotics ER 2模型，重视#机器人眼睛、物理AI#    的龙头睿创微纳；<br><br>#中国动力，BE(+27%)、GEV(+9%）大涨，AI能源视角国内绝对领先主机龙头、全球民船发动机龙一；<br><br>#中富电路/新雷能，重视#中富全球二三次电源PCB的卡位，谷歌、NV等供应链潜在业绩弹性大；<br><br>#中航光电/航天电器，重视光电液冷/高速/光链路/电源数据中心业务全布局、高胜率品种；<br><br>#海达尔，服务器滑轨国内算力龙头、海外渗透加速可期；#北交所召开公募基金座谈会，参会公募认为北交所正迎来政策、流动性与估值三重共振的配置窗口期。<br>------------<br>广发军工&amp;化工#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p025">
+            <div class="full-header">[025] 09:16</div>
+            <div class="full-body">[太阳]【申万宏源化工】利尔化学更新：华润入主焕新势能，合成生物协同启航<br><br>#华润体系市场化程度高、体制机制更为灵活。华润体系在决策授权方面相对开放，国资委体系已有较多股权激励案例华润入主后有望设定相应经营目标和激励政策，恢复公司经营活力。<br><br>#华润双鹤将推动利尔化学实现四个转变：#    1）从传统化学制造向“化学+生物制造”转变，双鹤将帮助公司提升生物制造能力和生物法生产占比；2）由除草剂为主向综合植保转变，未来将向杀虫剂、杀菌剂等领域拓展；3）由仿制驱动向创新驱动转变；4）由原药为主向品牌制剂转变，双方将发挥原料制剂一体化优势。<br><br>#双方的协同主要体现在三个方面：#    1）借助利尔化学的产业化和商业化能力，推动华润双鹤合成生物研发成果转化；2）结合华润双鹤的合成生物技术和利尔化学的化学制造经验，促进生物技术与化学技术融合，促进产业转化；3）整合双方现有国际销售渠道，加快相关产品在全球市场的推广。<br><br>#草铵膦淡季不淡、旺季涨价预期强。目前农药行业进入淡季，草铵膦行业开工仍在高位运行，在需求高增的态势下，供需格局持续向好。精草铵膦高性价比叠加海外登记证放量拉动需求高增，公司精草铵膦龙头地位稳固，海外登记较行业有2-3年的领先身位，后续随巴西下证需求仍有跃迁式增长。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p026">
+            <div class="full-header">[026] 09:17</div>
+            <div class="full-body">CICC Morning Call<br>260731<br><br>——策略——<br><br>【哪些公司有望入通？（2026-8）】<br><br>预计49只有望入通；14只或被移出；AH公司如立讯精密与中际旭创将在8月先后入通；MINIMAX-W预计8月初入通。<br><br>——海外研究——<br><br>【日本熊本地震：最新进展梳理】<br><br>①经济方面，地震发生的熊本县GDP规模占日本全国约1%；②产业方面，尚未出现半导体工厂受损的信息；③股票，日股目前影响有限；④货币政策，日本央行鲜有在灾后加息历史。<br><br>——个股——<br><br>【01879.HK(曦智科技-P)首次覆盖】<br><br>光计算全球领跑者迈向“计算+互连”双轮驱动。公司是全球光计算和国内Scale-up光连接领域的方案引领者，我们预计2026-28年收入为2.14/4.94/17.26亿元，参考可比公司估值，基于2028年20倍P/S给予公司目标价426元港币。<br><br>【YUMC.US(百胜中国)业绩回顾】<br><br>经营韧性延续，必胜客和新模型加速发展。2Q26业绩略超我们预期，考虑收购必胜客品牌中国，上调26/27年经调整净利润预测1%/4%至10.3/11.4亿美元，维持跑赢行业评级和目标价61美元。<br><br>【EDU.US(新东方)业绩回顾】<br><br>收入增长超预期，股东回报坚定信心。新东方公布4QFY2026业绩：总收入同比增长23.0%至15.3亿美元；Non-GAAP经营利润1.1亿美元，同比增长34.7%，均超出市场预期。股东回报计划坚定市场信心。<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p027">
+            <div class="full-header">[027] 09:17</div>
+            <div class="full-body">【华泰宏观｜海外每日评论】<br>数据：美国二季度GDP放缓至1.5%，低于一季度的2.1%，也不及市场预期的约2%，其中净出口为主要拖累，衡量内需与潜在动能的私人消费+投资增速回升至3.9%。美国 6月PCE物价指数环比下降0.1%，为2020年以来首次录得月度负增长，同比升幅从前月的4.1%收窄至3.7%。剔除能源的核心PCE同比增速由3.4%小幅回落至3.3%，环比仅上涨0.1%，低于市场预期的0.2%。<br><br>政策：地缘政治方面，沙特阿拉伯与多国军方代表讨论组建多国联盟保护海上航运，应对胡塞武装红海封锁；俄罗斯将柴油出口禁令延长一个月；特朗普授权官员依据《[国防生产法]》对部分工业废料实施出口限制。<br><br>股市：周四美国三大股指全线上涨，标普 500 涨 1.7%、纳指涨 2.8%、道指涨 1.2%；分行业看，科技、半导体板块领涨，消费、房地产板块领跌。<br><br>债市：周四美债收益率下行，2年期美债收益率下行 3bp 至 4.25%、10年期美债收益率基本维持于 4.67%。市场预期联储 2026 年剩余加息幅度降至 30bp。<br><br>汇市：周四美元指数下跌 0.9%至99.9；欧元上涨 0.5%，报 1.15；日元上涨 2.4%，报 159.5。<br><br>商品市场：周四大宗商品涨跌不一。WTI 原油期货下跌 1.0%，报 83.6 美元 / 桶；布伦特原油期货下跌 1.5%，报 89.4 美元 / 桶；黄金现货上涨 0.9%，报 4103.4 美元 / 盎司；白银现货上涨 2.2%，报 59.0 美元 / 盎司；LME 期铜上涨 1.6%，报 13803.0 美元 / 吨。<br><br>今日关注：日本央行利率决议（预估 1.0%，前值 1.0%）、日本 6 月失业率（预估 2.5%，前值 2.5%）、日本6 月零售销售同比（预估 3.1%，前值 5%）、日本6 月工业生产环比初值（预估 1%，前值 0.1%）、欧元区 7 月消费者价格指数同比初值（预估 2.9%，前值 2.8%）、美国第二季度雇佣成本指数环比（预估 0.8%，前值 0.9%）、7 月密歇根大学消费者信心指数终值（预估 54，初值 54.4）。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p028">
+            <div class="full-header">[028] 09:18</div>
+            <div class="full-body">【中泰电子|海外观察】亚马逊云业务beat，上调全年capex指引<br><br>[红包]亚马逊今晨业绩后+9%，并带动硬件链继续大涨，盘后Marvell/闪迪/美光/台积电分别：+6%/5%/3%/2%。<br><br>[玫瑰]云业务大beat！企业级AI驱动高增<br>CY26Q2，AWS/谷歌云/微软Azure实现同比收入增长：+37%/+82%/+43%，均超出市场预期、且为历史最快增速。<br><br>亚马逊表示AWS很可能未来达到万亿美元的年收入，参考本季度AWS收入422亿美元，则后续有近10倍增长空间。<br><br>[玫瑰]云业务积压订单规模持续高增，供不应求加剧<br>26Q2末，AWS积压订单4960亿美元，qoq +36%， yoy +154%；三家大厂云业务合计积压订单达1.7万亿美元，合计yoy+152%，积压订单增速大幅超过云收入增长，供需矛盾加剧，其中约半数以上预计在24个月内确收，为后续增长拉高能见度。<br><br>AWS 27年新增容量的绝大部分和28年的相当一部分容量已被提前锁定。<br><br>[玫瑰]AI ROI：AI 基建层回本周期不到3年<br>亚马逊表示AI基础设施投资不到3年即可收支平衡。目前AI容量大部分以至少5年期合同签约，完整覆盖服务器至少5~6年的使用寿命。<br><br>[玫瑰]Capex：因涨价提升26年capex预期，至28年能见度仍高<br>亚马逊提升26年Capex预期至2200亿美元（此前：2000亿美元），主因内存成本上升。<br>公司表示目前掌握的28年需求情况“很震撼”，意味着后续投入能见度极高。<br><br>此前，谷歌、Meta均随通胀上修全年Capex指引，且对基于需求可见度，后续展望积极。<br><br>风险提示：AI进展不及预期#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p029">
+            <div class="full-header">[029] 09:18</div>
+            <div class="full-body">26H1游戏数据更新：国内大盘增长12%，PC、出海、小游戏增速约30%，重申推荐游戏板块！<br><br>26年6月： 国内游戏市场收入300.5亿元，YOY+12%，主要依托长线产品稳定运营、双端互通产品持续放量， 其中：移动游戏收入225.1亿元，YOY+12%；客户端游戏收入63.9亿元，YOY+9%，主要得益于双端互通长青端游。自研游戏出海市场收入19.7亿美元，YOY+26%，主要依托长线产品稳定运营，同时叠加新品持续出海释放增量<br><br> 26H1整体来看：<br>1）国内游戏市场收入1884.5亿元，YOY+12%，游戏用户规模6.84亿人， YOY+0.8%；其中移动游戏1352.1亿元，YOY+8%，角色扮演与策略类游戏保持较大占比；客户端游戏452.9亿元，YOY+28%；主机游戏9.6亿元，YOY-7%。自研游戏出海123.7亿美元，YOY+ 30%；自研游戏国内市场收入1633.6亿元，YOY+16%。<br><br>2）中国电子竞技市场收入896.16亿元，YOY+11%，主要系头部产品出色表现与新品输出。<br><br>3）小程序移动游戏市场收入316.57亿元，YOY+36%，其中IAP收入211.37亿元，YOY+38%，占比66.8%；IAA收入105.20亿元，YOY+32%，占比33.2%<br><br>4）休闲移动游戏市场收入182.05亿元，YOY+10.7%，其中IAP占比67%；IAA占比33%。<br><br>5）二游市场收入132.69亿元，YOY-9%，主要系部分头部长线二次元产品流水下滑，新品未能予以弥补。<br><br>6）桌游市场收入38.68亿元，YOY+4%，其中，电子桌游占比52%，实体桌游占比48%<br><br>[太阳]今年以来，游戏板块调整主要系资金虹吸效应下估值承压，A+H重点游戏公司26E平均PE仅13X，#低估值与高业绩增速形成显著错配。#   [太阳]全球科技巨头将资源集中配置AI产业的大背景下，游戏供给端竞争或将趋缓，需求端保持强劲，利好持续深耕游戏主业的公司。<br>[太阳]生成式AI革命下，内容迭代周期有望缩短、“创意”价值进一步放大，利好实力领先的研发商；多模态演进有望孵化新的互动娱乐形态和玩法。<br><br>新一轮产品周期酝酿中，关注业绩释放及估值修复。相关标的：世纪华通、心动公司、完美世界、恺英网络、三七互娱、巨人网络、腾讯控股、网易-S等。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p030">
+            <div class="full-header">[030] 09:18</div>
+            <div class="full-body">[太阳]【国金计算机&amp;科技】云与应用：闭环加速形成，AI产业链共繁荣，低位配置良机<br><br>云与应用闭环形成、当前迎来低位配置良机 <br>——当前云厂商收入持续加速，企业AI付费、Agent应用及垂直行业商业化开始落地，云与应用板块整体位置较低、基本面边际改善，当前已进入值得重点配置的阶段。<br><br>云厂商基本面持续走强、AI商业化闭环加速形成 <br>——海内外头部云厂商最新财报持续验证AI需求高景气：微软Azure最新季度收入同比增长43%，全年收入首次突破1000亿美元，AI需求仍明显超过算力供给；Microsoft 365 Copilot付费用户突破3000万席，验证AI正由基础设施投入逐步走向云服务、软件订阅及Token消耗兑现。头部CSP同时掌握算力基础设施、模型基座与流量入口，可通过API调用、企业席位和行业Agent完成商业化，并依托自研芯片和调度优化持续降本，云厂商有望成为AI产业链闭环中的核心价值承载者。#相关标的：阿里巴巴、金山云等。#  <br><br>AI应用建议重点关注AIInfra、高景气&amp;高壁垒、信创三大方向 <br>——AI Infra：随着AI项目由简单问答走向复杂Agent，企业对数据治理、向量检索、模型管理、可观测性、安全、恢复及混合云编排的需求快速提升，AI Infra工具正逐步成为刚需，行业TAM持续扩张。#相关标的：达梦数据、深信服、卓易信息、星环科技、绿盟科技等。<br>——高景气、高壁垒：以Seedance 2.0为例，模型生成稳定性显著提升，推动AI视频废片率和内容生产成本下降，使漫剧Agent首次具备规模化生产的单位经济模型。国内软件公司可围绕基模进行Agent、工作流及行业知识库的二次开发，将AI嵌入内容生产、工业控制、财税、人力和企业管理等高价值场景。#相关标的：德才股份、中控技术、税友股份、迈富时、金蝶国际等。<br>——信创：信创替换逐步进入关键节点，政策引导与行业采购有望共同推动业务增速回升；同时，AI正在重塑办公软件、数据库和操作系统等产品形态。#相关标的：金山办公、奔图科技等。#  <br><br>风险提示：行业竞争加剧；技术研发及商业化进展不及预期；下游资本开支波动。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p031">
+            <div class="full-header">[031] 09:19</div>
+            <div class="full-body">[红包][红包]【天风新材料 π点多支持】大盘见底，买什么？--20260731<br><br>[太阳]海外冲击缓释后，市场或已见底。经历了流动性冲击后，很多个股具备了非常强的配置价值。大盘见底，买什么：<br><br>电子布：作为覆铜板与PCB的核心骨架，AI算力爆发催生高端电子布需求激增。叠加织机瓶颈，且供给缺口不止28年，价格具备持续上涨的动力。调研显示，生产厂家已经考虑了下游客户承受能力比较克制的涨价幅度。重点推荐巨石、宏和、国际复材等；<br><br>树脂&amp;铜箔：AI服务器升级带动覆铜板需求爆发，铜箔作为核心导电层，表面粗糙度直接决定高频信号传输质量；电子树脂扮演绝缘与粘合角色，特种树脂构筑了极高的技术壁垒，性能直接影响高速传输稳定性。二者支撑着AI硬件的算力底座。AI大时代，重点推荐东材、铜冠、德福等；<br><br>玻璃基板：材料是工业革命的基础，每一次工业革命都伴随着巨大的材料变革。AI时代，“光+玻璃”或是最有潜力的组合，我们持续看好未来几年玻璃基板重大投资机会，重点推荐力诺、天承、美迪凯、帝尔、沃格、奥来德等；<br><br>碳化硅：伴随碳化硅终端价格下降幅度大，支撑其向功率端渗透率快速提升，驱动电压等级高、能耗敏感的应用领域替代速度超预期，是少有的能看到十倍以上需求增量的领域。战略配置时刻又来临，重点推荐天岳+晶盛+晶升。<br><br>[烟花]其他具备价值的个股：慧博云通（国产算力，华为昇腾服务器最核心的上市标的）、天通股份（铌酸锂，近期订单已落地）、联检科技（检测服务及设备）、光智科技&amp;海川智能（磷化铟）、洪田股份（平台化的设备公司）、凯旺科技&amp;瑞玛精密（液冷）、陶瓷基板（国瓷材料、旭光电子、金博股份）等。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p032">
+            <div class="full-header">[032] 09:21</div>
+            <div class="full-body">美股科技股强势反弹<br><br>费城半导体指数大涨超8%。存储芯片中，铠侠上涨31.81%，闪迪涨上涨25.99%，美光科技上涨18.36%，SK海力士上涨17.52%。Nebius Group上涨27.13%,AXT上涨26.97%，Bloom Energy上涨26.49%，Lumentum上涨15.09%，康宁上涨9%，TTM科技上涨13.50%，英特尔上涨11.30%。微软上涨15.51%，创2008年10月以来最大单日涨幅，市值单日增加4500亿美元。<br><br>存储芯片：德明利、兆易创新、普冉股份、佰维存储、江波龙、长鑫科技<br><br>CPO：东山精密、光迅科技、新易盛<br><br>光纤：长飞光纤、通鼎互联<br><br>磷化铟：云南锗业<br><br>半导体设备：北方华创、托伦斯<br><br>代工：华虹宏力、中芯国际<br><br>电子布：宏和科技、国际复材<br><br>覆铜板：生益科技、金安国纪<br><br>铜箔：铜冠铜箔<br><br>MLCC：风华高科、三环集团、博迁新材<br><br>玻璃基板：京东方A、戈碧迦（北交所）#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p033">
+            <div class="full-header">[033] 09:24</div>
+            <div class="full-body">六氟化钨供需平衡表<br>[含1张图]<br>[图1OCR] 项目 【需求量（吨）】 半导体（逻辑+存储） 国内 国外 需求同比增速 【供应量（吨）】 P公司 S公司 K公司 C公司 F公司 H公司 Z公司 供给合计 供给同比增速 【供需差额（吨）】 缺口占供给比例 2025 5802 1852 3950 1300 2000 1400 800 800 60 200 5760 -42 -1% 六氟化钨供需平衡表 2026E 6556 13% 2000 1400 700 300 900 200 400 5900 -1% -656 -11% 2027E. 8851 35% 3000 1200 200 100 900 600 600 6600 12% -2251 -34% 备注 25年数据按各下游厂 加总得到，26-27年数 据参考下游存储厂容 量增速 按照海外同行26年6月 起降负荷情景假设， 国内企业假设均开满 中船特气利润弹性测算 WF6均价（万元/ 吨） 800 700 600 500 400 300 200 钨粉价格 （万元/吨） 100 100 100 100 100 100 100 销量（吨） 3000 3000 3000 3000 3000 3000 3000 其它费用 （亿元） 10 10 10 10 10 10 10 稅前利润 （亿元） 186 159 133 106 80 53 27 所得税 税后利润 （亿元） 15% 15%</div>
+        </div>
+
+        <div class="full-item" id="p034">
+            <div class="full-header">[034] 09:24</div>
+            <div class="full-body">信维通信辟谣<br>[含1张图]<br>[图1OCR] 信维通信：关于媒体报道的澄清公告 日期：2026-07-31 10 文档智读 要点全览，数据深析，观点立得 ② 立即提问 深圳市信维通信股份有限公司 关于媒体报道的澄清公告 本公司及董事会全体成员保证信息披露的内容真实、准确、完整，没有 虚假记载、误导性陈述或者重大遗漏。 一、媒体报道情况 近日，据日经业洲（Nikkei Asia） 引述消息人士称“某北美企业据报要求供应 商排除中国籍员工及设备”，大量投资者对该事件表达了关切。针对上述情况，公 司董事会高度重视，立即组织相关部门对公司涉及商业卫星通信业务的供应链、生 产布局及人员配置情况进行了全面核查。 二、澄清说明与业务现状 1、经核实，该消息缺乏事实依据，公司与客户的商务合作条款均未发生任何变</div>
+        </div>
+
+        <div class="full-item" id="p035">
+            <div class="full-header">[035] 09:26</div>
+            <div class="full-body">韩国股市反弹，盈利提振了人们对人工智能交易的乐观情绪。<br>[含1张图]<br>[图1OCR] 韩国股市反弹，盈利提振了人们对人工智 能交易的乐观情绪。 SK 海力士公司晶圆模型。 摄影：SeongJoon Cho/彭博社 李有京报道 July 31, 2026 at 7:50 AM GMT+8 更新于July 31, 2026 at 8:09 AM GMT+8 贝 节省 翻译 韩国股市周五上涨，从本周早些时候的暴跌中反弹，主要原因是大型 科技公司的支出计划重新提振了人们对人工響能交易的乐观情绪。 韩国综合股价指数（KOSPI）一度上涨14%，创历史最大涨幅。SK海 力士股价飙升28%，SK 集团董事长崔泰源罕见地直接购入股份也提振 了股价：同为存储芯片制造商的三星电子股价上涨26%。 受全球最大科技公司债务水平不断攀升以及来自中国竞争的威胁担 忧，基准指数在过去三个交易日下跌了17%。今年人工智能驱动的大幅 上涨行情，随着5月份杠杆产品的推出，波动性日益加剧。 NH 投资证券韩国现金股票主管Shawn Oh表示：“近期人工智能科技 股因去杠杆化、去毛化、清算和其他流动性因素而加速抛售，这可能 正在趋于稳定。” 阅读更多：三星、SK海力士用亮眼数据和交易回击人工智能质疑者 投资者从 Chey 收购吧中获得了安慰。他在公开市场上购入了3620 股SK海力士股票，这是他首次直接投资这家芯片制造商。这笔价值约 48 亿韩元（320万美元）的收购被广泛解读为在公司股价大幅下跌 后，他</div>
+        </div>
+
+        <div class="full-item" id="p036">
+            <div class="full-header">[036] 09:26</div>
+            <div class="full-body">韩国早间资金流（20260731）<br><br>外资净流入5万亿韩元<br><br>韩国本地机构流出0.2万亿<br><br>个人散户净流出4.6万亿韩元<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p037">
+            <div class="full-header">[037] 09:26</div>
+            <div class="full-body">AI 悲观叙事证伪，关注量能高弹性的 mSAP 与价能高确定性 MLCC<br><br>mSAP是光模块上游升级的最大通胀项之一也是PCB 明后年的最大单一增量市场之一。光模块800G到1.6T到3.2T升级中，mSAP价值量非线性增加。市场规模有望从今年的超百亿到 27 年近 500亿元再到 28 年超千亿。mSAP工艺难度超 BT 载板，设备交期已近 2 年，竞争格局良好，光模块及存储需求爆发下，目前产能大幅吃紧，预计价格将在下半年继续上涨。<br><br>MLCC 在算力升级下，单 GPU 用料增速超 100% 。Q3消费电子拉货+Rubin等单柜需求更高的AI服务器迈入量产，而原厂依然存在转产的产能挤压，供需缺口有望进一步放大。三季度进入原厂涨价加速期，现货价格也在本周企稳并回暖走高，目前部分代理商已经停止接单。目前原厂供给紧张，全线满载，中容及普通高容持续转产 AI，渠道库存新低。随着缺货情况愈演愈烈，终端或普遍接受涨价。<br><br>重点关注：<br>1）板厂：景旺电子/红板科技/鹏鼎控股/深南电路，及上游电镀设备材料环节。<br>2）MLCC 原厂：风华/三环/昀冢/利和兴等。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p038">
+            <div class="full-header">[038] 09:26</div>
+            <div class="full-body">📈xb 机械｜八月电子布涨价或持续超预期，修复行情下关注强预期到强现实品种<br><br>7 月初，7628 电子布价格涨至 8.5～8.7 元/米，环比上涨 1.2 元/米，单月涨幅 16%；8 月价格将持续上涨，预计单月提价幅度或在 1.5 元/米以上。<br>2116/1080 等薄布 7 月初报价不低于 11 元/米，月涨幅 20%，预计 8 月涨幅继续保持在 15% 以上。<br><br>7 月供给端再现短缺，光远 7628 停产、宏和等头部大厂均转向高端产品结构；除了供给端问题，材料端也是主要驱动，7 月初电子纱 G75 主流成交价报 16500 元/吨—17000 元/吨，比 6 月初上涨 2500 元/吨，单月涨幅达 17%。<br>供需缺口不断放大的趋势下，下游库存基本告急，此轮涨价预期将稳定延续。<br><br>特种电子布方面，随着 26 年下半年Rubin 放量，二代布将成为涨价主力。<br><br>最后，高端织机供应受限仍是问题。丰田织机仍是行业首选，二手设备价格持续上涨，国产织机在产品稳定性、良率上跟进口设备还有差距。<br><br>🎁相关推荐：国际复材、宏和科技、中国巨石、中材科技。<br><br>☎️王昊哲/郭义俊<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p039">
+            <div class="full-header">[039] 09:27</div>
+            <div class="full-body">费城半导体指数22次大跌后反弹复盘<br>[含1张图]<br>[图1OCR] の东方则富证券 Eastmoney Securities 【策略研究陈果团队】 联系人：陈果/ 金科 2026年7月31日 费城半导体指数22次大跌后反弹复盘 • 1.2 近期费城半导体指数波动显著放大，近2个交易日收益率之差超过13%，历史 上，费城半导体指数还出现过22次类似的极端反弹，主要分布于亚洲金融危 机、科网泡沫破裂、次贷危机、新冠疫情等风险释放阶段。 背录 时间 背录 时间 背業 时间 亚洲金 1997-10-28 2001-01-03 2020-03-10 融危机 1998-09-01 2001-04-05 2000-04-17 科网熊 市尾声 2002-03-01 新冠 疫情 2020-03-13 2020-03-17 2000-05-11 2002-10-17 2020-03-19 科网泡 沫破裂 2000-07-06 2002-10-23 美联储加息 2022-11-10 2000-10-19 对等关税 2025-04-09 2000-10-26 次贷 2008-09-30 半导体行情 2026-06-08 2000-12-08 危机 2008-10-16 剧烈震荡 2026/7/30 从历史经验来看，费城半导体指数大跌后反弹往往意味着前期快速下跌所形 成的恐慌和交易性抛压正在得到释放，行情出现阶段性止跌信号，指数整体 转入震荡修复，并在后续1个月内平均上涨约</div>
+        </div>
+
+        <div class="full-item" id="p040">
+            <div class="full-header">[040] 09:31</div>
+            <div class="full-body">中国7月官方制造业PMI 49.2，预期50.1，前值50.3。<br><br>中国7月非制造业PMI 49，预期50，前值50.2。<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p041">
+            <div class="full-header">[041] 09:31</div>
+            <div class="full-body">【2026年7月30日云盘汇总】<br><br>-------------------------------<br>-------------------------------<br>-------------------------------<br>-------------------------------<br>-------------------------------<br>-------------------------------<br>-------------------------------<br>-------------------------------<br>-------------------------------<br>-------------------------------<br><br>通过网盘分享的文件：<br>链接: [https://pan.baidu.com/s/1in1IikR-NVgDwf2MWl9WtA?pw...] <br>提取码: je9v</div>
+        </div>
+
+        <div class="full-item" id="p042">
+            <div class="full-header">[042] 09:35</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 口 688158 优刻得科技股份有限公司2026年度向特定对象发行A股股票募集说明书（申报稿） 有鉴于此，公司拟进一步在乌兰察布推进 Al 基础设施建设。… 基于下游客户持续增长的算力需求，公司拟进一步在乌兰察布推进 AI 基础设施建设，持续深入业务布局、提升服务能力。… 本次公司向特定对象发行股票募集资金用于“优刻得乌兰察布智算中心及智算集群建设运营项目”。… 201</div>
+        </div>
+
+        <div class="full-item" id="p043">
+            <div class="full-header">[043] 09:35</div>
+            <div class="full-body">【长鑫科技市值突破4万亿】财联社7月31日电，长鑫科技继续冲高，盘中涨近13%，总市值突破4万亿。(来自财联社APP)#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p044">
+            <div class="full-header">[044] 09:37</div>
+            <div class="full-body">🔥【华创传媒互联网 姚蕾团队】26H1游戏数据更新：国内大盘增长12%，PC、出海、小游戏增速约30%，重申推荐游戏板块！<br><br>🌟26年6月： 国内游戏市场收入300.5亿元，YOY+12%，主要依托长线产品稳定运营、双端互通产品持续放量， 其中：移动游戏收入225.1亿元，YOY+12%；客户端游戏收入63.9亿元，YOY+9%，主要得益于双端互通长青端游。自研游戏出海市场收入19.7亿美元，YOY+26%，主要依托长线产品稳定运营，同时叠加新品持续出海释放增量<br><br>🌟 26H1整体来看：<br>1）国内游戏市场收入1884.5亿元，YOY+12%，游戏用户规模6.84亿人， YOY+0.8%；其中移动游戏1352.1亿元，YOY+8%，角色扮演与策略类游戏保持较大占比；客户端游戏452.9亿元，YOY+28%；主机游戏9.6亿元，YOY-7%。自研游戏出海123.7亿美元，YOY+ 30%；自研游戏国内市场收入1633.6亿元，YOY+16%。<br><br>2）中国电子竞技市场收入896.16亿元，YOY+11%，主要系头部产品出色表现与新品输出。<br><br>3）小程序移动游戏市场收入316.57亿元，YOY+36%，其中IAP收入211.37亿元，YOY+38%，占比66.8%；IAA收入105.20亿元，YOY+32%，占比33.2%<br><br>4）休闲移动游戏市场收入182.05亿元，YOY+10.7%，其中IAP占比67%；IAA占比33%。<br><br>5）二游市场收入132.69亿元，YOY-9%，主要系部分头部长线二次元产品流水下滑，新品未能予以弥补。<br><br>6）桌游市场收入38.68亿元，YOY+4%，其中，电子桌游占比52%，实体桌游占比48%<br><br>太阳今年以来，游戏板块调整主要系资金虹吸效应下估值承压，A+H重点游戏公司26E平均PE仅13X，#低估值与高业绩增速形成显著错配。#  <br>太阳全球科技巨头将资源集中配置AI产业的大背景下，游戏供给端竞争或将趋缓，需求端保持强劲，利好持续深耕游戏主业的公司。<br>太阳生成式AI革命下，内容迭代周期有望缩短、“创意”价值进一步放大，利好实力领先的研发商；多模态演进有望孵化新的互动娱乐形态和玩法。<br><br>🎁新一轮产品周期酝酿中，关注业绩释放及估值修复。相关标的：世纪华通、心动公司、完美世界、恺英网络、三七互娱、巨人网络、腾讯控股、网易-S等。<br><br>☎️交流：姚蕾/丁子然19121827120/杨孙权13761429801#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p045">
+            <div class="full-header">[045] 09:45</div>
+            <div class="full-body">【招商电新】北美缺电加剧，继续推荐SOFC/变压器 20260731<br><br>BE大涨，SOFC进入业绩兑现<br>Bloom Energy昨夜大涨约26%，Q2收入首次突破10亿美元，利润率和经营现金流全面超预期，并上调全年指引。<br><br>拉闸限电，利好表后模式<br>PJM拟对50MW以上大负荷建立登记制度，电网紧张时，未自带电的数据中心可能被拉闸限电！<br>叠加黑石QTS终止弗吉尼亚超大数据中心、Oracle近1GW项目或需超70亿美元担保，电力接入、并网周期、社区许可和前置资本正成为AI数据中心核心约束。<br><br>PJM缺电继续强化<br>美国7月高温持续考验PJM，备用容量一度从约22GW降至约5GW，接近3.2GW最低备用要求，市场价格一度接近2.8万美元/MWh。最新28/29容量拍卖顶格出清，可靠性缺口扩大至约6.8GW；若不设限价，PJM测算容量价格应接近555美元/MW-day。<br><br>SOFC有望持续超预期<br>AI数据中心抬高长期负荷曲线，建设速度远超电源和电网扩容。SOFC具备快速交付、低排放、模块化、离网运行优势，契合北美“缺电+限电+审批+社区许可”约束，后续订单和业绩有望持续超预期。<br><br>变压器订单持续<br>变压器仍是最确定的电力设备短缺环节。无论数据中心并网还是自建电源，大型园区均需要变压器、开关、配电和微电网设备，景气度具备持续性。<br><br> 建议重点关注：春晖智控、三环集团、德昌电机控股、壹连科技、振华股份、龙佰股份、壹石通、潍柴动力。<br>推荐：思源电气、金盘科技、伊戈尔、白云电器、安靠智电。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p046">
+            <div class="full-header">[046] 09:45</div>
+            <div class="full-body">隔夜市场点评0731：大奇迹日存储大涨，美日配合日元跳升<br><br> 行情总览：<br><br> 隔夜迎来本轮调整以来最强反攻，标普+1.66%、纳指100+3.36%、道指+1.19%；费城半导体指数大涨8.19%、DRAM指数飙升16.70%。存储链集体逼空：闪迪、西数、希捷、SK海力士ADR及镁光均涨15%以上。VIX重挫17.28%至17.09。<br><br> 6月PCE物价指数环比-0.1%，六年来首次转负，同比涨幅显著收窄；二季度GDP年化增长1.5%不及预期。美元指数一度失守100，黄金+1.58%。<br><br> 资本效率分化继续演绎，微软（capex不变＋云加速）+16%；亚马逊AWS增速37%超预期、AI与自研芯片年化收入双双破250亿美元，盘后涨9%；Meta连跌11天、7月累计跌21%；苹果盘后跌超5%，Q4指引因供应限制不及预期。<br><br> 日本疑似开展次此前声称的突袭式干预，日元盘中暴涨超3%至158.26，创2024年8月以来最大涨幅。日经新闻称日本政府与央行实施了大规模买入日元的干预、纽约联储同步进行汇率询价。<br><br> 核心逻辑：<br><br> 昨夜通胀数据与财报电话同时解决了压制市场的两个变量。分母端，PCE转负缓解长端利率失控压力；分子端，景气的兑现因子在财报中获得体现（微软Azure云收入+43%）。但PCE的暂冷建立在6月油价相对低位之上，7月油价则两度破百，后续8月公布数据情况或是真正的裁判。<br><br> 三星Q2创史上最强盈利季，电话会表态存储供不应求，且短缺将持续至2028年。同时表示60-70%产能分配给长期协议；HBM4收入将占六成。一方面，电话会部分证实了此前市场对于长协可执行性的顾虑，另一方面对短缺的预期部分对冲了中国供应的长期影响。<br><br> Lam Research财报大超预期、股价+18%，用真实订单反驳了中国DUV替代对设备链的杀跌，结合微软、亚马逊及三星消息，供给、设备、需求三端提供了隔夜反弹的三大动力源，远超此前筹码修复的力度。<br><br> 美日配合下的汇市干预，日经确认日本实施大规模买入日元干预、纽约联储在美国财政部指示下同步进行汇率询价。日本方面与7月初的“突袭式干预”策略转向一致，美国方面则变相提供配合，加强日元获得双边配合。今日植田新闻会口风值得一探。<br><br> 中美经贸出现实质性缓和信号，何立峰与贝森特、格里尔举行视频通话，双方同意进一步发挥中美经贸磋商机制作用。但同期美国参议员施压苹果采购中国芯片、FCC限制清单扩容，经贸缓和和科技管制同时存在，关税压力对冲不代表科技封锁松动。<br><br>⚠️ 风险点：油价回升拉动8月通胀数据风险；芯片供应链约束进一步侵蚀消费电子盈利风险；存储供给端“准入化”风险；日元反转加速，套息平仓存在冲击全球风险资产风险。<br><br>欢迎大家与我们讨论，请联系国联民生宏观团队陶川/林彦#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p047">
+            <div class="full-header">[047] 09:56</div>
+            <div class="full-body">长江宏观宋筱筱团队_7月PMI一图速览<br>[含1张图]<br>[图1OCR] •研究所。 长江宏观|宋筱筱团队 7月PMI数据一图速览 欢迎关注：长江宏观经济研究 单位：% 制造业PMI 新订单 新出口订单 生产 原材料库存 产成品库存 2026-07 相对于荣枯线 49.2 绝对值较13-19年 同期均值之差 49.6 49.9 48.3 48.6 49.5 53.2 主要原材料购进价格 出厂价格* 从业人员 在手订单 采购量 进口 生产经营活动预期 按企业类型分 49.0 49.4 47.5 54.1 低低低低高低低低低低高 中型企业 小型企业 趋势性变化 动能：新单-生产 内需：新订单-新出口订单 库存：原材料库存+产成品库存 价差：出厂价格-原材料购进价格 非制造业商务活动指数 建筑业 服务业 49.7 47.4 -1.1 5.4 47.0 49.3 图：历年各月制造业PMI指数（%） 2019 2020- -- 2021----2022 2023 ~2025-0-2026 52 51 上月 -1.5 +0.9 -1.0 -0.4 +0.5 -2.0 -2.1 -0.2 -0.8 -2.2 +0.8 +0.6 -2.0 -1.1 1月 2月3月4月5月6月7月8月9月10月11月12月 图：历年各月制造业PMI新订单指数（%） 2019- 2020---2021----2022 - 2023 ⑦02420②6∞0⑦06 -2.8 -2.9 2026-</div>
+        </div>
+
+        <div class="full-item" id="p048">
+            <div class="full-header">[048] 09:57</div>
+            <div class="full-body">7月30日消息，算力金属”价格狂飙，铜、铝、锡、钽、铟等有色金属价格大幅上涨 ?锡价半年内上涨40%，钽价更是飙升158%，铟价上涨60%。<br>钽：东方钽业，中矿资源<br>[含1张图]<br>[图1OCR] 韭研公社 为尖成研究賊能 分类 钽产业（260330）更新 公社 O 产业库 个股 业务相关 信源 子公司栗木矿业投资实施60万吨/年采矿改造工程项目、150万吨/ 钽资源 新金路 公告 年选矿项目、钽铌（钨、锡）资源治炼综合利用技改项目一期工程 永兴材料 公司钽铌锡混合精矿（钽5°锡40°）产销量为540吨/年 公告 钽粉 东方钽业 公司电容器级钽粉国内市场占有率50%左右，全球市场占有率20% 公告 左右；电容器用钽丝全球市场占有率50.00%以上 宏达电子 公司是国内高可靠钽电容器生产领域的龙头企业 半年报 公司的民用钽电容器在国产服务器中开始供货；片式钽电解电容器 振华科技 调研/公告 产能4.8亿只/年 产品 火炬电子 公司成熟产品包括钽电容器 半年报 钽电容 公司为全球顶级客户开发新型结构钽电容，钽电容产品已为客户配 顺络电子 调研 套供应产品线 康达新材 参股公司成都铭瓷主要产品系列包括钽电容器 风华高科 钽电容为公司销售产品之一 北方华创 完成抗振动高能钽电容技术攻关和高分子钽电容产品研发 互动 互动 半年报 设备 化学品 杰普特 钽电容双工位智能焊接设备研制成功 新宙邦 钽电容用化学品 半年报 互动 银邦股份 公司与中国科学院国家空间科学中心合作研制抗辐射铝担复材 抗辐射铝钽复材 天力复合 深空探测钼铝屏蔽板制备技术 西部材料 公司是天力复合控股股东，公司产品包括</div>
+        </div>
+
+        <div class="full-item" id="p049">
+            <div class="full-header">[049] 09:57</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 昨天7月30日下午3点在币安VIP私享会的核心观点分享（由币安团队总结发布，这里是节选） 快讯一 洪灏：科技股调整窗口或持续至8月底，尽管短期内或有两位数反弹 7月30日，在今日举行的币安私享会上，著名经济学家洪灏表示，此前团队预测的大级别调整窗口已开启，预计将持续 至8月底左右，短期内可能有两位数反弹，但当前市场仍处于去杠杆阶段，投资者可更有耐心。 洪灏指出，目前韩国KOSPI指数已从高位明显回落，市场正进入“看多者逢低布局、看空者止损离场”的阶段。由于指数 权重高度集中于少数科技龙头，其基本面表现仍将是判断市场是否真正见底的关键因素。 对于是否应立即布局科技股，洪灏表示，未来两到三周，市场见底信号有望进一步明朗，在此之前保持耐心更为重要。 他提醒，典型资产泡沫破裂往往经历三分之二甚至更大幅度的调整，目前市场虽已出现约50%跌幅，但仍不能排除进一 步下行的空间。 洪灏同时表示，除了价格走势外，还需关注韩国监管政策、去杠杆进程以及海外杠杆ETF等因素对市场的影响。他认 为，若本轮调整能够较快完成，也将为长期看好相关资产的投资者提供更具吸引力的布局机会。 快讯四 洪灏：周期研究与“算命"本质都是预测，区别在于方法论 7月30日，在今日举行的币安私享会上，谈及市场周期研究与”玄学"的关系时，著名经济学家洪灏表示，无论是投资研 究还是传统算命，本质上都属于对未来的预测，不同之处在于所依赖</div>
+        </div>
+
+        <div class="full-item" id="p050">
+            <div class="full-header">[050] 10:23</div>
+            <div class="full-body">[玫瑰][玫瑰][玫瑰]产业逻辑才能对抗短期恐慌，持续强call中国硬科技【华西机械】<br><br>#1、昨日美股半导体强势反弹（SOX指数+8.19%），其中设备+存储领涨：LAM、AMAT、TER等涨幅+18%、+15%、+14%；MU、SNDK涨幅+18%、+26%！A股投资人向来缺乏自主科技自信，交流下来，#祈祷美股反弹已经成为绝大部分A股科技投资人唯一的救命稻草，所以说昨日美股半导体反弹的情绪修复意义重大！相比短期的情绪修复，#TER、LAM等设备资产营收加速增长的基本面信号更应该值得我们重视！<br><br>#2、长鑫上市短期博弈已经结束，我个人一直属于中国硬科技乐观派，也非常不认同海力士27年估值不到5X，所以对比下来长鑫估值没有吸引力，投资价值不高！这里不赘述短期基本面了，中长期产业逻辑视角下：长鑫大扩产去抢占全球市场份额，去卷海力士是必然的，长鑫的成长性更高；其次，目前全球AI投资的成本卡点在存储环节（成本占比太高），考虑川普一贯的自我利益的价值观，不太可能容忍大部分利润分配集中在海力士、三星那（MU大扩产、以及美国要韩国存储利润分成其实已经是信号）！<br><br>#3、客观来说，中国大陆长鑫的大扩产（还有长存、先进逻辑、先进封装等），当下对AI的依赖度没有那么高，#AI的逻辑确实掩盖了国产替代的逻辑，这波下杀洗盘不见得是坏事（太多的资金不明不白就上车了）！#A股半导体设备这波调整幅度也超过30%，#目前估值已经在历史分位底部（华创27年订单估值不到5PS、拓荆不到8ps、哪怕精测也不到8PS，长川不到40PE等等），这些都是硬科技核心资产，这个位置我们没有必要不乐观起来！<br><br>投资建议： 1）#核心推荐长鑫：27年20X，目标市值看6w亿+！2）设备核心大票推荐#拓荆、长川、华创、飞测、华海、中微等！近期超跌推荐#精测、屹唐、华峰、京仪、先导等！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p051">
+            <div class="full-header">[051] 10:23</div>
+            <div class="full-body">【zx汽车】汽车零部件&amp;机器人观点更新——谷歌发布Gemini Robotics 2，宇树上市在即，科技开启反攻！<br><br># 科技超跌反攻、🤖新催化来袭！<br>7月，机器人板块跟随科技超跌，最大回撤达约25%。反观产业进展，无论是软件模型、硬件量产还是资本市场融资都是在不断加速推进的。7月30日，谷歌DeepMind发布下一代物理AI——Gemini Robotics 2，为人形机器人带来全身智能、高级灵巧性、多机器人团队协作等能力。同日晚，宇树科技正式启动发行，准备登录资本市场。2026年将是人形机器人的重要里程碑之年，我们呼吁重视科技大回撤带来的黄金坑，继续推荐机器人板块！<br><br># 重点推荐方向<br>1、国产本体：宇树科技、优必选/锋龙股份、上纬新材、胜通能源（七腾机器人）；<br><br>2、特斯拉产业链<br>1）Optimus V3增量环节：<br>- 灵巧手/电机：恒帅股份（电机）、鸣志电器<br>- 电子皮肤：岱美股份、日盈电子<br>- 减速器/旋转关节：斯菱股份（谐波）、科达利（谐波）、新泉股份（关节）、双环传动（新型减速器）、绿的谐波<br>- 其他部件&amp;结构件：福赛科技（结构件）、模塑科技（外观件）、旭升集团（结构件）、星宇股份、万向钱潮、科博达等。<br>2）T总成&amp;核心部件供应商：拓普集团、浙江荣泰、三花智控、恒立液压等；<br>3）核心tier-2：五洲新春、北特科技、铁流股份、肇民科技、金沃股份、宁波东力、凯迪股份、恒辉安防等。<br><br>3、国产机器人产业链：宁波华翔、均普智能、敏实集团、兆丰股份、美湖股份、征和工业、晋拓股份等。<br><br>欢迎交流！<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p052">
+            <div class="full-header">[052] 10:23</div>
+            <div class="full-body">[玫瑰]【华泰消费看海外系列｜美护】#Puig26H1业绩速递：香水彩妆领跑、亚太高增、维持全年展望<br><br>#26H1经营成果#<br>[庆祝]营收23.54亿欧元/yoy+4.4%；其中Q2营收11.38亿欧元/yoy+4.1%，beat彭博一致预期1.36%<br>[庆祝]毛利17.76亿欧元，毛利率75.5%；经营利润3.40亿欧元/yoy+2.3%，经营利润率14.5%<br>[庆祝]经调整归母净利润2.60亿欧元/yoy+5.2%，经调归母净利率11.1%/yoy+30bp，调整后EPS 0.46欧元<br>[庆祝]经营性自由现金流-1.96亿欧元，主要受库存水平阶段性较高影响<br><br>#26全年指引：维持全年展望，预计全年可比口径继续跑赢高端美妆市场，经调整EBITDA率与25年基本持平；品牌投放节奏将更偏向26H2<br><br>#26H1分业务：香水及彩妆延续增长、护肤受高端护肤调整拖累<br>[太阳]香水及时装营收17.16亿欧元/yoy+3.8%；Q2 yoy+3.7%；Carolina Herrera双位数增长，Byredo/Dries Van Noten带动小众香水双位数增长<br>[太阳]彩妆营收3.59亿欧元/yoy+9.1%；Q2 yoy+9.1%；Charlotte Tilbury延续强势，Boots UK渠道扩张贡献增长<br>[太阳]护肤营收2.79亿欧元/yoy+2.3%；Q2 yoy-0.3%；皮肤科护肤Uriage双位数增长，但高端护肤偏弱及产品线调整形成拖累<br><br>#26H1分区域：亚太高增、欧美稳健#<br>[烟花]EMEA营收12.21亿欧元/yoy+2.6%；Q2 yoy+2.1%，欧洲表现稳健，中东局势对旅游零售有所拖累<br>[烟花]美洲营收8.59亿欧元/yoy+2.6%；Q2 yoy+3.2%，北美香水和彩妆sell-out健康增长<br>[烟花]亚太营收2.73亿欧元/yoy+20.9%；Q2 yoy+16.1%，为集团增速最快区域，小众香水及Charlotte Tilbury表现较好<br><br>#增持CT：# 2026年4月公司增持Charlotte Tilbury 6.5%股权至85%，计划2031年前实现全资持有<br><br>注：除特殊标注，各区域/品类营收增速均为可比口径（Like-for-like）。<br>详情欢迎交流：樊俊豪/孙丹阳18521095693/袁嘉会13801791440[红包]<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p053">
+            <div class="full-header">[053] 10:25</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 所以，电话会议中，微软使用的词语 是： quickly monetized。 这意味着新增CapEx开始具备极高的 资产周转效率。它不再是传统意义上 的长期资本沉淀，而越来越像一种能 够快速转化为收入的生产资料。 这是整个AI基础设施经济学最大的 变化之一。 Azure 少数派观点局 微软给出了AI CapEx的新回答</div>
+        </div>
+
+        <div class="full-item" id="p054">
+            <div class="full-header">[054] 10:25</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 金融市场发生的事在不断循环，只有自己经历过，或者自己研究过才能慢慢的理解。比 如，Citadel吃掉其他人投资组合的事就完整的发生过：2006年，Amaranth 在天然气 价差上亏掉约60亿美元，能源组合由摩根大通与城堡整体接手，两家随后各赚约10亿 美元。2007年夏天的一单，结构与这次几乎同构：前哈佛捐赠基金经理 Jeffrey Larson 的 Sowood Capital，约30亿美元规模，在次贷向信用市场扩散初期的利差急升中触发 保证金，最终把大部分组合折价整体卖给城堡；据城堡的公司史记载，其他竞购者相继 放弃后，其团队连夜完成估值，凌晨报出价格。同年年底，城堡又以约27美分兑1美 元的价格，买下 E*Trade账面约 30亿美元的资产支持证券。 再加上1998年由银行团接盘的LTCM 和 2021年由投行自营台清算的 Archegos，这个 剧本每隔几年重演一次，台词几乎不变：天才、杠杆、拥挤、保证金、整体转手，变的 只是资产类别，从天然气到次贷信用再到 Al股票。</div>
+        </div>
+
+        <div class="full-item" id="p055">
+            <div class="full-header">[055] 10:26</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] ©财联社电报 财经通讯社 2026-07-30 21:03:49星期四 【报道称台积电开发AI芯片 封装技术以抗衡英特尔】 财联社7月30日电，据报道，两位 直接了解该项目的人士透露，台积 电正在开发一种与英特尔已有的先 进芯片封装技术类似的产品，这表 明这家全球领先的芯片制造商担心 竞争对手的竞争。芯片封装是芯片 生产的最后阶段，将不同硅片组装 成一个单元并接线，使其能够作为 一个整体工作并连接到计算机的其 他部分。 半导体芯片 存储芯片 长按右侧二维码阅读原文 准确 快速 权威 专业 CLS 财联社 •上海报业集团主管主办 为速度和交易而生 机构和私募都在使用</div>
+        </div>
+
+        <div class="full-item" id="p056">
+            <div class="full-header">[056] 10:26</div>
+            <div class="full-body">【天风电新 &amp; 汽车】AIDC 不同板块最大回撤、26-27 年利润及增速、PE<br>[含1张图]<br>[图1OCR] 【天风电新&amp;汽车】AIDC不同板块最大回撤、26-27年利润及增速、PE 利润（亿元） 增速 PE 板块 公司 最大回撤 26年 27年 26年 27年 26年 27年 铜冠铜箔 -62% 10 25 1496% 150% 66 26 德福科技 -65% 10 20 789% 100% 40 20 方邦股份 -68% 千万级别 2 38 中一科技 -56% 10 669% 100% 21 10 海亮股份 37% 20 42 112% 110% 20 宝鼎科技 -60% 4 10 222% 150% 31 12 国际复材 -52% 20 50 634% 150% 62 25 东材科技 -59% 10 20 250% 100% 34 17 PCB 金安国纪 -61% 25 60 731% 140% 14 建滔积层板 -73% 80 180 277% 125% 10 建滔集团 -74% 68 140 78% 106% 华正新材 -62% 7 20 153% 186% 23 江南新材 -55% 5.5 10 151% 82% 26 14 天承科技 -63% 5 131% 150% 51 20 新锐股份 -59% 10 17 342% 70% 17 10 深南电路 -41% 55 127.5 68% 132% 35 15 兴森科技 -50% 4.5 40 233% 789% 105 12 英</div>
+        </div>
+
+        <div class="full-item" id="p057">
+            <div class="full-header">[057] 10:26</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] G 格隆汇 •电报 比新闻更快的财经资讯 2026-07-31 08:19星期五 亚马逊CEO：算力强劲需求将持持续至 2028年 格隆汇7月31日| 美东时间周四盘后，亚马逊上调全年 资本支出预期至2200亿美元。公司CEO安迪•贾西在 投资者电话会议上表示，即便投资达到这一规模， “2026年算力供给依|日无法完全满足客户全部需求， 我们判断2027年同样会面临算力供给缺口；事实上， 目前客户锁定的2028年算力订单规模已经十分惊 人。” 亚马逊 USAMZN 研究•电报•路演•行情，社区 长按二维码识别，下载格隆汇 APP G 格隆汇 全球视野•下注中国</div>
+        </div>
+
+        <div class="full-item" id="p058">
+            <div class="full-header">[058] 10:26</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 快讯 31 July 星期五 A股三大指数集体高开 2026/07/31 09:27 源杰科技涨超16%，仕佳光子涨超14%，江波龙涨超 13%；通信设备、半导体、电脑硬件领涨，白酒、汽 车、油气跌幅居前；沪指高开0.76%，深成指高开 3.04%，创业板指高开5.15%。 那K 长按识别二维码 阅读全文</div>
+        </div>
+
+        <div class="full-item" id="p059">
+            <div class="full-header">[059] 10:26</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] G财联社电报 财经通讯社 2026-07-31 09:32:35 星期五 【长鑫科技市突破4万亿】 财联社7月31日电，长鑫科技继续冲高，盘中涨近13%， 总市值突破4万亿。 C长盞 +12.20% 盘面直播 长按右侧二维码阅读原文 准确 快速 权威 专业 CLS财联社•上海报业集团主管主办 为速度和交易而生 机构和私募都在使用</div>
+        </div>
+
+        <div class="full-item" id="p060">
+            <div class="full-header">[060] 10:27</div>
+            <div class="full-body">[發]【国泰海通医药】先声药业发布盈利预告<br><br>[玫瑰]昨晚公司发布中报盈利预告，1h26实现收入45.5-46.1亿元，yoy+26.9%-28.6%，实现归母净利润8.1-8.6亿元，yoy+34.8%-43.1%，实现经调整净利润9.5-10亿元，yoy+46.5%-54.2%。主要系创新药销售收入增加，以及对外许可收入增加；<br><br>[玫瑰]今年以来公司对外授权进展丰富：1）2026/1 就旗下IL23p19*TL1A双抗和BI达成授权合作，获得0.42e欧元首付款；3）2026/2 GPRC5D*BCMA*CD3三抗和获得了艾伯维支付的0.4e美金里程碑，临床进展顺利推进中；<br><br>[玫瑰]2026年公司持续加大对外合作获得后期资产：1）2026/6从普祺医药处引入JAK1凝胶普美昔替尼；2）2026/6-2026/7先后和美国斯坦福大学、美国薛定谔公司达成合作协议，开发肺纤维化新药和AI制药；<br><br>[玫瑰]2026年研发进展顺利，多款新药陆续进入临床：包括25年和IPSEN合作的IRRC15 ADC、panRAS分子胶以及PD1*VEGF双抗。临床前还储备有PSMA*STEAP*CD3三抗、STAT6 PROTAC、透脑Aβ双抗等项目；<br><br>[玫瑰]在研产品和临床前资产丰富，多个项目具有全球竞争力：1）NMTi毒素ADC平台第一个分子EGFR*CMET ADC预计于2h26 IND。诺华已于2026/7以15e美金收购myricx获得NMTi载荷平台；2）肿瘤领域PDL1*15融合蛋白SIM0237已在膀胱癌上展现出优异疗效，EGFR*CMET ADC SIM0610、CDH17 ADC SIM0609全球进度靠前，后者2h26有望释放首次人体实验数据；3）神经领域先必新舌下、PLG抑制剂等值得关注；<br><br>[玫瑰]联系人：余文心/余克清/廖博闻/汪晋#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p061">
+            <div class="full-header">[061] 10:27</div>
+            <div class="full-body">【小米集团】新车定价超预期，重视底部反转机会！<br><br>[礼物]7.30日公司举行澎程系列技术发布会，发布大五座SUV N70 Max/大七座SUV N90 Max，定价25.99/29.99万元。<br><br>[庆祝]定位高配大空间增程SUV，定价超预期！<br>➠空间：前后贯通纯平底板+轮包体积优化+滑轨设计，乘员&amp;储物空间大，空间布置灵活性高。<br>➠动力：双电机四驱+增程专用电池+定制增程器，N90 Max 0-100km/h加速 5.9s，CLTC纯电续航464km，CLTC综合续航达1705km。<br>➠安全：全向碰撞测试结果远超行业标准，自建研发团队+电芯工厂保障电池安全。<br>➠场景化配置：娱乐屏/座椅/音箱/空调/防晒等配置高端，产品力凸显。<br>➠智能化：全车空间调节可通过小爱同学语音控制，标配骁龙8Gen3+Nvidia Thor+四合一域控，新增固态雷达优化倒车感知能力。<br>➠发布时间：N70 Max/N90 Max已于7.30晚开启小订，有望与标准版/Pro型号一同于9月正式发布。<br><br>[太阳]顶配版车型定价低于此前市场预期，后续标准版/Pro型号售价预计进一步下探，销量有望超预期，重视反转机会。<br><br>风险提示：需求不及预期等#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p062">
+            <div class="full-header">[062] 10:27</div>
+            <div class="full-body">🚘🚘小米集团：小米澎程亮相 智能增程SUV迎来新变量【国联民生汽车 崔琰团队】<br>——————————<br>🚘事件：7月30日晚7点，小米举办澎程系列技术发布会，两款新车亮相。小米澎程N90 Max定位为“大七座旗舰增程SUV”，采用2+2+3大七座空间布局；小米澎程N70 Max定位为“大五座四驱增程SUV”。N70 Max与N90 Max预售价分别为25.99万元和29.99万元。<br><br>🚘增程路线补齐产品版图 双旗舰切入家庭市场<br>首批亮相的N70 Max定位大五座四驱SUV，车长约4.96米、轴距2.95米；N90 Max定位大七座旗舰SUV，车长约5.29米、轴距3.08米，采用2+2+3座椅布局，两款车型分别覆盖主流中大型和大型家庭SUV市场。<br><br>🚘昆仑架构重塑空间逻辑 可变座舱建立产品特色<br>澎程最突出的创新，是昆仑架构带来的“智能可变大空间”。通过一至三排纯平地板、贯穿式长滑轨、可移动中岛和旋转座椅，车内空间可灵活切换。N90 Max还提出“7+7”空间概念，即在容纳7名约1.85米身高乘员的同时，后备厢仍能放下7个标准登机箱。<br><br>🚘大电池增程兼顾通勤远行 长续航强化使用体验<br>澎程采用大电池增程方案，N70普通版的电池容量52kWh，N70 Max和N90 Max提升至76kWh；其中N70 Max的CLTC纯电续航达到505公里，N90 Max常规版的WLTC纯电续航达到370公里。价格方面，N70 Max与N90 Max预售价分别为25.99万元和29.99万元。<br>—————————————<br>📞欢迎联系国联民生汽车：崔琰15800865715/杨睿18702151873<br>免责声明：基于公开资料整理，可能存在信息滞后或更新不及时、不全面<br>[含1张图]<br>[图1OCR] 【国金汽车徐慧雄团队】 小米澎程配置对比 N90 Max竞品对比 车型 小米澎程N90 Max 指导价（万元） 29.99（预售） 座位数 长*宽*高（mm） 轴距（mm） 电池能量 （kWh） WLTC纯电续航（km） 电池快充时间（h） 最大功率（kW） 最高车速（km/h） WLTC馈电状态油耗（L/100KM） 后备箱容积（L） 辅助驾驶芯片 传感器 扬声器数量（个） 线控转向 5285*1998*1825 3080 76 370 0.3 （20%-80%） 310 190 6.26 577-1831 Thor-U 小米HAD 11V+顶部激光雷达+ 后向激光雷达 25 小鹏GX Ultra 旗舰 35.98 （优惠后34.98） 6 5265*1999*1800 3135 63.3 320 0.2 （10%-80%） 370 200 6.19 673-1748 双图灵 小鹏XNGP 11V3R12U 33 车型 指导价（万元） 长*宽*高 （mm） 轴距（mm） 电池能量 （kWh） WLTC纯电续航（km） 电池快充时间（h） 最大功率 （kW） 最高车速（km/h） WLTC馈电状态油耗（L/100KM） 辅助驾驶芯片 空气悬架 N70 Max竞品对比 小米澎程N70 Max 25.99（预售） 4960*1998*1765 2950 76 380 0.3 310 1</div>
+        </div>
+
+        <div class="full-item" id="p063">
+            <div class="full-header">[063] 10:28</div>
+            <div class="full-body">【有道云笔记】华福研究所福莱蒽特调研笔记 <br>[有道云笔记]<br><br>#300台英伟达B300# <br>第一期100台落地，年净利润3000~4000万<br>远期千台，整体营收规模有望到300~500亿<br><br>美股Corewave等算力租赁暴涨，#福莱恩特预期差最大的算力租赁，重视！# <br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p064">
+            <div class="full-header">[064] 10:28</div>
+            <div class="full-body">[玫瑰]【华泰消费看海外系列｜美护】#Puig26H1业绩速递：香水彩妆领# 跑、亚太高增、维持全年展望<br><br>#26H1经营成果# [庆祝]营收23.54亿欧元/yoy+4.4%；其中Q2营收11.38亿欧元/yoy+4.1%，beat彭博一致预期1.36%<br>[庆祝]毛利17.76亿欧元，毛利率75.5%；经营利润3.40亿欧元/yoy+2.3%，经营利润率14.5%<br>[庆祝]经调整归母净利润2.60亿欧元/yoy+5.2%，经调归母净利率11.1%/yoy+30bp，调整后EPS 0.46欧元<br>[庆祝]经营性自由现金流-1.96亿欧元，主要受库存水平阶段性较高影响<br><br>#26全年指引：维持全年展望，预计全年# 可比口径继续跑赢高端美妆市场，经调整EBITDA率与25年基本持平；品牌投放节奏将更偏向26H2<br><br>#26H1分业务：香水及彩妆延续增长、# 护肤受高端护肤调整拖累<br>[太阳]香水及时装营收17.16亿欧元/yoy+3.8%；Q2 yoy+3.7%；Carolina Herrera双位数增长，Byredo/Dries Van Noten带动小众香水双位数增长<br>[太阳]彩妆营收3.59亿欧元/yoy+9.1%；Q2 yoy+9.1%；Charlotte Tilbury延续强势，Boots UK渠道扩张贡献增长<br>[太阳]护肤营收2.79亿欧元/yoy+2.3%；Q2 yoy-0.3%；皮肤科护肤Uriage双位数增长，但高端护肤偏弱及产品线调整形成拖累<br><br>#26H1分区域：亚太高增、欧美稳健# [烟花]EMEA营收12.21亿欧元/yoy+2.6%；Q2 yoy+2.1%，欧洲表现稳健，中东局势对旅游零售有所拖累<br>[烟花]美洲营收8.59亿欧元/yoy+2.6%；Q2 yoy+3.2%，北美香水和彩妆sell-out健康增长<br>[烟花]亚太营收2.73亿欧元/yoy+20.9%；Q2 yoy+16.1%，为集团增速最快区域，小众香水及Charlotte Tilbury表现较好<br><br>#增持CT：#  2026年4月公司增持Charlotte Tilbury 6.5%股权至85%，计划2031年前实现全资持有<br><br>注：除特殊标注，各区域/品类营收增速均为可比口径（Like-for-like）。<br>详情欢迎交流：樊俊豪/孙丹阳18521095693/袁嘉会13801791440[红包]#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p065">
+            <div class="full-header">[065] 10:28</div>
+            <div class="full-body">🔥华峰测控的几个核心变化<br><br>1、已经开始适配H（爱德万退出，H为1+1供应体系）<br><br>2、推进存储测试平台，先做HBM，后续会公布产品<br><br>3、订单继续加速，二季度单月3亿，3季度单月4亿，利润率预期上升<br><br>4、远期gpu份额由20%上修至乐观情况下50%<br><br>翻倍空间，重点推荐👊#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p066">
+            <div class="full-header">[066] 10:28</div>
+            <div class="full-body">【东吴电新】LG新能源：26Q2利润转正，ESS订单与北美产能加速落地<br><br>#Q2利润环比扭亏为盈、经营质量持续改# 善。 26Q2实现营收7.56万亿韩元，约合357.6亿人民币，同比+24.8%、环比+15.3%；营业利润1133亿韩元，约合5.36亿元人民币，同比-77.0%、环比扭亏为盈；其中北美生产激励（AMPC）2410亿韩元，环比增长约27%，对盈利改善形成重要支撑。经营活动现金流转正至250亿韩元。<br><br>#ESS订单放量、DTE大单落地。26# Q2新增ESS订单约2.4万亿韩元，环比约+300%；26H1累计新增订单超3万亿韩元。26年5月，公司与DTE Energy签署约16亿美元、规模1.5GW/6GWh的储能系统供应协议，覆盖8个电网侧储能项目，并包括Oracle数据中心配套项目。业务端，26H1 ESS收入同比增长至约4.6倍，占公司收入比重提升至20%+。产能端，公司已形成Holland、Lansing、NextStar、Ultium Tennessee及Honda JV Ohio五大北美ESS生产基地，计划26年末将北美ESS产能提升至50GWh以上、全球ESS产能提升至60GWh以上，为后续订单交付和收入增长提供支撑。<br><br>#圆柱电池出货高增、46系列及BBU等# 新应用持续推进。26H1圆柱电池（含46系列）出货量同比增长约50%；欧洲及亚洲出货量已连续3个季度增长。46系列产品出货环比保持较快增长，亚利桑那圆柱电池产线设备效率预计较Ochang提升约50%，公司正推进相关产线建设及量产准备。订单端，公司7月28日拿下本田方形动力电池大单，为公司首个方形电池车企客户、体量超此前特斯拉订单。BBU方面，公司于26年3月首次展示面向AI数据中心的BBU解决方案，并于6月展示面向高性能服务器的下一代2170 BBU。26H2公司计划推进高功率无极耳Tabless 2170圆柱电池规模化量产，并拓展BBU、机器人等新应用。<br><br>#资本开支更加聚焦、软件及服务能力不断# 增强。 2026H1资本开支约2.7万亿韩元，同比下降约53%，全年资本开支目标同比下降约40%，公司资源配置进一步向高景气ESS、圆柱电池及新应用集中。公司预计2026年营收同比增长约15%–20%，整体营业利润率提升至5%。与此同时，持续完善ESS系统集成、运维服务、能源管理及虚拟电厂等能力，推动业务从单一电芯供应向系统解决方案和全生命周期服务延伸。<br><br>[爱心]以上信息均来自LG新能源，欢迎联系东吴电新团队#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p067">
+            <div class="full-header">[067] 10:29</div>
+            <div class="full-body">隔夜市场点评0731：大奇迹日存储大涨，美日配合日元跳升<br><br>🔆 行情总览：<br><br>🌀 隔夜迎来本轮调整以来最强反攻，标普+1.66%、纳指100+3.36%、道指+1.19%；费城半导体指数大涨8.19%、DRAM指数飙升16.70%。存储链集体逼空：闪迪、西数、希捷、SK海力士ADR及镁光均涨15%以上。VIX重挫17.28%至17.09。<br><br>🌀 6月PCE物价指数环比-0.1%，六年来首次转负，同比涨幅显著收窄；二季度GDP年化增长1.5%不及预期。美元指数一度失守100，黄金+1.58%。<br><br>🌀 资本效率分化继续演绎，微软（capex不变＋云加速）+16%；亚马逊AWS增速37%超预期、AI与自研芯片年化收入双双破250亿美元，盘后涨9%；Meta连跌11天、7月累计跌21%；苹果盘后跌超5%，Q4指引因供应限制不及预期。<br><br>🌀 日本疑似开展次此前声称的突袭式干预，日元盘中暴涨超3%至158.26，创2024年8月以来最大涨幅。日经新闻称日本政府与央行实施了大规模买入日元的干预、纽约联储同步进行汇率询价。<br><br>🔆 核心逻辑：<br><br>🌀 昨夜通胀数据与财报电话同时解决了压制市场的两个变量。分母端，PCE转负缓解长端利率失控压力；分子端，景气的兑现因子在财报中获得体现（微软Azure云收入+43%）。但PCE的暂冷建立在6月油价相对低位之上，7月油价则两度破百，后续8月公布数据情况或是真正的裁判。<br><br>🌀 三星Q2创史上最强盈利季，电话会表态存储供不应求，且短缺将持续至2028年。同时表示60-70%产能分配给长期协议；HBM4收入将占六成。一方面，电话会部分证实了此前市场对于长协可执行性的顾虑，另一方面对短缺的预期部分对冲了中国供应的长期影响。<br><br>🌀 Lam Research财报大超预期、股价+18%，用真实订单反驳了中国DUV替代对设备链的杀跌，结合微软、亚马逊及三星消息，供给、设备、需求三端提供了隔夜反弹的三大动力源，远超此前筹码修复的力度。<br><br>🌀 美日配合下的汇市干预，日经确认日本实施大规模买入日元干预、纽约联储在美国财政部指示下同步进行汇率询价。日本方面与7月初的“突袭式干预”策略转向一致，美国方面则变相提供配合，加强日元获得双边配合。今日植田新闻会口风值得一探。<br><br>🌀 中美经贸出现实质性缓和信号，何立峰与贝森特、格里尔举行视频通话，双方同意进一步发挥中美经贸磋商机制作用。但同期美国参议员施压苹果采购中国芯片、FCC限制清单扩容，经贸缓和和科技管制同时存在，关税压力对冲不代表科技封锁松动。<br><br>⚠️ 风险点：油价回升拉动8月通胀数据风险；芯片供应链约束进一步侵蚀消费电子盈利风险；存储供给端“准入化”风险；日元反转加速，套息平仓存在冲击全球风险资产风险。<br><br>🌹欢迎大家与我们讨论，请联系国联民生宏观团队陶川/林彦#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p068">
+            <div class="full-header">[068] 10:29</div>
+            <div class="full-body">[礼物]浙商机械【杰瑞股份】燃气发电机组完成海外首单交付，电力装备全球化再进一步#持续推荐！# <br><br>近日，公司自研的小土星模块化燃气发电机组完成海外首单交付。系统以单个模块（350kW或400kW）为基本单元，可进行多机并网组合，功率范围350kW-3200kW。公司将打造差异化产品布局，电力装备全球化再进一步！<br><br>⭐️核心逻辑<br>燃气轮机发电机组屡获突破，数据中心一体化打开成长空间。<br><br>1、燃气轮机发电：北美AIDC持续突破，品牌+供应链优势凸显。公司连续获北美数据中心数家头部CSP客户多笔大单。上周斩获头部CSP客户百亿复购大单，大超预期，明后年业绩有望大幅上修。<br><br>2、数据中心一体化进一步打开成长空间。公司构建了供配电、热管理、储能、SMR等多维度的业务布局，#单MW价值量有望数倍提升。近期已发布# AIDC液冷产品、预制模块化方舱产品，包括IT算力方舱、锂电备电、低压交流电力模块方舱、固态高压直流电力模块方舱、储能方舱等。<br><br>3、传统主业：钻完井设备龙头地位稳固，天然气业务进入订单业绩共振期。<br><br>近期调研增量信息，欢迎交流[抱拳]<br>深度白马推荐报告：#小程序://浙商证券研究所/xRvU# TIrgyC0GvJb<br><br>风险提示：北美数据中心建设不及预期<br><br>☎浙商机械 邱世梁/王华君18610723118 /陈姝姝18810356992#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p069">
+            <div class="full-header">[069] 10:30</div>
+            <div class="full-body">🔥【国盛机械&amp;机器人】8月可以乐观一点，陆续做多三大阵营三大主线<br><br>1️⃣宇树科技8.10申购，预计最快本月底登陆科创板。宇树上市打响第一枪，#下半年国产机器人IPO浪潮开启。# <br>2️⃣指数进入底部区间，反弹需要新主线引领。机器人板块自26年2月至今已跌破年线，回调幅度在4-50%，但无论是产业进展还是资本动作都将在下半年加速；<br>3️⃣数据飞轮开启运转，#谷歌deepmind推出Gemini#  Robotics模型，与特斯拉FSD和英伟达GR00T共同成为北美三大世界模型。每100小时机器人数据大概需要10-12w台机器人，而#大规模数采是具身模型走向成熟的必经之# 路。特斯拉、波士顿动力（nv）、国产的三大阵营正在逐步形成。<br><br>[红包]投资思路：<br>三大阵营三大主线：短期优先重视国产链，行情展开后回归t链有真实交付的公司，同时暗线波士顿动力（nv）链也将是后续行情重点。<br>1️⃣ys&amp;国产链：#上纬新材、晋拓股份等；# <br>2️⃣t链：#斯菱智驱、新泉股份、福赛科技、北特科# 技、浙江荣泰、鸣志电器、新剑链；<br>3️⃣波士顿（nv）链：#福赛科技、凯迪股份、泛亚微透#  等。<br><br>[爆竹]风险提示：机器人量产进度不达预期，大模型进展不及预期，产业链国产化水平不达预期<br><br>🔥联系人：张一鸣/彭元立/刘嘉林/何鲁丽🔥【国盛机械&amp;机器人】8月可以乐观一点，陆续做多三大阵营三大主线<br><br>1️⃣宇树科技8.10申购，预计最快本月底登陆科创板。宇树上市打响第一枪，#下半年国产机器人IPO浪潮开启。# <br>2️⃣指数进入底部区间，反弹需要新主线引领。机器人板块自26年2月至今已跌破年线，回调幅度在4-50%，但无论是产业进展还是资本动作都将在下半年加速；<br>3️⃣数据飞轮开启运转，#谷歌deepmind推出Gemini#  Robotics模型，与特斯拉FSD和英伟达GR00T共同成为北美三大世界模型。每100小时机器人数据大概需要10-12w台机器人，而#大规模数采是具身模型走向成熟的必经之# 路。特斯拉、波士顿动力（nv）、国产的三大阵营正在逐步形成。<br><br>[红包]投资思路：<br>三大阵营三大主线：短期优先重视国产链，行情展开后回归t链有真实交付的公司，同时暗线波士顿动力（nv）链也将是后续行情重点。<br>1️⃣ys&amp;国产链：#上纬新材、晋拓股份等；# <br>2️⃣t链：#斯菱智驱、新泉股份、福赛科技、北特科# 技、浙江荣泰、鸣志电器、新剑链；<br>3️⃣波士顿（nv）链：#福赛科技、凯迪股份、泛亚微透#  等。<br><br>[爆竹]风险提示：机器人量产进度不达预期，大模型进展不及预期，产业链国产化水平不达预期<br><br>🔥联系人：张一鸣/彭元立/刘嘉林/何鲁丽<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p070">
+            <div class="full-header">[070] 10:30</div>
+            <div class="full-body">【zx汽车】汽车零部件&amp;机器人观点更新——谷歌发布Gemini Robotics 2，宇树上市在即，科技开启反攻！<br><br>#科技超跌反攻、🤖新催化来袭！# <br>7月，机器人板块跟随科技超跌，最大回撤达约25%。反观产业进展，无论是软件模型、硬件量产还是资本市场融资都是在不断加速推进的。7月30日，谷歌DeepMind发布下一代物理AI——Gemini Robotics 2，为人形机器人带来全身智能、高级灵巧性、多机器人团队协作等能力。同日晚，宇树科技正式启动发行，准备登录资本市场。2026年将是人形机器人的重要里程碑之年，我们呼吁重视科技大回撤带来的黄金坑，继续推荐机器人板块！<br><br>#重点推荐方向# <br>1、国产本体：宇树科技、优必选/锋龙股份、上纬新材、胜通能源（七腾机器人）；<br><br>2、特斯拉产业链<br>1）Optimus V3增量环节：<br>- 灵巧手/电机：恒帅股份（电机）、鸣志电器<br>- 电子皮肤：岱美股份、日盈电子<br>- 减速器/旋转关节：斯菱股份（谐波）、科达利（谐波）、新泉股份（关节）、双环传动（新型减速器）、绿的谐波<br>- 其他部件&amp;结构件：福赛科技（结构件）、模塑科技（外观件）、旭升集团（结构件）、星宇股份、万向钱潮、科博达等。<br>2）T总成&amp;核心部件供应商：拓普集团、浙江荣泰、三花智控、恒立液压等；<br>3）核心tier-2：五洲新春、北特科技、铁流股份、肇民科技、金沃股份、宁波东力、凯迪股份、恒辉安防等。<br><br>3、国产机器人产业链：宁波华翔、均普智能、敏实集团、兆丰股份、美湖股份、征和工业、晋拓股份等。<br><br>欢迎交流！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p071">
+            <div class="full-header">[071] 10:30</div>
+            <div class="full-body">【招商电新】北美缺电加剧，继续推荐SOFC/变压器 20260731<br><br>#BE大涨，SOFC进入业绩兑现# <br>Bloom Energy昨夜大涨约26%，Q2收入首次突破10亿美元，利润率和经营现金流全面超预期，并上调全年指引。<br><br>#拉闸限电，利好表后模式# <br>PJM拟对50MW以上大负荷建立登记制度，电网紧张时，未自带电的数据中心可能被拉闸限电！<br>叠加黑石QTS终止弗吉尼亚超大数据中心、Oracle近1GW项目或需超70亿美元担保，电力接入、并网周期、社区许可和前置资本正成为AI数据中心核心约束。<br><br>#PJM缺电继续强化# <br>美国7月高温持续考验PJM，备用容量一度从约22GW降至约5GW，接近3.2GW最低备用要求，市场价格一度接近2.8万美元/MWh。最新28/29容量拍卖顶格出清，可靠性缺口扩大至约6.8GW；若不设限价，PJM测算容量价格应接近555美元/MW-day。<br><br>#SOFC有望持续超预期# <br>AI数据中心抬高长期负荷曲线，建设速度远超电源和电网扩容。SOFC具备快速交付、低排放、模块化、离网运行优势，契合北美“缺电+限电+审批+社区许可”约束，后续订单和业绩有望持续超预期。<br><br>#变压器订单持续# <br>变压器仍是最确定的电力设备短缺环节。无论数据中心并网还是自建电源，大型园区均需要变压器、开关、配电和微电网设备，景气度具备持续性。<br><br> 建议重点关注：春晖智控、三环集团、德昌电机控股、壹连科技、振华股份、龙佰股份、壹石通、潍柴动力。<br>推荐：思源电气、金盘科技、伊戈尔、白云电器、安靠智电。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p072">
+            <div class="full-header">[072] 10:31</div>
+            <div class="full-body">全球三大AI巨头云计算增速集体创新高，谷歌&amp;Meta上调资本开支，继续坚定看好全球AI算力链🔥【开源通信】<br><br>一、云业务增速：谷歌云、亚马逊云、微软云增速全部创近年新高<br><br>1、Google Cloud（谷歌云）<br>（1）26Q2营收248亿美元，同比+82%（Q1仅63%），创上市以来历史最高单季增速；<br>（2）订单储备5140亿美元环比持续走高，TPU+Gemini大模型企业订单集中放量，AI算力租赁、企业私有云爆发拉动增长。<br><br>2、AWS（亚马逊云）<br>（1）26Q2营收422.3亿美元，同比+37%，2021年以来五年最高增速（Q1仅28%）；<br>（2）自研Trainium芯片、Anthropic/OpenAI大额算力订单为核心增量，生成式AI服务年化收入突破250亿美元。<br><br>3、Microsoft Azure（微软云）<br>（1）26财年Q3（自然26Q2）Azure同比+43%（Q1 40%），管理层指引下季度进一步升至45%，近2年持续提速、阶段新高；<br>（2）Copilot付费席位突破3000万，企业AI上云需求持续放量，在手长期合同6780亿美元。<br><br>二、资本开支：谷歌&amp;Meta再次上调资本开支<br><br>1、谷歌<br>最新全年指引：1950–2050亿美元（Q1仅1800–1900亿，二季度大幅上修），2025全年仅914亿，全年开支近乎翻倍，明确表态2027年资本开支会比2026年再显著增长，长期持续加码算力基建。<br><br>2、Meta<br>全年指引再度上调至1300–1450亿美元（此前1150–1350亿），同比大幅提升；全部增量用于自建AI超算集群、自研定制算力芯片，无对外云收入承接。<br><br>3、亚马逊（AWS）<br>全年指引维持2000亿美元不变，同比2025年+56%，绝大多数资本开支投向AWS AI基础设施、自研Trainium/Graviton芯片产线；<br><br>4、微软<br>由于会计准则调整，全年指引变为1750亿美元，（调整原因：数据中心折旧年限延长、租赁资产会计重分类）；下季度单季capex预计突破500亿美元，2027财年整体资本开支继续同比上行。<br><br>☎️开源证券通信团队@所有人#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p073">
+            <div class="full-header">[073] 10:32</div>
+            <div class="full-body">国家发展改革委政策研究室主任、新闻发言人蒋毅在新闻发布会上指出，有关机构测算，“十五五”时期算力网建设将新增直接投资4万亿元，考虑到算力建设以企业投资为主，这将为民间投资创造巨大空间，我们将加强规划引导、要素保障等工作，为民间投资营造良好环境。(财联社)<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p074">
+            <div class="full-header">[074] 10:32</div>
+            <div class="full-body">韩国计划斥资140亿美元投资主权财富基金的人工智能项目<br>[含1张图]<br>[图1OCR] 韩国计划斥资140亿美元投资主权财富基 金的人工智能项目，此前韩国股市暴跌 作者：Haram Lim July 31, 2026 at 7:30 AM GMT+8 更新于July 31, 2026 at 8:42 AM GMT+8 阅读最多 芯片股创7 市场综述 贝节省）（亥翻译~（の听 2:32） 债券收益 告 韩国计划向其主权财富基金注入20万亿韩元（139亿美元），用于人 工智能、数据中心和基础设施领域的战略投资。此前，韩国科技股遭 遇重挫，这是韩国首次将该基金的投资范围扩大到包括国内资产。 华纳兄弟 亿美元 微软市值森 高 根据周五发布的一份声明，政府将在韩国投资公司（Korea Investment Corporation）内设立该账户。声明称，该账户初始资金 至少为20万亿韩元，资金来源包括政策性银行等公共机构的股权出 资。 Meta 在回 智能投资后 虽然声明没有将政府的计划与当前的市场动荡联系起来，但该声明是 在本周该国股市遭受重创之后发布的，此前政府也采取了一系列措施 来稳定股市。 韩国综合股价指数（KOSPI）周五早盘一度飙升14%，从本周早些时候 的暴跌中反弹。此前三个交易日，该指数累计下跌超过17%，原因是市 场担忧债务水平上升，以及对两大芯片巨头支撑人工智能行业的巨额 资本支出日益产生疑虑。 韩国政府表示，做出这一决定是出于“积极应对”全球对韩国日益增长</div>
+        </div>
+
+        <div class="full-item" id="p075">
+            <div class="full-header">[075] 10:33</div>
+            <div class="full-body">Roblox｜2Q26业绩会纪要<br>[https://share.note.youdao.com/ynoteshare/index.htm...]<br>#笔记链接#</div>
+        </div>
+
+        <div class="full-item" id="p076">
+            <div class="full-header">[076] 10:33</div>
+            <div class="full-body">【国泰海通电子】2026年国内超节点元年，带动未来几年国产算力芯片需求增长；封装/测试产能急缺，重视相关机会<br><br>[红包]半导体板块前期跌幅太大，目前位置已较低，海外映射，北美、韩国股市大涨，应该积极重视26H2由产业基本面变化带来的投资机会。<br><br>[烟花]背景：国内先进封装产能急缺、测试产能急缺，目前先进封装扩产已进入新一轮扩产潮，测试机预定的交期长达9个月。<br><br>[太阳]26H2值得重点关注的变化：<br>1、国内CoWoS-L的产线拉通，国内进入先进封装实质性的扩产大周期；<br>2、国产测试机的送样验证、海外测试机的提前预定，已提前抢占更多测试产能的公司会充分受益需求的暴增；<br><br>[玫瑰]建议关注：<br>1、先进封装设备：芯碁微装<br>2、测试设备：长川科技、华峰测控、精智达<br>3、先进封装代工：盛合晶微、长电科技、汇成股份<br>4、测试代工：利扬芯片#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p077">
+            <div class="full-header">[077] 10:33</div>
+            <div class="full-body">AI材料27年预期业绩和估值：<br>1、电子布：国际复材/中材科技/中国巨石/宏和科技18x/11x/9x/25x（中性预期的涨价）<br>2、树脂：东材科技/圣泉集团15x/13x<br>3、填料：联瑞新材23x#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p078">
+            <div class="full-header">[078] 10:35</div>
+            <div class="full-body">谷歌Gemini Robotics进展超预期，大脑将激活机器人下一轮行情｜国金具身智能cch<br><br>1、今年以来，机器人板块步入艰难的预期消化期，相对高点板块平均跌幅约50%。市场的核心叙事：机器人大模型短期难以取得突破。一旦大脑模型原叙事被打破，板块即被激活。<br><br>2、Gemini Robotics核心超预期点：Gemini Robotics 2和ER2双模型组合打通任务认知-拆解-电机执行；跨本体迁移能力。<br><br>3、投资建议：模型进展是非线性的，市场叙事越悲观，后续被打破的概率和幅度就越大。这轮由coding等突破带来的AI板块波澜壮阔的行情，后续将会复制到物理AI领域。我们建议关注几条线：<br><br>（1）头部AI模型公司及其供应链：人才、算力和数据密度都足够，会最先突破，重点关注特斯拉链等；<br><br>（2）数据：当前物理AI最大的卡点之一是机器人任务执行的精度和成功率，在物理AI领域，90%成功率和99%任务成功率是质变，用真实物理数据提高精度是商业化必选项。最核心受益方向是三大传感器（关节和灵巧手IMU、触觉和视觉）、垂类（垂类应用公司、物理仿真和数据平台企业等）。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p079">
+            <div class="full-header">[079] 10:36</div>
+            <div class="full-body">传智教育带动AI应用，一字预期，教育信息化这个线还没动：欧码软件，方直科技，佳发教育， 新开普#市场段子# #文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p080">
+            <div class="full-header">[080] 10:36</div>
+            <div class="full-body">【重申】腾讯WorkBuddy产品数据持续超预期，持续提示相关投资机会0730：<br>【AI应用的起量可以驱散当前的CSP阴霾】：<br>AI硬件当下的悲观来自海外大厂资本开支的疑虑，但我们重申：AI应用生态已经开始明显起量，无论是亚马逊云业务增速还是国内大厂AI产品的月度高频数据超预期，都是来自AI应用需求端的重要变化；# 只要需求起来行业就能闭环！<br>【腾讯WorkBuddy产品相关数据】：<br>自WorkBuddy全面接入混元Hy3之后，其办公任务解决率自72%提升至90%，单次任务平均耗时缩短34%；新版本上线后算力资源一度满载。根据易观分析数据，当前产品跨平台去重MAU突破2000万，WorkBuddy凭借2000w+月活，# 登顶国内PC端AI原生Agent第一， 当前限时免费开放hy3.0两周，上线第3日排队率超50%。Hy3完美适配WorkBuddy，白领工作流TAM广阔，商业模式或可跑通。<br>【相关标的】：<br>-WorkBuddy产业链：#泛微网络# （WorkBuddy AI生态首批共创伙伴）、#恒生电子# （金融数据MCP及skills已入驻腾讯WorkBuddy）、#普联软件# （腾讯旗下明略科技入主）、<br>-AI办公、应用相关：#金山办公、#福昕软件、#税友股份、#金桥信息、#石基信息等。<br><br>腾讯WorkBuddy概念股<br>[含2张图]<br>[图1OCR] 01 立 WorkBuddy A股 四大天王 腾讯系加持•企业级 AI Agent 化改造四大核心标的 博思软件 BOSSSOFT 博思软件 腾讯为第二大股东 每子興奖 电子票夹微信小程序 注册用户1.3亿＋ 1.30 财政 /票据/非税收入的 Agent 化改造空间巨大 02 普联软件 pI Pansoft 著联软件 明略科技（腾讯持股27%） 拟入主成为控股股东 明略科技 腾讯企业级 AI 首家A 股控股平台 腾讯持股27% 血 央企 ERP/财务/司库 将 Agent 化改造 03 泛微网络 腾讯持股~5% 的OA协同龙头 weaver 泛段阌耪 腾讯持股 ~5% 04 华宇软件 与腾讯云合作 法律科技 AI垂直引擎 THUNISOFT 华宇软件 OA是 WorkBuddy 最天然的 Agent入口 血 法院/检察院/司法系统的 Agent 化改造 腾讯企业级 AI 在政法行业的独家落点 注：数据截至2024年11月，来源：公开信息整理<br>[图2OCR] 腾讯WorkBuddy概念股 易观2026年6月报告显示，在中国桌面端原生办公智能体赛道，腾讯WorkBuddy月访问量达2097 万，登顶榜首 -比字节系和阿里系所有产品加起来的访问量还多。17家产品总共6062万月访问 量，WorkBuday一家就占了三分之一。 类别 代码 股票名称 自由市值 概念解析 300996 普联软件 28.72亿 腾讯旗下明略科技入股 603039 泛微网络 46.1亿 600570 恒生电子 316.78亿 合 300271 华宇软件 31.64亿 300785 值得买 33.49亿 688318 财富趋势 78.3亿 920976 视声智能 4.63亿 002575 群兴玩具 25.29亿 算 力 600602 云赛智联 109.93亿 603629 利通电子 212.11亿 公司为腾讯战略投资对象，是腾讯WorkBuddy Al生态首 批共创伙伴。 子公司恒生聚源金融数据MCP已入驻腾讯WorkBuddy； 其数据地图MCP服务接连入驻阿里云、腾讯云等头部主 流云平台，为金融机构提供一站式的金融Al数据服务。 元典法律数据 MCP正式接入腾讯智能体WorkBuddy， WorkBuddy 的办公工作流可以调用华宇元典的法律法 规、案例文书、企业信息。 值得买科技正式将“什么值得买购物管家”Skills上线腾 讯WorkBuddy，成为其首个引入</div>
+        </div>
+
+        <div class="full-item" id="p081">
+            <div class="full-header">[081] 10:36</div>
+            <div class="full-body">【宇树科技：FCC相关禁令不会影响公司现有主要产品，但后续开发产品存在无法在美销售风险】<br>7月31日，宇树科技在更新的招股书中表示，美国联邦通信委员会（FCC）将美国境外所生产的先进机器人设备和电力逆变器新增列入“受管制设备和服务清单”。公司目前在售的主要型号产品包括人形机器人G1、H2、R1以及四足机器人Go2、B2、A2等均已取得FCC认证，并属于前述公告所指先进机器人设备，因此前述政策变更目前不会影响公司现有主要产品在美国市场的继续销售。但公司后续开发的新型号机器人产品，除非获得特定豁免或有条件批准，否则将面临因未能取得FCC认证而无法在美国市场进行销售的风险。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p082">
+            <div class="full-header">[082] 10:36</div>
+            <div class="full-body">半导体设备跟踪：LRCX Q2毛利率超指引上限，上修全年WFE市场规模<br><br>[礼物]26Q2公司实现营收67.22亿美元，同比+30.0%/环比+15.1%，高于此前指引中值（66亿美元），连续第四个季度创历史新高；毛利率52.0%，同比+1.7pcts/环比+2.1pcts，超过此前指引上限；营业利润率38.4%，同比+4.0pcts/环比+3.4pcts。<br><br>[礼物]分业务看，设备系统收入42.50亿美元，同比+23.6%/环比+13.9%；CSBG收入24.72亿美元，同比+42.6%/环比+17.1%。设备系统业务中，存储收入创历史新高，占比46%/环比+7pcts，其中NAND占比23%/环比+11pcts；DRAM占比23%/环比-4pcts，代工业务占比44%，中国大陆成熟制程投资有所回落，但2nm、3nm先进制程及先进封装投资保持强劲。<br><br>[礼物]公司预计2026Q3营收为81.00±4.00亿美元，中值同比+52.1%/环比+20.5%；毛利率为52.0%±1.0pct，中值同比+1.4pcts/环比持平；营业利润率为39.5%±1.0pct，中值同比+4.5pcts/环比+1.1pcts。<br><br>[礼物]公司将2026年全球WFE市场规模预期由约1400亿美元上调至低1500亿美元区间，并预计连续第三年跑赢WFE市场；展望2027年，DRAM预计为增长最快的细分市场，代工/逻辑第二，NAND排名第三，客户已开始围绕新建洁净室及长期产能提前锁定设备。<br><br>[礼物]AI推动GAA、HBM及先进封装等架构加快演进，持续提升刻蚀与沉积工艺强度。Akara平台已由2nm及以下先进逻辑拓展至先进DRAM，装机量有望在2027年延续增长；2026年先进封装业务收入预计同比增长超过70%，面板级封装设备交付持续推进。<br><br>[礼物]投资建议：LRCX二季度收入、毛利率及营业利润率均表现强劲、对三季度指引乐观，NAND技术升级、先进DRAM扩产和CSBG增长共同强化业绩确定性，同时上修WFE市场规模及对远期扩产指引乐观。随着全球新增晶圆厂逐步投产及AI相关设备投资持续提升，持续看好全球及中国存储、先进逻辑和先进封装扩产带来的半导体设备景气周期。<br><br>[礼物]建议关注设备相关公司：北方华创、中微公司、拓荆科技、华海清科、微导纳米、芯源微、精测电子、中科飞测、屹唐股份、矽电股份、华峰测控、长川科技、联动科技、金海通、精智达、强一股份、ASMPT等；#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p083">
+            <div class="full-header">[083] 10:37</div>
+            <div class="full-body">❗凭什么博思软件能成为腾讯WorkBuddy"人机双写"Agent时代的最大受益标的？<br><br>✨核心矛盾：7月30日腾讯WorkBuddy联合腾讯文档推出"人机双写"协同编辑，框到哪AI写到哪，人+AI+机多端同步协同。这是AI办公从"问答式辅助"到"参与式创作"的范式跃迁——但只有腾讯生态内的深度绑定者才能吃到第一波红利。<br><br>✅关键事实：<br>① 腾讯为博思软件第二大股东，双方5月签署深度战略合作，AI智能体解决方案全面对接。博思不是腾讯生态的"外部ISV"，是腾讯自己人<br>② 电子票夹微信小程序累计注册用户超1.3亿，C端流量入口已成型。WorkBuddy人机双写能力接入后，1.3亿用户可直接体验AI协同编辑——这不是冷启动，是现成的用户池<br>③ 博思已完成从传统财税软件商向AI智能体解决方案商的转型，7月获AI企业能力评估一级证书，财政+税务+医疗三大政务AI场景已规模化落地200+家三甲医院<br>④ WorkBuddy"人机双写"=财政预算协同、税务申报、政府采购全场景可用，博思是这三大政务场景的绝对龙头<br><br>结论很清楚：腾讯WorkBuddy人机双写不是功能更新，是AI办公的范式跃迁。博思软件=腾讯第二大股东+1.3亿用户入口+政务AI龙头，股权绑定+流量入口+场景卡位三重锁定，确定性碾压一切外部ISV。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p084">
+            <div class="full-header">[084] 10:37</div>
+            <div class="full-body">【特斯拉据报考虑出售中国业务，为SpaceX合并铺路】<br>7月31日｜据华尔街日报，特斯拉部分高管已被告知，需为中国业务的分离做好准备，以便为可能与SpaceX进行的合并交易扫清障碍。知情人士透露，特斯拉顾问已讨论过包括分拆、出售乃至关闭在内的多种方案。中国是特斯拉仅次于美国的第二大市场。2026年上半年，中国市场销量约占其全球的18%。<br>[含1张图]<br>[图1OCR] 据《华尔街日报》报道，特斯拉在完 SpaceX 达成交易前正在考虑出售中国业 务。 特斯拉上海超级工厂的标识牌。摄影：沈启来/彭博社 作者：彼得：弗科 July 31, 2026 at 9:16 AM GMT+8 贝节省 亥 翻译 听1:03 据《华尔街日报》报道，特斯拉公司正在考虑剥离其中国业务，为与 SpaceX 的潜在合并铺平道路。 据《华尔街日报》报道，称，一些特斯拉高管已被告知要为此做好准 备。9P 据一位知情人士透露，特斯拉顾问已讨论过包括分拆、出售或 关闭中国业务在内的各种方案。另一位知情人士也向媒体证实了这一 消息。 自太空探索技术公司（SpaceX）上个月上市以来，外界一直猜测埃隆• 马斯克会推动两家公司合并。 Bloomberg Hyperdrive Chinese EVs Are Everywhere in Argentina Despite Milei's MAGA Ties How to Make Any Diesel Freight Truck Electric? Use This Plug-In Device Toyota Sales Fall For Fifth Month on Iran Turmoil, China Nickel Giant Tsingshan Halts Some Export Loadings From Indonesia 阅</div>
+        </div>
+
+        <div class="full-item" id="p085">
+            <div class="full-header">[085] 10:38</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 【美股交易笔记 |市场思考】AI第六次大灭绝之后的物种大爆发 观点：前两天有朋友将近23年以来的AI调整比喻成五轮生物大灭绝，私下觉得 这个比喻很有趣。进一步拓展下，如果说过去五次Al调整都是产业趋势怀疑（天 灾），那么这一次更像是一场多杀多（种内竞争）。因此我们认为＃昨晚反弹很重 要，不是反弹本身，而是A对于“资金多杀多"的担忧可能到了拐点。 1 #第六次大灭绝，没有陨石，只有恐龙互相踩踏。 过去几次Al调整，无论是DeepSeek、Agent，还是利率冲中击，本质上都是外部坏 境变化带来的“大灭绝”。而这一次却完全不同。OpenAl最新ARR继续超预期， Google Cloud收入同样超预期，产业基本面其实正在改善；#海外市场关注最多 的是Leopold相关产品平仓、多杀多等资金事件。产业没有出大问题，先出问题 的是仓位。这更像是一场种内竞争，而不是生态环境恶化。 2 #真正回答市场担忧的，不是反弹，而是ROl。 过去几个月，我们一直认为市场围绕ARR、涨价、Capex和融资的讨论，看似是 四个问题，本质都是一个问题——A到底能不能赚钱。昨晚OpenAl验证了企业 付费蒂求仍在增长，Google验证了AI能够持续转化为云收入，这两条信息共同回 答的都是ROI，而ROI才是Capex和融资能够持续的根基。 #为什么我们认为AI正在接近阶段性企稳？ 因为这一次#基本面和资金面开始</div>
+        </div>
+
+        <div class="full-item" id="p086">
+            <div class="full-header">[086] 10:38</div>
+            <div class="full-body">美股大涨印证 AI 盈利兑现，A 股 AI 赋能赛道迎来重估机遇（8月主线2026-0731）<br><br>🔥【核心定调】本轮美股反弹不是超跌修复，是AI正式进入实打实盈利兑现周期<br>美东7月30日美股全线暴力反弹，纳指、费城半导体指数集体冲高。本轮行情本质并非技术性超跌反弹，而是微软炸裂财报彻底重塑华尔街AI叙事：AI彻底告别“纯烧钱、纯预期”阶段，成功落地为企业真实营收、真实利润、真实现金流，直接击碎市场长期以来的AI泡沫焦虑。<br><br>📊【硬核数据】AI商业化全面落地，收入、利润双爆发<br>微软单季总营收高达900.1亿美元、同比+18%，净利润同比增幅超30%，增长质量远超市场预期。核心AI底座Azure云业务同比暴涨43%，年度营收历史性突破1000亿美元，全球企业AI算力采购持续爆满，算力刚需彻底坐实。AI应用端变现更是超预期，Office Copilot付费用户从2000万快速攀升至3000万，全球90%五百强企业批量采购AI办公工具，To B付费商业模式完全跑通。同时微软下调全年资本开支，意味着AI投入产出比大幅优化，不再无效烧钱，盈利能力持续抬升，单日暴涨15.51%，创下近年最大单日涨幅。<br><br>⚡【产业链传导】AI算力+存储全线暴动，资金只认“业绩兑现”<br>本轮行情呈现清晰的AI全链爆发结构：上游存储芯片方向，美光、西部数据单日最高涨幅达24%；AI芯片端AMD大涨13%，算力、存储、AI应用全线走强。市场资金彻底完成风格切换，抛弃纯题材炒作，集中抱团有真实业绩、有落地订单、有付费增量的AI核心资产。叠加美国PCE通胀回落、美债收益率下行，成长股估值修复窗口彻底打开。<br><br>🚀【A股映射】8月核心主线：AI赋能千行百业，复刻美股盈利逻辑<br>美股AI盈利大周期确认，将直接带动A股AI应用赛道重估。当前A股最强主线已从纯算力炒作，切换至AI赋能实体经济、AI增值服务变现，完美对标微软办公AI变现逻辑。泛微网络、金山办公的政企AI办公赋能，宝信软件的工业AI落地，蓝色光标的AI营销批量变现，全部进入订单落地、毛利抬升的拐点阶段。随着海外AI巨头持续验证商业化逻辑，A股AI应用赛道估值修复空间巨大，8月AI业绩兑现标的将成为资金核心抱团主线。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p087">
+            <div class="full-header">[087] 10:38</div>
+            <div class="full-body">🍍OpenAI降价，token成本下降利好应用<br><br>🔺事件：7月30日OpenAI宣布对GPT-5.6两档模型降价，理由是推理服务效率提升。<br><br>🔺关键信息：<br>🔸Luna（最快最便宜档）：降约80%，输入/输出从$1/$6降至$0.2/$1.2（每百万token）。<br>🔸Terra（中端档）：降约20%，输入/输出从$2.5/$15降至$2/$12。<br>🔸Sol（旗舰档）：不降价，仍$5/$30。<br>🔸OpenAI直言：更便宜的中国开源模型（Kimi K3、DeepSeek V4等）正加大对OpenAI/Anthropic的压力，倒逼其证明高价的合理性；同时长程Agent任务吃Token远多于聊天，两家近月都在反复调价、调限额。<br><br>🔺点评：<br>①降价的是走量档（Luna/Terra）而非旗舰Sol，本质是“效率提升+中国开源施压”双轮驱动的Token通缩——能力上限继续卖高价，走量能力则被打到地板价；<br>②这印证我们此前判断：开源逼近闭源SOTA后，模型能力被商品化，价值分配从“卖模型”转向“用模型做出结果”，海内外同此逻辑；<br>③Token单价大幅下探，直接降低应用/Agent层的推理成本，尤其利好Token消耗大的Work/Agent类应用——单位成本下降往往带来调用量爆发（杰文斯悖论），有望驱动应用渗透加速；<br>④降价是普惠的，真正受益的是有真实场景、数据壁垒和高Token消耗的应用；且降的是走量档，复杂旗舰任务成本未必降。<br><br>🔺相关标的：AI应用/Agent落地方向（有场景+数据壁垒者优先），看好办公/Work落地，关注泛微、用友、金山等；国产模型&amp;场景端【腾讯】、阿里。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p088">
+            <div class="full-header">[088] 10:38</div>
+            <div class="full-body">津上机床：2026Q2加速高增，下游持续拓展，订单充足<br><br>公司控股股东日本津上（持股公司67.15%）发布FY27Q1（26Q2）业绩：<br><br>其中，中国区收入380.13亿日元（约16亿人民币），同比+41.4%；<br><br>分部利润115.53亿日元（约4.9亿人民币），同比+50.1%；<br><br>分部利润率30.4%，同比+1.8pct。<br><br>#分产品：①自动车床收入305.67亿日元+40.5%；<br>②磨床收入16.04亿日元+24.3%；<br>③加工中心收入26.25亿日元+39.4%。<br><br>订单：26H1订单同比增长高双位数，且AI类订单占比提升，目前订单基本覆盖全年，印证下游AI景气度延续。<br><br>#AI算力，已满足液冷UQD、光引擎TOSA、ROSA等量产要求，且批量订单已落地；#半导体，公司是全球为数不多具备探针机床加工能力的企业，订单持续向好；#人形机器人，公司储备外螺纹磨床产品积极应对市场变化。<br><br>#公司凭借走心机较高市场地位及品质、交付等核心优势加速突破新兴领域，刀塔机处于壮年期<br><br>预计2026日历年可实现利润16亿，yoy+50%+，当前估值9.8x#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p089">
+            <div class="full-header">[089] 10:38</div>
+            <div class="full-body">Fortescue（FMG-AU）4QFY26运营数据速览：发运量符合市场预期，铁桥项目爬产延期计提减值<br>📍铁矿发运量：季度总发运量环比+9%至0.53亿吨，符合市场预期，其中赤铁矿发运量环比+8%至0.50亿吨，铁桥精粉发运量环比+35%至0.03亿吨。FY26全年总发运量同比+1%至2.01亿吨，其中赤铁矿发运量1.92亿吨，铁桥精粉发运量0.09亿吨<br>📍销售均价：季度赤铁矿销售均价环比-4%至88.85美元/干吨，实现普氏61%价格指数的84%；全年销售均价90.66美元/干吨，实现普氏61%价格指数的88%。铁桥精粉季度销售均价环比-3%至118.20美元/干吨，实现普氏65%/61%价格指数的97%/112%；全年销售均价120.46美元/干吨，实现普氏65%/61%价格指数的101%/117%<br>📍单位成本：季度赤铁矿C1成本（不含海运费和权益金）环比+6%至19.37美元/湿吨，主要由于柴油价格上涨，基本符合市场预期。FY26全年C1成本为18.74美元/湿吨，高于17.50-18.50美元/湿吨的指引区间<br>📍资本开支：季度资本开支及投资环比+20%至11亿美元，其中勘探和研究资本开支环比+55%至1.29亿美元。FY26全年资本开支及投资为36亿美元，其中勘探和研究资本开支同比+15%至3.68亿美元<br>📍现金与负债：截至季度末，在手现金环比增加9亿美元至51亿美元，总债务环比持平于58亿美元，净负债环比下降8亿美元至8亿美元<br>📍FY27指引：铁矿总发运量1.97-2.07亿吨（中值同比基本持平，符合市场预期），其中铁桥精粉发运指引0.11-0.14亿吨；赤铁矿C1成本20.50-21.75美元/湿吨；金属板块资本开支37-47亿美元，能源板块资本开支约1.5亿美元<br>📍铁桥项目：公司预计FY28项目年化产量1,600万吨（此前公司计划于2HFY27实现1,600-2,000万吨年化运行率），中期优化后C1成本60-70美元/湿吨。考虑修订后的爬产时间表，公司预计FY26计提税前7.50亿美元、税后5.25亿美元非现金减值<br>📍港口运力提升：公司当前港口出货能力约2.05亿吨/年，中期正在评估提升至2.10亿吨/年的牌照上限。现有赤铁矿项目支持超过1.90亿吨/年的供应能力，而一旦铁桥项目爬产至2,200万吨满产，港口出货能力成为新增销量的主要约束<br>📍脱碳与绿色转型：公司已启动澳洲690MW Turner River光伏项目建设，Nullagine风电项目首批风机抵达皮尔巴拉；目前共有18台电动挖掘机投入运营，Flying Fish矿区挖掘机已全部实现电动化；绿色金属项目已进入调试阶段，公司预计首批产品即将产出#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p090">
+            <div class="full-header">[090] 10:39</div>
+            <div class="full-body">亚马逊和微软的业绩显示，人工智能领域的支出热潮依然强劲。<br>[含1张图]<br>[图1OCR] 亚马逊和微软的业绩显示，人工智能领域 的支出热潮依然强劲。 作者：迪娜.巴斯和扎娜 霍斯金斯 2026年7月31日上午8:29（GMT+8） 阅读最多 芯片股创下自20 市场综述 贝 节省 翻译 听 4:01 债券收益率创19 ** 彭博人工智能得出的结论 隐藏、 •亚马逊、微软和AIphabet积极的AI支出计划表明对芯片及相关设备的需求强劲， 这将缓解该行业的压力。 •这些支出计划对于生产芯片、网络设备以及数据中心使用的其他技术的企业来说 是个好消息，提振了它们来年的前景。 •投资者越来越关注公司在人工智能方面的支出回报，而不仅仅是支出金额，一些 公司尽管增加了支出，但股价却下跌了。 华纳兄弟交易破 亿美元 微软市值飙升49 Meta在向持怀吳 智能投资后股价 亚马逊、微软和Alphabet等公司积极推进人工智能领域的支出计 划，再次证明对芯片及相关设备的需求将保持强劲，这为近来遭受重 创的该行业带来了一线生机。 亚马逊周四将全年资本支出预期从之前的2000亿美元上调至2200亿美 元。首席执行官安迪•贾西表示，其中大部分支出将用于人工智能领 域。 这份展望报告是所谓超大规模云计算提供商（全球最大的云计算提供 商）发布的一系列盈利报告的一部分，这些报告表明，构建人工智能 基础设施的雄心壮志丝毫没有减弱。 微软确认了其资本支出预测，未计入会计准则变更的影响。谷歌母公 司Alpha</div>
+        </div>
+
+        <div class="full-item" id="p091">
+            <div class="full-header">[091] 10:39</div>
+            <div class="full-body">高盛称微软向华尔街展示了人工智能投资的回报<br>[含1张图]<br>[图1OCR] 高盛称微软向华尔街展示了人工智能投资 的回报 Microsot 位于加利福尼亚州山景城的微软园区。摄影：David Paul Morris/彭博社 作者：爱德华•卢德洛 2026年7月31日凌晨1点28分 （GMT+8） 更新于2026年7月31日凌晨1点42分（GMT+8） 贝 节省 翻译 2:42 林 彭博人工智能得出的结论 隐藏～ • 高盛集团分析师加布里埃拉-博尔赫斯表示，微软公司正在向投资者发出更明确的 信号，表明它有多种方式将其人工智能投资转化为收入。 • 博尔赫斯表示，微软的人工智能模型产品质量正在提高，不断增长的用户数量正 在帮助形成“正反馈循环”。 •微软 365 Copilot 的付费席位数量超过3000万，而三个月前这一数字约为 2000万，这表明企业正在继续采用其旗舰 AI 助手。 高盛集团分析师加布里埃拉•博尔赫斯表示，微软公司正在向投资者发 出更明确的信号，表明该公司有多种方式将其人工智能投资转化力收 入，此前该公司股价创下近18年来的最大涨幅。 博尔赫斯周四在接受彭博电视台采访时表示：“你会看到更多关于微软 在盈利方面运用各种手段的蛛丝马迹，这些手段以前可能并不那么明 显。” 微软公布了自2022年以来最快的云业务增长数据吧，股价应声飙升。 这表明其人工智能和计算服务正在赢得客户的青睐，同时也预示着资 本支出增长正在放缓。博尔赫斯维持对微软股票的“买入</div>
+        </div>
+
+        <div class="full-item" id="p092">
+            <div class="full-header">[092] 10:40</div>
+            <div class="full-body">☀️【中信证券科技】小米澎程双车定价策略激进，N90 Max以29.99万元切入大七座增程SUV赛道<br><br>🎯 小米澎程系列今日发布两款增程SUV——N90 Max与N70 Max，预售价格分别为29.99万元和25.99万元。从价格带对比看，N90 Max（车长5.28m、轴距3.08m、2+2+3七座）、N70 Max（车长5m、轴距3m、大五座）定价25.99万元，均大幅低于同尺寸增程SUV产品。我们认为，澎程双车以"同尺寸段价格下探+同价位段续航领先+可变大空间“，形成了在同定位车型中极具竞争力的产品力。<br><br>⚙️ 可变大空间是澎程产品语言的核心差异点。通过同轴电驱前置和电池模块重构，澎程将地板总厚度压缩至298mm（较同级减少约200mm），实现从驾驶舱到后备箱的2.9米贯穿纯平地板，舱内可用面积达4.4㎡。全车布置6根最长1.9米超长滑轨，支持前排座椅电动旋转、滑动中岛和桌板联动，可在52秒内通过小爱同学语音切换对坐模式、大床模式、办公模式。N90 Max采用2+2+3大七座布局，中间过道180mm，第三排进出无需挪动二排座椅；二排极致后移时腿部空间1.55m，二三排极致前移时后备箱容积超1800升。我们认为，澎程的空间设计对标了MPV的纯平地台理念，在增程SUV品类中形成了差异化的空间价值锚点。<br><br>🎁 两款车型在智能与底盘配置上实现全系统一：标配英伟达Thor芯片（700 TOPS）、激光雷达（含后向固态）、4D毫米波雷达、空簧+CDC及高阶智驾。澎程预售已于即日开启，意向金1000元可随时退款，预计9月正式上市。<br><br>🧧 我们认为澎程上市或将提振小米汽车的整体销量，推荐投资人对小米保持关注。欢迎联系中信证券科技组！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p093">
+            <div class="full-header">[093] 10:41</div>
+            <div class="full-body">【zs】【AI应用变现开启】SaaS或为经营性现金流打下坚实基础<br>1、微软财报披露Azure以及云服务收入同比43%，公司指引下个季度增速进一步上行至45%。365 Copilot付费席位环比+50%，远超市场预期。运营现金流554亿美元，同比+30%。手握6780亿美元长期云履约订单，同比增长84%，未来收入具备极强确定性。AI投入不再单纯挤压利润，已经转化为实实在在的业绩增量。<br>2、席位数增长+经营性现金流同比提升能够为AI商业化闭环打下有效基础，同时SaaS商业模式可以有效缓解Capex投入带来的现金流压力。<br>3、应用闭环在当下市场虽然仍然值得持续验证，但是资本开支已然创造增量收入。建议优先关注估值低、SaaS、产品化商业模式的软件标的。<br><br>相关标的：金山、金蝶、合合、卓易、新点、税友、用友、致远、达梦、星环#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p094">
+            <div class="full-header">[094] 10:44</div>
+            <div class="full-body">AI应用概念股汇总<br>[含1张图]<br>[图1OCR] 韭研公社 为实成研究贼花 AI应用 微软 甲骨文 字节 华为 AI玩具 AI眼镜 AR眼镜 Al机 AI音箱 AI PC AI家居 AI办公 AI视频 Al短剧 AI营销 AI制图 AI电商 Al设计 AI教育 Al数字人 AI搜索引擎 AI医疗 AI医药 AI游戏 AI陪伴 AI客服 AI社交 AI文旅 AI展馆 AI校对 AI体育 AI监考 AI大模型 垒知集团 南兴股份 鼎捷数智 新炬网络 杰创智能 新亚电子 荣联科技 汉得信息 盛通股份 视觉中国 能科科技 酷特智能 金财互联 彩讯股份 Al合集（250826）更新 实丰文化 汤姆猫奥飞娱乐贝仕达克 润欣科技 苏豪弘业 博通集成利安科技 国光电器 博士眼镜 亚世光电 移远通信 亿道信息 天键股份 雷柏科技 朗 科科技 天键股份 国脉文化亿道信息*ST宝鹰卓翼科技 国光电器 漫步者 国光电器 朝阳科技 华勤技术 视声智能 万兴科技 因赛集团 虹软科技 泛微网络（AI智能体办公）金山办公 福昕软件 用友网络（数智财税） 信雅达 万兴科技 易点天下 中文在线 昆仑万维 掌阅科技 汇量科技 易点天下 引力传媒 浙文互联 万兴科技 视觉中国 返利科技 焦点科技 值得买 美图公司 万兴科技 世纪天鸿（Al+教育产品“小鸿助教”）科大讯飞 豆神教育 凡拓数创 天娱数科 捷成股份 天地在线 昆仑万维 岩山科技 三六零 朗玛信息 润达医疗 安</div>
+        </div>
+
+        <div class="full-item" id="p095">
+            <div class="full-header">[095] 10:48</div>
+            <div class="full-body">【发改委：全球每销售10台人形和四足智能机器人，就有8台来自中国】7月31日，国家发展改革委政策研究室主任、新闻发言人蒋毅在新闻发布会上表示，当前，全球每销售10台人形和四足智能机器人，就有8台来自中国。（人民财讯）#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p096">
+            <div class="full-header">[096] 10:49</div>
+            <div class="full-body">【GH先进制造】珂玛科技：存储耗材第一股，静电卡盘、陶瓷加热器等战略紧缺单品加速放量，非金属平台化布局成长空间广阔，一阶段看1000e<br><br>[爆竹]陶瓷加热器<br><br>国产唯一规模放量，CC又一型号突破、大单在即，CX inline验证通过后开始直供，多个头部设备商加速放量，加速扩产<br><br>[爆竹]静电卡盘<br><br>多个头部设备商验证通过，26E开启规模放量元年，最难零部件单品国内领先，加速扩产<br><br>[爆竹]平台化+出海<br><br>碳化硅等多类非金属零部件快速起量，积极布局MLCC等功能陶瓷部件<br>陶瓷零部件全球紧缺，公司海外业务持续高增，应材等客户积极下单，有望成为先进陶瓷全球领先企业<br><br>[爆竹]空间<br><br>目前陶瓷加热器/静电卡盘/陶瓷结构件/超纯碳化硅部件，国内空间约50/50/50/20e，远期按100/100/100/50e，合计350e，净利率30%，利润100e，假设公司份额40%，利润40e，25X，1000e(未考虑平台化及出海)<br><br>欢迎联系 杜先康 18721667399#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p097">
+            <div class="full-header">[097] 10:49</div>
+            <div class="full-body">🌎【美股交易笔记｜市场思考】AI第六次大灭绝之后的物种大爆发🦕<br><br>💡观点：前两天有朋友将近23年以来的AI调整比喻成五轮生物大灭绝，私下觉得这个比喻很有趣。进一步拓展下，如果说过去五次AI调整都是产业趋势怀疑（天灾），那么这一次更像是一场多杀多（种内竞争）。因此我们认为#昨晚反弹很重要，不是反弹本身，而是AI对于”资金多杀多”的担忧可能到了拐点。<br><br>1️⃣ # 第六次大灭绝，没有陨石，只有恐龙互相踩踏。<br><br>过去几次AI调整，无论是DeepSeek、Agent，还是利率冲击，本质上都是外部环境变化带来的”大灭绝”。而这一次却完全不同。OpenAI最新ARR继续超预期，Google Cloud收入同样超预期，产业基本面其实正在改善；#海外市场关注最多的是Leopold相关产品平仓、多杀多等资金事件。产业没有出大问题，先出问题的是仓位。 这更像是一场种内竞争，而不是生态环境恶化。<br><br>2️⃣ # 真正回答市场担忧的，不是反弹，而是ROI。<br><br>过去几个月，我们一直认为市场围绕ARR、涨价、Capex和融资的讨论，看似是四个问题，本质都是一个问题——AI到底能不能赚钱。 昨晚OpenAI验证了企业付费需求仍在增长，Google验证了AI能够持续转化为云收入，这两条信息共同回答的都是ROI，而ROI才是Capex和融资能够持续的根基。<br><br>3️⃣ # 为什么我们认为AI正在接近阶段性企稳？<br><br>因为这一次#基本面和资金面开始出现共振。一方面，ROI开始得到越来越多产业数据验证；另一方面，多杀多和去杠杆已经释放了大量拥挤仓位。前者改善的是未来盈利预期，后者释放的是短期卖压。当市场重新从”谁先爆仓”回到”谁能赚钱”，AI交易也更有可能重新回归基本面。<br><br>4️⃣ # 往后怎么看？第一阶段修复Beta，第二阶段兑现ROI。<br><br>我们认为，#AI行情大概率不会回到年初的普涨，而会进入新的演绎阶段。第一阶段，交易的是仓位修复，硬件、算力基础设施、电力等高Beta方向弹性更大；第二阶段，随着ROI持续兑现，资金将逐步向真正实现商业闭环的云平台、能源基础设施以及AI应用集中。<br><br>🏵️综上，我们认为，第六次AI大灭绝或阶段性迎来转机，短期内先关注超跌资产的反弹（前期强势存储/光/INTC)，中后期聚焦ROI主线（目前看CSP+算租是个好故事）+长期瓶颈（北美缺电上游+能源层）<br><br>联系人：赵志远 18616232922#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p098">
+            <div class="full-header">[098] 10:50</div>
+            <div class="full-body">【中信前瞻】Azure&amp;AWS表现亮眼，重视CSP投资机遇<br>——————<br><br>【1】收入加速：微软公布FY2026Q4季报，Azure全年收入首次突破1000亿美元，增速进一步提升至43%，下季度指引增速45%。AWS增长37%，经营利润率39%，根据季度指引，AWS下季度仍将加速。<br><br>【2】资本开支：微软确保FY2027的FCF为正，公司FY26Q4 CAPEX约410亿美元，同时预计FY27Q1资本开支约500亿美元。亚马逊上调2026年capex至2200，继续维持此前的数据中心扩展计划，但管理层指出，数据中心开支能支持5-6代服务器，单服务器盈亏平衡点在2-3年，资本开支将按照需求投资，纪律性更强。<br><br>【3】需求展望：需求仍远超供给。微软披露商业RPO进一步增长至6780亿美元，同比增长84%。AWS积压订单近5000亿美元，同时指出27年上线的数据中心已大部分被预定，且已经包含部分28年需求。<br><br>【4】我们认为，当前在面对华尔街压力、FCF以及AI需求以及模型等约束下，CSP企业的开支的在政策可能会出现调整，在兼顾FCF的基础上，通过以需求定开支、计算回报率等方式保证投资ROI。CSP企业自身较好的财务质量以及当前较好的财务纪律，具备攻守兼备的属性，建议关注微软、亚马逊、谷歌等机会。<br>——————<br>欢迎联系中信证券前瞻研究团队！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p099">
+            <div class="full-header">[099] 10:50</div>
+            <div class="full-body">[礼物]【中信证券通信】亚马逊AWS增速超预期，坚定看好光通信<br><br>[太阳]FY26Q2业绩：<br>1.收入2006.1亿美元，同比+19.6%；营业利润274.4亿，同比+39.2%；<br>2.AWS季度营收422亿美元，同比+37%，#超买方35%预期，年化运行收入达1690亿；AWS营业利润166亿美元，同比+64%，营业利润率进一步提升至39.4%；其中AI和自研芯片业务年化营收均破250亿美元（AI上一季度ARR 150亿）；<br>3.积压订单达4960亿元，同比三位数增长，AI相关订单占比持续提升；<br><br>[太阳]Capex及未来指引：<br>1.2026年Capex上修至2200亿美元，此前为2000亿美元，主要系存储价格上涨；<br>2.FY26Q3营收1970-2020亿美元，同比增长9%-12%；营业利润指引225-265亿美元；<br><br>[太阳]AI相关：<br>1.公司管理层表示2028年能见度高，已掌握需求数据相当可观；回应ROI回报率：AI基建投资约3年就可以收支平衡，并认为AWS未来是年收入达1万亿美元的业务；<br>2.AI Agent已产生真实收入；Bedrock（企业端） Q2总token量超过历史全部季度总和；Rufus（零售端）转化率和客单价开始正向变化；<br><br>AWS/微软/谷歌云业务营收均超预期，已强力证明AI终端趋势良性向好、云计算建设投入ROIC坚实可靠，我们认为AI数据中心建设仍将保持高速增长态势，而光通信产业基本面良好，光互联网络仍然是AI建设中最具锐度和弹性的板块！<br><br>☎欢迎联系中信通信团队 李赫然/魏鹏程/田宇昊/祁天#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p100">
+            <div class="full-header">[100] 10:50</div>
+            <div class="full-body">质疑德明利<br>嘲笑德明利<br>理解德明利<br>成为德明利<br>跑输德明利<br>逃离德明利<br>#市场段子# #文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p101">
+            <div class="full-header">[101] 10:51</div>
+            <div class="full-body">欧莱雅公告26H1业绩，营收增速超5%，中国地区表现跑赢市场大盘🔥 其中高档化妆品部为最大增长贡献板块！！<br><br>[烟花]#欧莱雅公告26H1业绩，公司实现销售额237.76亿欧元（约合人民币1844.96亿元），报告层面同比增长5.8%，可比口长增长6.8%。营业利润为392.88亿元，同比增长6.8%。<br><br>[烟花]26Q2公司实现销售额901.3亿元，报告层面同比增长8.2%，可比口径增长6%，经调整后增长6.3%。<br><br>[烟花]#26H1欧莱雅四大业务部门均实现正向增长，增速呈现明显分化，其中增长势头最为迅猛的为专业美发部，该部门上半年实现销售额226.61亿元，同比增长14.7%；增速排名第二的皮肤科学美容部上半年销售额达327.08亿元，同比增长9.3%；作为集团营收规模最大的部门，大众化妆品部上半年销售额高达670.62亿元，同比增长2.7%；高档化妆品部为集团营收第二大部门，上半年实现销售额620.5亿元，同比增长4.4%，#依托北亚尤其是中国市场实现逆势增长。<br><br>[烟花]26H1公司全球五大区域市场全线实现增长，其中欧洲为集团第一大市场，实现销售额630.1亿元、同比增长8%，北美市场销售额469.98亿元、同比增长4.2%，拉丁美洲销售额140.52亿元、同比增长9%，SAPMENA-SSA地区以9.2%的同比增速成为全球增速最高市场，实现销售额174.06亿元，包含中国在内的北亚地区上半年销售额427.77亿元，同比增长2.3%。<br>#中国是本次北亚市场复苏的核心驱动力，欧莱雅在中国市场跑赢大盘，其中高档化妆品部为最大增长贡献板块，依托赫莲娜Re-PLASTY系列产品创新、全平台618大促爆发及羽西品牌亮眼表现实现稳健增长，大众化妆品部增速与市场基本持平，皮肤科学美容部、专业美发部持续巩固行业地位，修丽可、卡诗等核心品牌均实现双位数增长、显著跑赢市场，同时北亚地区电商渠道销售占比突破50%，持续保持高增长态势。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p102">
+            <div class="full-header">[102] 10:51</div>
+            <div class="full-body">🍔百胜中国业绩点评：26Q2肯德基/必胜客同店正增约1%，外卖销售额占比过半<br><br>[玫瑰]公司发布26Q2业绩。26Q2总收入31.4亿美元/+13%，核心经营利润3.28亿美元/+7%，经调整净利润2.44亿美元/+14%，#收入及利润端均好于预期、主要系拓店速度较往年更快、成本端精简。26H1累计收入64.1亿美元/+11%；经调整净利润5.53亿美元/+9%。<br><br>[玫瑰]#Q2系统销售额同比+6%、同店销售贡献约1%；同店交易量同比+5%，连续第14个季度正增长。其中肯德基同店销售同比+1%，门店数同比+13%；必胜客同店销售同比+1%（转正增长），门店数同比+18%。<br><br>[玫瑰]Q2整体餐厅利润率16.1%，同比持平，#外卖占比提升导致骑手成本增加、其他营运成本精简 ；经营利润率11.1%/+0.2pct，连续第9个季度同比提升。Q2外卖销售同比+26%，外卖占公司餐厅收入的54%/+9pct。<br><br>[玫瑰]截至Q2末，公司门店总数达19297家，肯德基13789家，必胜客4549家。上半年肯德基净增门店792家，其中加盟净增324家，占比41%；必胜客净增门店381家，加盟净增175家，占比46%。26年全年门店指引为净增超1900家（门店总数超2万家），对应资本开支6-7亿美元；肯德基和必胜客净新增门店中加盟店占比40%-50%。<br><br>[玫瑰]Q2每股摊薄收益0.7美元/+21%，向股东回馈4.02亿美元（3亿回购+1亿现金股息）；维持24-26年间每年回馈15亿美元的目标，年回报率约10%。#公司自2027年起计划将约100%自由现金流（扣除子公司少数股东股息后）回馈股东，预计27-28年年均回报约9亿至逾10亿美元。<br><br>[玫瑰]维持26年业绩端约5%-8%高个位数增速，外卖大战影响主要集中在下半年，仍需观察门店端外卖占比对同店销售及利润率的影响，当前估值约16x。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p103">
+            <div class="full-header">[103] 10:51</div>
+            <div class="full-body">#百胜中国2026Q2业绩会要点：# #新业务与服务布局：# <br>1）K-COFFEE：为母店带来中等个位数的销售额提升，门店数已超过3300家，预计2027年底达到5000家，较原计划提前2年；除咖啡外，还在拓展茶饮和食品选项，扩大目标市场。<br>2）K-PRO：为母店带来约20%的销售额提升，已扩张至超过450家门店，表现好于预期，预计年底达到约800家；在高线城市取得成功后，正逐步向部分低线城市扩张。<br>3）车速取：超过8000家肯德基门店已提供该服务，2026年已有超过700万会员使用过该服务，但仅占活跃会员基数的3%，增长空间充足。<br>4）必胜客汉堡模块：已扩张至超过200家门店，为母店带来两位数的增量销售额；计划下半年加快布局，年底门店数达到500-600家。<br><br>#必胜客中国大陆品牌收购：# <br>1）收购带来的3%许可费节省，扣除增值税后预计将提升必胜客餐厅利润率和经营利润率2.8个百分点，对应百胜中国整体利润率提升约60个基点；预计2026Q3对百胜中国整体餐厅和经营利润率的正向影响约为30-40个基点，2026年全年约为20-30个基点。<br>2）收购完成后，必胜客2027-2028年的年净新增门店数预计将超过800家，高于此前超过600家的原目标。<br><br>#业绩指引：# <br>1）销售端：7月销售表现基本符合预期，目标Q3保持同店正增长；全年同店维持0-2%的增长目标，系统销售额实现中个位数增长。<br>2）盈利端：不考虑必胜客收购影响，预计Q3餐厅利润率同比基本持平或略有提升，经营利润率同比基本持平；全年经营利润实现高个位数增长，每股收益实现双位数增长，餐厅利润率和经营利润率略有提升。<br><br>#欢迎与我们进一步交流、欢迎索取完整纪要[玫瑰]#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p104">
+            <div class="full-header">[104] 10:51</div>
+            <div class="full-body">百胜中国26Q2同店继续正增，净增门店数创新高<br><br>[玫瑰]26Q2：总收入同比增13%，不考虑汇率影响同比增6%，超预期；同店yoy+1%；净新增门店560家，创Q2单季度新高；餐厅利润率16.1%，同比持平。归母净利润2.44亿美元，yoy+14%。<br><br>[玫瑰]26指引：保持不变，净新增门店超1900家，新增门店中加盟店占比40%-50%<br><br>[玫瑰]肯德基：26Q2同店yoy+1%；收入23.38亿美元，yoy+12%；餐厅利润率17.1%，同比增0.2pct<br><br>[玫瑰]必胜客：26Q2同店yoy+1%；收入6.13亿美元，yoy+11%；餐厅利润率12.9%，同比降0.4pct<br><br>[玫瑰]受益于加盟门店持续高增，26Q2加盟费收入yoy+18%，加盟门店交易收入yoy+35%，拉动收入增速。<br><br>风险提示：门店经营不及预期等#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p105">
+            <div class="full-header">[105] 10:51</div>
+            <div class="full-body">[玫瑰]重点推荐江海股份【国泰海通电子】<br><br>[玫瑰]近期变化: 1）与逸飞的多条超容线设备已经下单。2）40条ai牛角产线整体规划公布<br><br>#ai市场利润空间增加5倍:#  利润从50亿空间增长到250亿空间，可拿份额从10%增长到50%<br><br>#产业趋势:#  1）超容已经成为标品。2）牛角因为power rack非线性增长。<br><br>#催化:#  已拿到G和台达的量产订单#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p106">
+            <div class="full-header">[106] 10:51</div>
+            <div class="full-body">美图公司：26H1利润保持较快增长，Q2核心收入环比健康<br><br>公司发布26H1业绩预告：影像与设计产品收入同比+30.9%至约18亿元，经调整归母净利润同比+36%-40%（对应6.36-6.54亿元），利润继续快于收入增长，经营杠杆仍在兑现。<br><br>Q2核心业务收入环比仍保持增长<br>26H1影像与设计产品收入约18亿元，其中26Q1收入为8.5亿元，对应26Q2收入约9.5亿元，环比增长约11%，同比增长约28%。同比增速下移（25年同比+42%，26Q1同比+34%）不能简单理解为基本面转弱，主要由于基数影响，26Q2收入绝对额仍持续提升。<br><br>生活场景韧性强，大模型竞争无需过度担心<br>生活场景收入Q1同比+36%，Q2同比+30%；占影像与设计产品收入约82%。生活场景MAU趋于稳定，但付费用户仍保持增长，国际市场继续拓展有望带动ARPPU上行。<br>我们认为美图生活场景竞争优势强，结合编辑器的模式相比纯Chatbot在修图垂直场景的效率和可控性更高。公司技术储备久，有海量数据并且强运营。<br><br>生产力场景后续关注付费用户及ARR增长趋势。<br>生产力场景付费用户增长放缓（Q1净增18万，Q2净增1万），但MAU截至26H1比年初增长37.5%。AI生产力应用ARR由26Q1约5.8亿元提升至6月底约6.2亿元，环比增长约7%。AI算力点消费额在26Q1和Q2均实现超过46%的环比增长，且Q2增速进一步提升。后续关注新增MAU的付费转化能力，以及AI算力点消费的高速增长能否进一步推动ARR和ARPU提升。<br><br>26年PE＜13x#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p107">
+            <div class="full-header">[107] 10:52</div>
+            <div class="full-body">#再次提示【东方电热】的机会！！# [玫瑰]机器人量产时代最核心卡位的公司！不可或缺液冷散热龙头！<br><br>[红包]主业业绩反转+液冷散热模组批量出货，#下半年预计出货超千套。此外，正在与头部本体厂谈股权合作（zy、众擎等），预期差大！<br><br>[礼物]当前位置底部，建议重点重视！展望看240亿市值！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p108">
+            <div class="full-header">[108] 10:52</div>
+            <div class="full-body">🚀🚀【联讯仪器】反弹重视！！光通信&amp;半导体均有重大预期差！<br><br>#光通信领域# <br>公司具备全球领先光通信测试底层技术，是极少数覆盖晶圆、芯片、器件、模块全产业链的厂商。其中光芯片KGD设备需求旺盛，公司份额超50%；光模块测试全球领先，1.6T示波器高速增长，2.4T示波器年内推出，3.2T预计2027年落地；CPO实现四大测试环节全覆盖。光通信技术快速迭代，联讯充分吃到产业红利，爆发中！<br><br>#半导体领域# <br>存储FT测试机国产替代0到1，确定性拐点。公司18G高速FT测试机9.6G-14.5G多速率测试在存储大厂全部完成，核心芯片一次流片成功、客户测试一次通过，2026年批量订单、2027年放量，弹性可期。存储资本开支大年，联讯卡位优势突出，国产替代先锋！<br><br>[玫瑰]公司业绩有望持续超预期，强call！第一阶段市值到3000亿，目标市值4000亿，具体测算欢迎沟通<br><br>风险提示：客户拓展进度不及预期。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p109">
+            <div class="full-header">[109] 10:53</div>
+            <div class="full-body">⚡亚马逊FY26Q2：Capex、ROI，市场想要的都给了<br><br>1️⃣FY26Q2业绩Beat：营收为2006亿美元（yoy+20%）；营业利润275美元（yoy+43%）。<br><br>2️⃣Capex：Q2为531亿美元。#2026年Capex上修了200亿、至2200亿美元，主要原因是内存成本上升。同时表达了，#即便到2200亿美元仍无法满足26年的全部需求，预计27年也将延续这一态势，2028年的在手需求已相当可观。回报率方面，#服务器资产不到三年即可回本，预计在回本后的2-3年内会产生大量自由现金流。<br><br>3️⃣AWS：422亿美元（yoy+37%），OPM上升到39%（yoy+6.5pcts），均大幅Beat。关于云讲了很多：1）Backlog升至4960亿美元，增速超三位数，观察到#目前AI需求呈杠铃式分布：#  一端是Frontier Lab，另一端是企业通过AI降本增效，杠铃中间是企业现有生产工作负载，绝大多数尚未采用推理。2）AI收入的ARR已突破250亿美元，增速超三位数。3）#强调了Baerock上模型丰富程度的优势，预计未来几年内至少会出现六款能力相近的顶级模型，全部会接入Bedrock，一款将来自亚马逊自身。4）#长期AWS很可能最终成为营收达万亿美元的业务。<br><br>HYJSJ YZX⚡⚡⚡#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p110">
+            <div class="full-header">[110] 10:53</div>
+            <div class="full-body">亚马逊盘后涨9%，公司表示3年AI服务器投入可以收回成本。2Q AWS收入和订单，以及Anthropic投资收益超预期。AWS订单yoy环比显著加速（优于行业），4月和Anthropic订单是主要贡献，远期还有OpenAI合作增量贡献。<br><br>亚马逊在我们美股推荐排序靠前，投资防御性相对更好。一是客户对公司预期较低，二是AWS核心产品，刚开始20%的涨价周期，三是电商人员优化释放利润。6月Anthropic ARR已达约700亿美元（对比5月470亿），我们认为对AWS增长具备较强指引意义；管理层预计远期AWS收入将达1万亿美元。<br><br>横向对比美股业绩，亚马逊的财务增长相对健康，capex季度超预期，全年指引上调10%到2200亿。总营收同比+20%，超预期2%。经营利润同比增长43%，超预期16%。净利润同比+245%，534亿美元投资Anthropic的利得，剔除后净利润略低于预期2%。但自由现金流除了微软，三家都是负增长或者接近为零，后续需要更多融资（亚马逊-76亿）。<br><br>①AWS仍是核心增长引擎。亚马逊持续追加投资Anthropic并绑定算力，6月Anthropic ARR已达约700亿美元（对比5月470亿），我们认为对AWS增长具备较强指引意义；管理层预计远期AWS收入将达1万亿美元<br><br>②EC2机器学习模块近期提价约20%，再次验证云增长动力，我们粗略测算若EC2整体涨价20%可带动AWS收入增长约7%-8%<br><br>Joanne丁骄琬#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p111">
+            <div class="full-header">[111] 10:53</div>
+            <div class="full-body">【申万TMT海外科技】亚马逊FY26Q2：AWS加速，Capex ROI回应积极<br><br>#整体业绩：26Q2营收2006亿（YoY+20%）营业利润275亿美元，北美分部营收1162亿，YoY+16%。国际分部营收422亿,YoY+15%。<br><br>#AWS：本季度营收422亿，YoY+36.8%（预期增长约34%），营业利润率达39.4%，环比提升1.7pct，其中包含能源合约公允价值变动约6亿美元的单独收益影响1.3pct。公司AI业务（GPU+Trainium）年化收入达250亿美元；自研芯片（CPU+Trainium）业务年化收入同样达到250亿美元。<br><br>#Capex：本季度为531亿，公司上修2026年全年指引，从2000亿调至2200亿，主要由于上游存储等涨价。<br><br>#核心变化：AWS本季度着重强调投资回报率；1）CSP作为Capex的奠基石，其投资决策实际倾向理性，是否融资投Capex取决于下游大模型厂商等客户需求旺盛程度、以及是否有更高的出价意愿，市场交易也正在逐步将CSP从非理性投入主体假设纠正为理性主体。2）关注云计算商业模式的持续改善：TaaS只是开始，由Tokens API延伸的优化、适配工具等生态工具，有望逐步改善AI Cloud的商业业态增加粘性，AI云技术层价值正在不断增加。<br><br>欢迎联系【申万TMT 海外科技】林起贤/黄俊儒#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p112">
+            <div class="full-header">[112] 10:53</div>
+            <div class="full-body">AI 带动❗️继续加速❗️亚马逊26Q2业绩速递【国联民生海外 | 美股】<br><br>💡整体业绩：亚马逊Q2营收2006亿美元，同比+20%；营业利润275亿美元，同比+43%；EPS5.75美元；净利润626亿美元，同比+245%。<br><br>🌟分业务看：<br>AWS收入422亿美元，同比+37%，连续第五个季度加速，创18个季度最快增速；AWS营业利润166亿美元，同比+64%，营业利润率达到39.4%。<br><br>北美业务收入1162亿美元，同比+16%，营业利润91亿美元；国际业务收入422亿美元，同比+15%，营业利润17亿美元。<br><br>广告收入198亿美元，同比+26%；订阅服务收入137亿美元，同比+12%。<br><br>🚀前期All in AI投入开始进入收入兑现期。Q2CapEx达到531亿美元，主要投向AWS和生成式AI；全年CapEx规划由约2000亿美元提高至约2200亿美元，增量部分受存储成本上涨影响。TTM自由现金流由去年同期+182亿美元转为-76亿美元。<br><br>❗️AI需求已经开始从订单承诺转化为实际收入。AWS订单积压达到4960亿美元。管理层表示，2027年新增容量中的大部分已经被预订，2028年亦已有较多容量锁定，即使全年投入2200亿美元，2026—2027年仍可能无法完全满足需求。<br><br>🏵️往后看，亚马逊预计Q3收入1970亿-2020亿美元，同比+9%-12%；营业利润指引为225亿-265亿美元。<br><br>风险提示：基于公开资料整理，可能存在信息滞后或更新不及时、不全面及翻译不准确的风险；任何情况下均不构成投资建议。<br><br>☎️欢迎联系国联民生海外孔蓉/樊程安吉/赵志远#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p113">
+            <div class="full-header">[113] 10:53</div>
+            <div class="full-body">【天风医药杨松团队】英派药业：塞纳帕利欧洲等66国独家授权Pharmanovia，最高4.235亿欧元对价开启全球商业化<br><br>事件：近日，公司宣布已与全球专科制药公司Pharmanovia订立独家合作，授予其在欧洲、中东及北非、澳洲及新西兰共66个国家制造、开发及商业化核心产品塞纳帕利的独家权利，用于晚期上皮性高级别卵巢癌、输卵管癌及原发性腹膜癌的维持单药治疗。公司有望获得总计最高4.235亿欧元付款，以及基于净销售额最高至中二十位数百分比的分级特许权使用费。<br><br>[玫瑰]66国独家授权、最高4.235亿欧元对价开启出海第一步，EMA获批在即<br><br>授权覆盖全部27个欧盟成员国及英国、瑞士、澳洲、新西兰、中东及北非等共66国，交易对价含首付款、注册及商业化里程碑，总额最高4.235亿欧元，另有中二十位数百分比的分级特许权使用费。塞纳帕利用于一线维持治疗的欧洲上市许可申请已于2025年8月获EMA正式受理，预计2026年下半年获批。本次合作是公司将其经验证治疗方案带给中国境外患者的第一步，有望借助Pharmanovia成熟的专科药物商业化渠道快速放量。<br><br>[玫瑰]塞纳帕利具同类最佳疗效特征，安全性差异化显著<br><br>塞纳帕利（IMP4297）为公司自研新型高活性PARP1/2抑制剂。在一线维持治疗卵巢癌的III期FLAMES研究中，塞纳帕利组mPFS尚未成熟，安慰剂组为13.6个月， HR为0.43，BRCA突变型与野生型亚组均一致获益。安全性方面，其因不良事件停药率为4.4%，低于奥拉帕利的11.7%、尼拉帕利的6.7%和氟唑帕利8.9%（非头对头）。塞纳帕利具有差异化疗效与安全性优势。<br><br>[玫瑰]国内医保放量+华东医药渠道打底，合成致死平台管线具有厚度<br><br>塞纳帕利2025年1月获国内批准一线维持治疗，并纳入2025年医保目录，由华东医药推广、公司作为MAH保留全部权利，已收到1亿元预付款、另可获最高1.9亿元里程碑；叠加国内卵巢癌市场稳步增长，国内销售额有望自2026年起逐步攀升。平台层面，下一代PARP1选择性抑制剂IMP1734和可穿透中枢神经系统的PARP1抑制剂IMP1707的中国以外权益已授予Eikon，首付款3150万美元已收到、里程碑最高9.56亿美元；ATR抑制剂IMP9064为中国首个进入临床的ATR抑制剂，与塞纳帕利联用的I期临床预计2026年下半年完成；双载荷ADC（IMP32）与KAT6A降解剂（IMP27）计划2027年下半年提交IND，管线梯队丰富。<br><br>[咖啡]更多请联系：天风医药 杨松/曹文清/吴卓瑾#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p114">
+            <div class="full-header">[114] 10:54</div>
+            <div class="full-body">关注光的反弹0731<br><br>本周可预期内的风险因素落地（加息/csp），此前恐慌情绪主要集中于AI capex能否持续的问题，利空情绪释放后看好光通信板块整体复苏，建议优先关注#基本面稳健利润兑现能力强#  的超跌龙头，以及#eps开始释放弹性pe能给相对较高#  的新产业趋势的确定性龙头<br><br>光模块：中际旭创 新易盛 <br>CPO：罗博特科（光模块先体现在报表+激光器/CPO等给估值）  炬光科技  天孚通信<br>光芯片：源杰科技 永鼎股份<br><br>zttx Stella#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p115">
+            <div class="full-header">[115] 10:54</div>
+            <div class="full-body">📈📈📈【华创计算机｜AI 】底部已至 ❗️海外大涨 MSFT &amp; AMZN &amp; OAI  验证 AI 景气，关注 模型与国产链 20260731<br><br>💡 昨日，MSFT FY26Q4 财报，收入利润云超预期，后大涨 +15.51%；今 AMZN FY26Q2 收入利润云及Capex均超预期 盘后大涨 +9.53%；OAI 7月ARR大超预期；<br><br>1️⃣ MSFT：营收900亿美元（+18%）、净利润358亿美元（+31%）均超预期。Azure 同比 +43%，年收入首破千亿美元；单季Capex 410亿美元（+69%），#2# 026年引约1750亿美元算力供需缺口明确；<br><br>2️⃣ AMZN：营收2006亿美元（+19.6%）、净利润626亿美元（+245%）大幅超预期。AWS 加速，利润率维持高位；#单季Capex约450亿美元，全年指引存在上调空间，自研芯片持续放量；<br><br>3️⃣ OAI：CFO 内部披露7月 ARR 增量已超整个Q2，6月底420亿美元，7月底逼近600亿美元，#缩小与ANTH差距。增长由GPT-5.6、Agent 及 Codex驱动。当前公司正筹备IPO，收入曲线陡峭化为其提供核心支撑。<br><br>🌟结论：CSP 厂验证算力需求强劲；OAI 验证行业高景气， AI 进入正循环。<br><br>❗️❗️❗️关注核心资产：<br><br>#1#  存储：长鑫科技/SK海力士/美光/三星电子<br>#2# GPU：寒武纪/海光信息/天数智芯/沐曦股份<br>#3#  Fab厂：中芯国际/华虹宏力/燕东微<br>#4#  设备：北方华创/拓荆科技/中科飞测/中微公司<br>#5#  模型：智谱/Minimax/中控技术/九安医疗 etc.<br><br> ☎️ 华创计算机 吴鸣远 15601668682/杨玖祎/祝小茜/周志浩/周楚薇/胡昕安/陈科玮#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p116">
+            <div class="full-header">[116] 10:54</div>
+            <div class="full-body">领导们问的最多的是抄底方向，简要说一下我们密集调研和路演完的思考：<br><br>1. #海外主线：#  大光和 PCB 依旧是业绩和逻辑的稳健中军，看 26H2 业绩有弹性且中长期卡位好的公司（中际旭创/鹏鼎控股/胜宏科技/新易盛）；<br>2. #涨价线：#  看筹码集中度释放以及中长期逻辑好的，仅仅依靠高端挤占中低端产能涨价逻辑的高度很难再演绎第二遍，主要看高端线的存储（长鑫科技）、电子布（国际复材/宏和科技）、CCL（生益科技/南亚新材）、光芯片（源杰科技）；<br>3. #国产线：#  依旧强调 AI 芯片、FAB、超节点是最有锐度的三个方向，弹性看（寒武纪/华虹宏力 A/万通发展等）；设备看含存量较高和国产化率低的弹性方向（中微公司/拓荆科技/中科飞测/精智达）；<br>4. #超跌消电：#  很多消费电子 AI 化的公司已经把 AI 部分所隐含的股价预期跌没了，甚至连主业的很多预期都跌没了，开始重视（水晶光电/立讯精密/联想集团等）<br><br>[玫瑰]派点请支持国联民生电子团队<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p117">
+            <div class="full-header">[117] 10:54</div>
+            <div class="full-body">【国家发改委：近期正在会同有关部门抓紧研究制定扩大内需战略实施方案（2026-2030年）】国家发展改革委国民经济综合司副司长周宏伟在新闻发布会上表示，近期，我委正在会同有关部门抓紧研究制定扩大内需战略实施方案（2026-2030年）。下一步，国家发展改革委将会同有关部门，以更大力度、更实举措有效扩大国内需求。（证券时报）#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p118">
+            <div class="full-header">[118] 10:55</div>
+            <div class="full-body">【中信证券金属】宏观逆风消解，涨价预期形成，把握金铜板块盈利和估值双击<br><br>📈随着市场对于议息会议产生“强表态、弱行动”的解读，昨夜PCE符合预期、美GDP低于预期，以及接下来两周潜在的就业转弱、通胀走低预期，宏观逆风正在陆续消解。此前，压制黄金、铜板块估值的两大因素“板块情绪”和“涨价预期”中的前者已经出现一些修复，驱动当前板块估值回归到11-12x。在基本面的强劲支撑（铜之低库存、极端天气扰动，黄金之央行购金再创新高），随着宏观转好，“涨价预期”的形成将带来盈利和估值的双击。<br><br>📈重视金铜板块性整体配置，三条逻辑的超额优势标的：一是量增带来三季度环比继续增长（主要是铜）、四季度以及明年的超额增长预期（金铜皆有）；二是较纯的业务结构和相对稳定的成本，具备较高交付度的业绩弹性；三是事件催化较多的。黄金重点标的【万国黄金集团、招金矿业、中国黄金国际、灵宝黄金、中金黄金】，铜重点标的【洛阳钼业、五矿资源、江西铜业、西部矿业、金诚信】，此外受益于成长情绪修复的【株冶集团、中金岭南】。<br><br>💡欢迎联系交流或获取铜金板块基本面数据对比/弹性测算表！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p119">
+            <div class="full-header">[119] 10:56</div>
+            <div class="full-body">OPENAI为了应对中国大模型竞争，把自己的入门级模型LUNA价格降低了80%，我们看了下价格对比，价格便宜仅次于DS，这完全符合我们AI应用角度的研究，就好比电费，夏天天气这么热，如果电费太贵，我肯定不敢开空调，但是电费够便宜的话，我空调可以24小时不关，所以为了推动TOKEN消耗，大模型TOKEN降价必然会纷至沓来，谁不降价，谁就有压力，TOKEN降价会显著促进下游AI应用大发展，AI编程，AI影视，AI游戏，AI办公，AI金融，AI医疗都会大发展，另外，我们再次强调，AI现在以及未来海内外主要的叙事就是AI如何商业化，会高度激励商业化做的好的（微软，亚马逊，字节），一定不能偏离这个AI主线！<br><br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p120">
+            <div class="full-header">[120] 10:56</div>
+            <div class="full-body">[福]否极泰来，物极必反——当前市场核心问题简答-20260730【中期策略核心观点：先修复绝对收益，再追平相对收益】<br><br>[玫瑰]1、为何6月开始我们坚定看多低波策略修复？<br>绝对收益角度，资产1没有绝对收益，交易盘出来买先前跌的多的资产2，资产1和资产2都是交易性的绝对收益性资产。<br><br>[玫瑰]2、当前低波策略的绝对收益修复完毕了吗？<br>到位了，7月低波的资产修复了5~7%的绝对收益了，后续或有1~3%的空间，但是需要看资产1的节奏；<br><br>[玫瑰]3、弹性策略7月是否超跌？<br>超跌了，因为7月杀逻辑，直接体现的更多的是杀筹码，杀拥挤度；但是绝对收益负债主导下的市场，交易盘拥挤度提升的快，回撤后缓解的也快。<br><br>[玫瑰]4、全市场相对收益收敛后，该如何继续追赶？<br>6月底的低波与弹性策略的相对收益差距为40%左右【转债基金维度】，现在是相对收益差距收敛到了10~15%左右；弹性回撤下来了，低波反弹上去，但是弹性策略年初以来依旧有绝对、相对、规模优势；而低波策略从6月底的无绝对、无相对、无规模的状态仅仅改善为有绝对、无相对、无规模的状态，因此需要追；追什么？追弹性V反弹。<br><br>[玫瑰]5、 当前市场负债端与资产端最大预期差是什么？<br>资产端最大预期差是V反弹的高度；负债端最大预期差是还会不会追弹性；这不是一个理性分析的问题，而是一个具体的实践问题，取决于负债端的压力、动力；而资产端的反弹的高度【股价下行30%，半年度EPS上修20%，性价比相对高点不就改善了50%？】所以资产端逻辑顺，只待风险偏好修复，负债端做多资金不缺，因为交易性资产1在二季度涌入了大量的交易盘【数千亿】。<br><br>[玫瑰]6、V反弹买什么？<br>弹性转债超跌反弹+新券上市定位不高策略：路维、欧通、微导、银轮、道通、颀中、本川、睿创、南芯、豪26等。<br><br>[福]否极泰来，物极必反——当前市场核心问题简答-20260730【中期策略核心观点：先修复绝对收益，再追平相对收益】#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p121">
+            <div class="full-header">[121] 10:56</div>
+            <div class="full-body">教育板块标的更新260730<br>近期教育板块上涨，我们分析和7月底即将召开政治局工作会议、市场预期有望出台刺激消费政策，以及新东方业绩超预期有关。<br>[玫瑰]传智教育：近期上涨主要由于中报预告+7.28大同机器人发布会。今年公司变化在于：1）短期来看，去年基于保壳，主要业绩贡献来自并购的2个公司，而今年主业困境反转，来自AI大模型+AI智能体（合计占比70-80%）驱动，即今年短训+50-100%（其中ASP+10%），前瞻指标就业率目前达到94%；10月即将开课的新课程AI具身智能目前已经报满。从班均人数来看，目前达到70人左右，好于23-25年调整期的40人，因此按照老师产能*带班量*净利率-学历学校亏损，我们预计今年净利6000万左右。2）中期来看，行业出清明显，此前的竞争对手达内、千锋等陆续退出；3）长期来看，三大课程每个有望达到2亿左右利润。<br>[玫瑰]学大教育：1）我们预计Q2收款较Q1加速，利润端由于旺季投入可能增速略低于收入，大的拐点在Q3淡季不淡，即去年的人员更替影响告一段落，新开店50家左右，预计全年一对一/全日制收入+15%/20%。2）小板块今年有望减亏。3）小股东南京私募发过减持但未减、紫光通过市场减持的可能也基本结束。<br>[玫瑰]中国东方教育：截至目前我们估计公司人数/收款+6.5%/14-15%，秋招面临一定高中扩招的压力、体现在三年制，但15个月（高中生）/6-12个月（大学生）依然保持60%/15-20%增长，且我们判断今年是高中扩招压力最大的一年，因为部分省份的普高率已从50%提升至今年的83%。业绩预期收入+10%、利润+20%维持不变。<br>[玫瑰]新东方：（见昨日更新），今晚好未来FY27Q1收入/经调OP+32%/492%同样延续了高增。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p122">
+            <div class="full-header">[122] 10:57</div>
+            <div class="full-body">[玫瑰]如何看待OpenAI 7月ARR加速？<br><br>[礼物]据CNBC报道，OpenAI CFO在周三内部会议上表示，7月ARR增量超过整个Q2。根据yipit数据，OpenAI 3-6月ARR分别为250/260/370/430亿美金、Q2增量为180亿，已此推算7月ARR已达610亿美金（anthropic7月中ARR达730亿美金）。<br><br>[烟花]此前市场交易anthropic 7月ARR增速斜率放缓（每月新增约150亿美金较为平稳）引致Capex ROI下降，叠加Google Q2 FCF转负引发Capex增长持续性担忧，进而AI基建大幅回调。此次7月OpenAI ARR加速、合并两家来看7月环增仍维持25%+，再考虑从Coding向泛金融、法律、AI4S场景渗透，我们对AI需求侧仍保持乐观，继续看好AI基建侧、模型及云厂！#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p123">
+            <div class="full-header">[123] 10:59</div>
+            <div class="full-body">💡为什么AI应用今日全线大涨？<br><br>#软件ETF鹏华·560790# #传媒ETF鹏华·159805# <br><br>刚刚发生的AI产业链大消息是OPENAI为了应对中国大模型竞争，把自己的入门级模型LUNA价格降低了80%。这就好比电费，太便宜才能一直开空调。所以为了推动TOKEN消耗，大模型TOKEN降价必然会纷至沓来，谁不降价，谁就有压力，TOKEN降价会显著促进下游AI应用大发展，AI编程，AI影视，AI游戏，AI办公，AI金融，AI医疗都会大发展，另外再次强调，AI现在以及未来海内外主要的叙事就是AI如何商业化，会高度激励商业化做的好的。<br><br>仅供内部参考，基金投资需谨慎#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p124">
+            <div class="full-header">[124] 10:59</div>
+            <div class="full-body">#优质应用企业已经开始展现业绩# <br>AI下游的投资当然不能停留在逻辑叙事，但我们目前能看到的是，不仅仅是腾讯workbuddy、字节豆包付费用户高歌猛进，诸如 金山办公、美图、迈富时等公司的业绩预告中均#有实实在在的总收入、净利润等的数据证明，而非停留在"AI收入、AI  PS估值"的主题炒作阶段。<br><br>建议关注<br>段子篇幅有限，我们对AI整体链条坚定看好，研究下游是为了更好的投资上游，同时储备下游机遇。<br>-&gt;持续看好算力产业链：核心出口零部件(光/设备/pcb等)、国产芯片、算力租赁、交换芯片/机、云等（具体标的见前段子)<br>-&gt;看好CPU环节，如果不好选场景、如果应用叙事仍需接受时间，但产业角度CPU是多重交集(上游硬件-下游落地、Agent的核心铲子)：AMD、ARM、Intel、海光、澜起、禾盛等。<br>应用可逐步开始关注【有业绩、初步有清晰AI增量叙事】的标的：<br>-&gt;A股：金山办公、深信服、税友股份、能科科技、合合、万兴等<br>-&gt;港股：金蝶国际、迈富时、英矽智能、五一视界、海致等#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p125">
+            <div class="full-header">[125] 11:00</div>
+            <div class="full-body">[太阳]【国金具身智能】奥比中光大涨点评：数据采集爆发+模型进展超预期<br><br>[庆祝]事件：7月31日，奥比中光盘中大涨近17个点<br><br>[烟花]核心原因：<br>1.谷歌Gemini Robotics进展超预期，大脑有望激活机器人下一轮行情<br>2.7月30日晚间，宇树科技披露科创板上市招股意向书及初步询价公告<br>3.数据采集爆发，奥比中光7月发布数据采集全系列新品，大订单有望持续落地<br><br>[礼物]投资建议：公司当前估值已低于历史20xPS底线，当前价格低于定增价格，由于物理Ai爆发背景下公司天花板较高，2030年100亿产值，假设25%净利率，40xPE，对应1000亿市值。<br><br>[咖啡]欢迎交流：国金具身智能陈传红/冉婷1862159786<br><br>数据采集更多详情欢迎阅读报告原文：#小程序://国金证券研究服务/3v2eMTEEHxeICwi#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p126">
+            <div class="full-header">[126] 11:02</div>
+            <div class="full-body">#eps开始释放弹性pe能给相对较高#   东方财富策略（2026-07-31）<br>💡费城半导体指数22次大跌后反弹复盘<br><br>1️⃣近期费城半导体指数波动显著放大，近2个交易日收益率之差超过13%，历史上，费城半导体指数还出现过22次类似的极端反弹，主要分布于亚洲金融危机、科网泡沫破裂、次贷危机、新冠疫情等风险释放阶段。<br><br>2️⃣从历史经验来看，费城半导体指数大跌后反弹往往意味着前期快速下跌所形成的恐慌和交易性抛压正在得到释放，行情出现阶段性止跌信号，指数整体转入震荡修复，并在后续1个月内平均上涨约3%~4%。<br><br>🌍风险提示：本图片内容呈现客观数据，仅作参考，不构成任何投资建议。<br><br>📣联系人：陈果/金科<br>[含1张图]<br>[图1OCR] の东方则富证券 Eastmoney Securities 【策略研究陈果团队】 联系人：陈果/ 金科 2026年7月31日 费城半导体指数22次大跌后反弹复盘 • 1.2 近期费城半导体指数波动显著放大，近2个交易日收益率之差超过13%，历史 上，费城半导体指数还出现过22次类似的极端反弹，主要分布于亚洲金融危 机、科网泡沫破裂、次贷危机、新冠疫情等风险释放阶段。 背录 时间 背录 时间 背業 时间 亚洲金 1997-10-28 2001-01-03 2020-03-10 融危机 1998-09-01 2001-04-05 2000-04-17 科网熊 市尾声 2002-03-01 新冠 疫情 2020-03-13 2020-03-17 2000-05-11 2002-10-17 2020-03-19 科网泡 沫破裂 2000-07-06 2002-10-23 美联储加息 2022-11-10 2000-10-19 对等关税 2025-04-09 2000-10-26 次贷 2008-09-30 半导体行情 2026-06-08 2000-12-08 危机 2008-10-16 剧烈震荡 2026/7/30 从历史经验来看，费城半导体指数大跌后反弹往往意味着前期快速下跌所形 成的恐慌和交易性抛压正在得到释放，行情出现阶段性止跌信号，指数整体 转入震荡修复，并在后续1个月内平均上涨约</div>
+        </div>
+
+        <div class="full-item" id="p127">
+            <div class="full-header">[127] 11:07</div>
+            <div class="full-body">【HTDZ】景旺电子：mSAP是光模块升级的核心通胀项，光模块+交换机+AI算力PCB带动公司高增<br><br>[太阳]光模块800G到1.6T到3.2T升级中，mSAP价值量非线性增加。目前1.6T光模块均已采用mSAP工艺，新一代800G光模块也全面转向mSAP，NPO的mSAP板面积较1.6T将增加2-3倍，带来明年2亿颗以上mSAP光模块PCB需求，市场规模有望超400亿元，较26年数倍增长。而3.2T光模块mSAP或SAP板价值量又将有数倍提升，板材高端化升级路径清晰、成为最核心通胀项。mSAP工艺难度极高，光模块及存储需求爆发下，目前产能大幅吃紧，预计价格将在下半年继续上涨。<br><br>[太阳]景旺电子是全球mSAP老牌供应商，光模块mSAP板已进入全球多家光模块大厂供应链，良率爬坡及扩产持续超预期，mSAP将成为公司明年最大增速来源。其他算力板方面，公司有望在北美算力新一代SWITCH板和中板拿到较大份额，海外高速交换机板实现突破。公司算力业务多点开花，有望进入非线性增长，27年仅10+PE。<br>#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p128">
+            <div class="full-header">[128] 11:16</div>
+            <div class="full-body">宇树科技，询价日8月5日，网下申购日8月10日<br>宇树链：首开股份、美湖股份、长盛轴承、中大力德、奥比中光等<br>特斯拉机器人：五洲新春、浙江荣泰、三花智控、拓普集团等<br>银河链：绿的谐波、兆威机电、均普智能、天奇股份、百达精工等<br>松延链：利亚德、绿的谐波等<br>魔法链：嘉美包装、领益智造、鸣志电器等#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p129">
+            <div class="full-header">[129] 11:16</div>
+            <div class="full-body">【日本央行将目标利率维持在1%不变，符合市场预期】日本央行将目标利率维持在1%不变，符合市场预期。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p130">
+            <div class="full-header">[130] 11:21</div>
+            <div class="full-body">【德邦高端制造】 宇树启动发行&amp;GeminiRobotics ER 2发布，本周电话会重点推荐具身整机，逻辑演绎正在强化<br><br>1️⃣ 宇树科技公告IPO发行启动，将在8月5日初步询价，8月10日网下申购，预计8月中下旬正式登录科创板<br><br>2️⃣ 谷歌Deepmind推出全新Gemini Robotics 2.0系列具身大模型，“端到端”实现“全身智能控制+多步具身推理+多机协同”重大突破<br><br>💥Gemini Robotics 2（执行层）： 新一代VLA模型，实现全身运动统一控制，可将自然语言指令与视觉输入直接转化为精准电机信号，支持行走、下蹲、平衡与精细抓取的连贯协同<br><br>💥Gemini Robotics ER 2（推理层）： 定位“机器人大脑”，负责多步骤任务规划、空间推理、实时视频理解与动态纠错，支持边执行边推理，消除传统机器人“停止-思考-再行动”的延迟<br><br>💥Gemini Robotics On-Device 2（端侧层）： 离线低延迟版本，适配工业、应急等无云 / 弱网场景，可在数小时内完成新硬件适配，大幅降低部署门槛<br><br>🎁本次更新，使机器人可以跟踪任务进度并在不重启工作流的情况下修正直白步骤，从而大幅提高成功率，硬性接触如拧灯泡成功率达到92%，但柔性接触如扎垃圾袋依然是短板<br><br>🤞更值得关注的：On-Device 2模型的【跨本体迁移能力】，有望打破当前的【本体壁垒】<br><br>[咖啡][红包]独角兽资本化加速&amp;大厂加强布局迭代，我们本周一电话会重点推荐具身整机的逻辑演绎正在强化，欢迎各位领导交流~<br><br>风险提示：具身智能商业化落地进展不及预期、产业竞争加剧、政策变化等风险。<br><br>德邦高端制造团队：丁健/周天昊/杨安东/吴冰予/姜政宏#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p131">
+            <div class="full-header">[131] 11:24</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 4 3 易点天下 中文在线 天龙集团 19.99 20.01 19.97</div>
+        </div>
+
+        <div class="full-item" id="p132">
+            <div class="full-header">[132] 11:36</div>
+            <div class="full-body">【特斯拉正考虑剥离中国业务？特斯拉中国官方回应：不实消息】7月31日，有消息称特斯拉正考虑剥离中国业务，此举是为未来与SpaceX的潜在合并铺路。特斯拉中国方面就此回应称此为“不实消息” 。（澎湃新闻）#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p133">
+            <div class="full-header">[133] 11:36</div>
+            <div class="full-body">【ETF两市成交额报3903.65亿元，较昨日此时放量925.49亿元】截至目前，ETF两市成交额报3903.65亿元，较昨日此时放量925.49亿元，分类型来看，股票型ETF成交额1764.99亿元，债券型ETF成交额1252.4亿元，货币型ETF成交额263.54亿元，商品型ETF成交额31.92亿元，QDII型ETF成交额590.81亿元。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p134">
+            <div class="full-header">[134] 11:38</div>
+            <div class="full-body">【广发机械】三千亿市值组合近况更新-20260731<br><br>7月份我们核心组合回调幅度较大，与基本面出现较大背离，我们把核心推荐更新如下。<br><br>1.#长川科技。GPU测试机深度绑定H，#拿下最新一代GPU测试设备所有份额，26H1业绩超预期兑现。公司布局板级封装与TCB设备，有望在CoPoS大潮中成为核心标的，TCB已经在大客户验证中；量检测业务积极突破。<br><br>2.#松发股份。公司定增发行价146.02元，募资总额70亿元。#Q2业绩大超预期、净利率爬至17%，上半年新签订单200亿美金，已排产至29-30年。目前看需求加速、业绩高增、估值历史底部，远期业绩有望达到400亿以上，<br><br>3.#杰瑞股份。近期新签16亿美金，使用FTAI航改燃机头，#订单规模1GW+。FTAI持有446台CMF56当量、约11GW。公司近期还签约微网一体化项目，燃气轮机+SST+储能，AIDC一体化业务进入兑现阶段。<br><br>4.#联讯仪器。26Q2业绩实现环比260%加速，下游光模块高陡峭斜率的扩产导致keysight交付周期大幅拉长，公司份额超预期扩张。#高速FT测试、HBM KGD测试设备在头部客户验证，目标成为测试设备的平台型公司。<br><br>5.#鼎泰高科。Q2业绩增速中枢接近400%，#7月份出货均价已达2元/支，预计到年底可实现月增1500万支的扩产速度。公司是少数具备高倍径扩产能力的龙头。<br><br>以上标的是我们核心推荐组合，欢迎交流。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p135">
+            <div class="full-header">[135] 11:38</div>
+            <div class="full-body">【ZTDZ】芯源微基本面重大更新：涂胶显影国产替代10倍空间，先进封装核心受益-0731<br><br>⭕ 卡位核心领域，新架构进展积极。前道涂胶显影设备（track）是产线上唯一与光刻机联机作业的核心设备，当前市场规模约百亿，日系厂商TEL占据绝大多数份额，国产化率极低，芯源微是国内量产型前道涂胶显影设备龙头，已推出offline、I-line、KrF 及 ArF 浸没式等多种型号产品，卡位优势突出。<br><br>涂胶显影Track处于放量前夕、弹性巨大。公司新一代超高产能涂胶显影机架构FT Alkaid取得积极进展，该系列前道超高产能涂胶显影机具有高产能、高稳定性、高可靠性，通过验证后，有望满足下游客户，实现国产化率的跃升。<br><br>✔️ 核心存储客户验证顺利，订单落地可期。预计Q3中期将有小批量订单，其他头部客户也将陆续开启验证。全球大beta提升的背景下，TEL对中国大陆地区的交付能力已明显下降、全球提价10%+，Track替代的紧迫性不断加强，芯源微验证通过后的放量弹性巨大。另外，国产光刻机后续基本配套国产Track，产业进展也很积极。<br><br>❗ 替代紧迫性凸显，国产突破机遇明确。对于Track设备，日系公司TEL占据了行业95%的份额，且因为全球性的扩产，交付周期拉到了一年以上，国内晶圆厂扩产无保障，预计加速对于芯源微设备的验证与采购进度。目前国内涂胶电影设备90%以上份额被日系公司占据，国内仅芯源微从事相关设备的研发量产，经历过前几代设备的迭代，叠加当前的行业扩产趋势，有实现中高端涂胶电影设备的突破。<br><br>✨ 多领域并进，打破海外垄断放量：<br>清洗设备：公司推出高温SPM清洗设备，核心指标对标海外龙头，通过客户工艺验证，打破国外垄断，新签订单快速增长。<br>临时键合/解键合设备：公司临时键合机、解键合机整体技术已达到国际先进水平，备继续获得国内多家客户订单，2.5D/3D 先进封装应用的新产品 Frame 清洗设备，已通过客户验证，进入放量阶段。<br><br>订单高增，业绩韧性凸显。虽然公司涂胶显影Track仍未放量、化学清洗+后道贡献了今年的高速增长。预计今年上半年订单20-25亿，接近去年全年水平（约28亿）。在核心产品track仍在验证阶段的情况下，公司在化学清洗、后道方面的能力很强，订单依旧实现高增。<br><br>赛道红利叠加，深度受益行业爆发。存储厂疯狂扩产 + HBM 堆叠需求爆发，涂胶显影、清洗、临时键合设备缺一不可。芯源微作为国内唯一能量产前道涂胶显影设备厂，深度绑定长江存储、长鑫存储，3D NAND、国产 HBM 扩产直接拉动设备批量复购；先进封装设备同步放量，受益AI与存储两大增量赛道。#文字观点#</div>
+        </div>
+
+        <div class="full-item" id="p136">
+            <div class="full-header">[136] 11:56</div>
+            <div class="full-body">马斯克否认特斯拉正考虑剥离中国业务<br>[含1张图]<br>[图1OCR] Elon Musk @elonmusk 这是假新闻。 11:40 AM•Jul 31,2026•20K Views 99 Subscribe 0•. 75 Relevant V 783 W14 View quotes &gt; Post your reply 回复 Travis Rothell e @TRotheLL62855•11m 你们合并 Spacex 这件事并非虚假，因为它一直在亏损。 所以特斯拉的股东们现在可以着手解决这艘漏水的船了。 0： ill 1.2K 贝企 Pureaggie06 @PureAggie06•5m 但我希望你们能脱离中国。 1 ilil 230 Lori Brolin Zizza C @lori_zizza01•13m 垃圾和＄TSLA 价格又要回升了。你就不能等一两天再辟谣吗？物2園 ill 1.1K 贝山 0： 贝 企</div>
+        </div>
+
+        <div class="full-item" id="p137">
+            <div class="full-header">[137] 11:57</div>
+            <div class="full-body">[含1张图]<br>[图1OCR] 半夏资本李蓓 什么是老登？ 一位小登，看过人性的浪花，经过周 期的洗礼，还能在市场上健康快乐的 活着，拥有了洞察力，纪律，稳定的 框架和情绪，他才能进化成一位老登。 大部分小登都只会死在半路上，要么 是财务上死掉，要么是精神上崩溃掉， 要么是肉体上垮掉。 收起 从2000%到爆仓，“AI股神”被击 溃，本轮牛市“最大神话”落幕！ 公众号•华尔街见闻 12分钟前 半夏资本李蓓：一位老登，面对大部分台 风上的猪，心里面都只会闪过一句：too young, too simple, sometimes naive.</div>
+        </div>
+
+        <div class="full-item" id="p138">
+            <div class="full-header">[138] 12:15</div>
+            <div class="full-body">午盘<br>[含1张图]<br>[图1OCR] 板数 5天5板 2天2板 2天2板 3天2板 L- 16天7板 5天2板 2天2板 4天4板 5天4板 7天3板 9天9板 3天3板 2天2板 代码 个股 003032.SZ 603039.SH 603171.SH 泛微网络 税友股份 000676.SZ 002354.SZ 600632 智度股份 天娱数科 恒银科技 005201- 688095.SH 福昕软件 002131.SZ 利欧股份 920130.BJ立方控股 301171.SZ 易点天下 603533.SH 掌阅科技 600588.SH 用友网络 605598- 603721.SH 002774.SZ 300364.SZ 002659.SZ 600986.SH 003005.SZ 301231.SZ 605064- 688607.SH 中广天择 侠燉电梯 凯文教育 浙文互联 竞业达 荣信文化 盈峰环墝 605289.SH 301396.SZ 600449.SH 宏景科技 宁夏建材 三人行 康惠股份 000815.SZ 美利云 603629.SH 利通电子 600602.SH 000048.SZ 京基智农 002197.SZ 证通电子 600673.SH|东阳光 003001.SZ 中岩大地 欧克科技 OOEO6SA 黍坦股份 002552.SZ 605198.SH 安德利 001359.SZ 平安电工 60501。 〝江</div>
+        </div>
+
+  <div class="footer">每日简报 · 自动生成</div>
+
+</div>
+</body>
+</html>
